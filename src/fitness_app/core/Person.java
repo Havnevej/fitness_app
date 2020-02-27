@@ -15,17 +15,17 @@ public class Person {
     private String city;
     private String address;
 
-    Person(String fN, String lN, float w, int h, int a, String g, String c, String r, String C, String A){
-        firstName = fN;
-        lastName = lN;
-        weight = w;
-        height = h;
-        age = a;
-        gender = g;
-        country = c;
-        region = r;
-        city = C;
-        address = A;
+    Person(String firstName, String lastName, float weight, int height, int age, String gender, String country, String region, String city, String address){
+        firstName = this.firstName;
+        lastName = this.lastName;
+        weight = this.weight;
+        height = this.height;
+        age = this.age;
+        gender = this.gender;
+        country = this.country;
+        region = this.region;
+        city = this.city;
+        address = this.address;
     }
 
     // setters
