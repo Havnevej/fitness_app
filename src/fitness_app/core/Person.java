@@ -14,17 +14,17 @@ public class Person {
     private String city;
     private String address;
 
-    Person(String firstName, String lastName, float weight, int height, int age, String gender, String country, String region, String city, String address){
-        firstName = this.firstName;
-        lastName = this.lastName;
-        weight = this.weight;
-        height = this.height;
-        age = this.age;
-        gender = this.gender;
-        country = this.country;
-        region = this.region;
-        city = this.city;
-        address = this.address;
+    Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+        firstName = setFirstName;
+        lastName = setLastName;
+        weight = setWeight;
+        height = setHeight;
+        age = setAge;
+        gender = setGender;
+        country = setCountry;
+        region = setRegion;
+        city = setCity;
+        address = setAddress;
     }
 
     // setters
@@ -79,16 +79,6 @@ public class Person {
         Hussein.setHeight(215);
         Hussein.setRegion("Jylland");
 
-        Line.setAge((20));
-        Line.setFirstName("Line");
-        Line.setLastName("Bøv");
-        Line.setAddress("Corona");
-        Line.setCity("København");
-        Line.setCountry("Kina");
-        Line.setGender("Demigirl");
-        Line.setWeight(121);
-        Line.setHeight(120);
-        Line.setRegion("Jylland");
 
         for(Person a_person_in_theList : list_with_persons){
             a_person_in_theList.print_person_details();
