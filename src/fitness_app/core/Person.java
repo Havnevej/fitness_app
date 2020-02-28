@@ -51,7 +51,7 @@ public class Person {
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
 
-    // printer personens detaljer ud
+
     void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
@@ -63,11 +63,11 @@ public class Person {
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
                 "Sjælland", "Roskilde", "CoronaVirus 5");
 
-        // tilføjer den nye person til vores arraylist med personer
+        // adds the new person to our arraylist of persons
         list_with_persons.add(Hussein);
         list_with_persons.add(Line);
 
-        // assigner andre attributes end den personen fik tildelt i starten.
+        // assigning new attributes
         Hussein.setAge(23);
         Hussein.setFirstName("Karl");
         Hussein.setLastName("Karlsen");
@@ -78,6 +78,17 @@ public class Person {
         Hussein.setWeight(119);
         Hussein.setHeight(215);
         Hussein.setRegion("Jylland");
+
+        Line.setAge((20));
+        Line.setFirstName("Line");
+        Line.setLastName("Bøv");
+        Line.setAddress("Corona");
+        Line.setCity("København");
+        Line.setCountry("Kina");
+        Line.setGender("Demigirl");
+        Line.setWeight(121);
+        Line.setHeight(120);
+        Line.setRegion("Jylland");
 
         for(Person a_person_in_theList : list_with_persons){
             a_person_in_theList.print_person_details();
