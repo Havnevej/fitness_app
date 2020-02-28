@@ -1,6 +1,4 @@
 package fitness_app.core;
-
-
 import java.util.ArrayList;
 
 public class Person {
@@ -57,18 +55,24 @@ public class Person {
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
+
+
     public static void main(String[] args) {
+        Person_Class_Extension.yes();
         ArrayList<Person> list_with_persons = new ArrayList<>();
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
                 "Sjælland", "Smørum", "Erantishaven 4");
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
                 "Sjælland", "Roskilde", "CoronaVirus 5");
 
+        //
         // tilføjer den nye person til vores arraylist med personer
         list_with_persons.add(Hussein);
         list_with_persons.add(Line);
+        list_with_persons.add(New_user);
 
         // assigner andre attributes end den personen fik tildelt i starten.
+        //New_user.setAge(23);
         Hussein.setAge(23);
         Hussein.setFirstName("Karl");
         Hussein.setLastName("Karlsen");
