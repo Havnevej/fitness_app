@@ -1,6 +1,5 @@
 package fitness_app.core;
 
-
 import java.util.ArrayList;
 
 public class Person {
@@ -41,16 +40,16 @@ public class Person {
     public void setAddress (String address){ this.address = address; }
 
     //getters
-    public int getAge (int age){  return this.age; }
-    public String getFirstName (String firstName){  return this.firstName; }
-    public String getLastName (String lastName){  return this.lastName; }
-    public float getWeight (float weight){  return this.weight; }
-    public int getHeight (String height){  return this.height; }
-    public String getGender (String gender){  return this.gender; }
-    public String getCountry (String country){  return this.country; }
-    public String getRegion (String region){  return this.region; }
-    public String getCity (String city){  return this.city; }
-    public String getAddress (String address){  return this.address; }
+    public int getAge (){  return this.age; }
+    public String getFirstName (){  return this.firstName; }
+    public String getLastName (){  return this.lastName; }
+    public float getWeight (){  return this.weight; }
+    public int getHeight (){  return this.height; }
+    public String getGender (){  return this.gender; }
+    public String getCountry (){  return this.country; }
+    public String getRegion (){  return this.region; }
+    public String getCity (){  return this.city; }
+    public String getAddress (){  return this.address; }
 
     // printer personens detaljer ud
     void print_person_details(){
