@@ -1,6 +1,7 @@
 package fitness_app.core;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
@@ -10,20 +11,20 @@ public class Client {
     public static void take_input() {
 
         Scanner user_input = new Scanner(System.in);
-
+        //For future work the inputs with characters and numbers can be split into two cases where the scanner is limited to only number etc. input.
         System.out.print("Name: ");
         String User_Name = user_input.nextLine();
 
-        System.out.println("Last name: ");
+        System.out.print("Last name: ");
         String User_lastname = user_input.nextLine();
 
-        System.out.println("Age: ");
+        System.out.print("Age: ");
         int User_Age = user_input.nextInt();
-
-        System.out.println("weight(optional): ");
+        //Case can also possibly be used for option conditions?
+        System.out.print("weight(optional): ");
         int User_weight = user_input.nextInt();
 
-        System.out.println("Height(optional): ");
+        System.out.print("Height(optional): ");
         int User_height = user_input.nextInt();
 
         //create new person with fields from input, store this new person in a temponary variable
@@ -44,9 +45,27 @@ public class Client {
         main_loop();
     }
     static void main_loop()  {
-        take_input();
-        for(Person a_person_in_theList : list_with_people){
-            a_person_in_theList.print_person_details();
+        Scanner input_reader = new Scanner(System.in);
+        System.out.println("Type: 'Create person'");
+        try {
+            while(true){
+                String input =input_reader.nextLine();
+                if (input.equals("Create person")) {
+                    take_input();
+
+                    for(Person a_person_in_theList : list_with_people){
+                        a_person_in_theList.print_person_details();
+                    }
+                } else if(!(input.equals("quit"))){
+                    System.out.println("Input is unacceptable - Type: 'Create person'");
+                }
+                System.out.println("To exit type: 'quit'");
+                if(input.equals("quit")){break;}
+
+            }
+        }
+        catch (Exception e){ //InputMismatchException
+            System.out.println("Error: " + e + " Input can only be numbers" );
         }
     }
 }
