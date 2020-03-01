@@ -27,6 +27,10 @@ public class Person {
         city = this.city;
         address = this.address;
     }
+    //Person(){
+      //  height = 0;
+        //age = 0;
+    //}
 
     // setters
     void setAge(int age){ this.age = age; }
