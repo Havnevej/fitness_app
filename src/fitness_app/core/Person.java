@@ -56,32 +56,4 @@ public class Person {
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
-    public static void main(String[] args) {
-        ArrayList<Person> list_with_persons = new ArrayList<>();
-        Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
-                "Sjælland", "Smørum", "Erantishaven 4");
-        Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5");
-
-        // adds the new person to our arraylist of persons
-        list_with_persons.add(Hussein);
-        list_with_persons.add(Line);
-
-        // assigning new attributes
-        Hussein.setAge(23);
-        Hussein.setFirstName("Karl");
-        Hussein.setLastName("Karlsen");
-        Hussein.setAddress("Erantishaven 5");
-        Hussein.setCity("København");
-        Hussein.setCountry("Sverige");
-        Hussein.setGender("female");
-        Hussein.setWeight(119);
-        Hussein.setHeight(215);
-        Hussein.setRegion("Jylland");
-
-
-        for(Person a_person_in_theList : list_with_persons){
-            a_person_in_theList.print_person_details();
-        }
-    }
 }
