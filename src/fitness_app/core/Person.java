@@ -13,6 +13,7 @@ public class Person {
     private String region;
     private String city;
     private String address;
+    private boolean valid_person = false;
 
     Person (){
         firstName = "";
@@ -62,6 +63,13 @@ public class Person {
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
 
+    //not implemented
+    //Could be moved to "Person handler wrapper class" around "Person" class
+    boolean is_valid_person (Person this){
+        //check if this instance of person class is valid, does it have the correct values?
+        valid_person = false;
+        return false;
+    }
 
     void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +

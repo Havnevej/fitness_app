@@ -9,53 +9,29 @@ public class Client {
 
     //takes userinput and processes it
     public static void take_input() {
+        Scanner user_input = new Scanner(System.in);    //Take input from system.in (stdin)
+        Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
 
-        Scanner user_input = new Scanner(System.in);
-        //For future work the inputs with characters and numbers can be split into two cases where the scanner is limited to only number etc. input.
-
-        //NAME
-        System.out.print("Name: ");
-        String User_Name = user_input.nextLine();
-
-        System.out.print("Last name: ");
-        String User_lastname = user_input.nextLine();
-        //AGE
-        System.out.print("Age: ");
-        int User_Age =0;
-        try {User_Age = Integer.parseInt(user_input.nextLine());} catch(Exception e){
-            System.out.print(" Age is a number dummie");
+        try {
+            //firstname
+            System.out.print("first name:");
+            user_we_are_creating.setFirstName(user_input.nextLine());
+            //lastname
+            System.out.print("last name:");
+            user_we_are_creating.setLastName(user_input.nextLine());
+            //optional weight, we could continue to add all the fields under here and allow empty input
+            System.out.print("weight (optional):");
+            user_we_are_creating.setWeight(user_input.nextFloat());
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
+            String response = user_input.reset().nextLine();
+            if(response.toUpperCase().equals("A")) {
+                take_input();
+            } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
+            return;
         }
 
-        //Optional inputs: Making a condition where the program sets the optional values equal to 0 when no values are given by user.
-        //WEIGHT
-        System.out.print("weight(optional): ");
-        String gg;
-        int User_weight = 0;
-        try{
-            gg = user_input.nextLine();
-            if (gg.isEmpty()){
-                User_weight = User_weight + 0;}
-            else if(!gg.isEmpty()){User_weight=Integer.parseInt(gg);}} catch (Exception e){
-            System.out.print(" Weight is a number!");
-            }
-
-        //HEIGHT
-        System.out.print("Height(optional): ");
-        String haha = user_input.nextLine();
-        int User_height =0;
-        try{
-        if(haha.isEmpty()){
-            User_height=User_height+0;}
-        else if(!haha.isEmpty()){User_height=Integer.parseInt(haha);}}catch (Exception e){
-            System.out.print(" Height is a number!");
-        }
-
-        //create new person with fields from input, store this new person in a temponary variable
-        Person new_user = new Person(User_Name, User_lastname, User_weight, User_height, User_Age, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5");
-
-        //Puts the new user in the list we have
-        list_with_people.add(new_user);
+        list_with_people.add(user_we_are_creating);
     }
     public static void main(String[] args) {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
@@ -69,6 +45,7 @@ public class Client {
         main_loop();
     }
     static void main_loop()  {
+        //needs cleanup
         Scanner input_reader = new Scanner(System.in);
         System.out.println("Type: 'Create person'");
         try {
