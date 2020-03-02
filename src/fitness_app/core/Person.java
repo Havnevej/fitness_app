@@ -25,7 +25,7 @@ public class Person {
         city = "";
         address = "";
     }
-
+    //overloaded constructor for when we have all the data.
     Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
         lastName = setLastName;
@@ -38,11 +38,6 @@ public class Person {
         city = setCity;
         address = setAddress;
     }
-    //Person(){
-      //  height = 0;
-        //age = 0;
-    //}
-
     // setters
     void setAge(int age){ this.age = age; }
     public void setFirstName (String firstName){ this.firstName = firstName; }
