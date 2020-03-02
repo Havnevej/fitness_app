@@ -1,6 +1,5 @@
 package fitness_app.core;
 
-
 import java.util.ArrayList;
 
 public class Person {
@@ -15,17 +14,17 @@ public class Person {
     private String city;
     private String address;
 
-    Person(String firstName, String lastName, float weight, int height, int age, String gender, String country, String region, String city, String address){
-        firstName = this.firstName;
-        lastName = this.lastName;
-        weight = this.weight;
-        height = this.height;
-        age = this.age;
-        gender = this.gender;
-        country = this.country;
-        region = this.region;
-        city = this.city;
-        address = this.address;
+    Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+        firstName = setFirstName;
+        lastName = setLastName;
+        weight = setWeight;
+        height = setHeight;
+        age = setAge;
+        gender = setGender;
+        country = setCountry;
+        region = setRegion;
+        city = setCity;
+        address = setAddress;
     }
     //Person(){
       //  height = 0;
@@ -45,47 +44,20 @@ public class Person {
     public void setAddress (String address){ this.address = address; }
 
     //getters
-    public int getAge (int age){  return this.age; }
-    public String getFirstName (String firstName){  return this.firstName; }
-    public String getLastName (String lastName){  return this.lastName; }
-    public float getWeight (float weight){  return this.weight; }
-    public int getHeight (String height){  return this.height; }
-    public String getGender (String gender){  return this.gender; }
-    public String getCountry (String country){  return this.country; }
-    public String getRegion (String region){  return this.region; }
-    public String getCity (String city){  return this.city; }
-    public String getAddress (String address){  return this.address; }
+    public int getAge (){  return this.age; }
+    public String getFirstName (){  return this.firstName; }
+    public String getLastName (){  return this.lastName; }
+    public float getWeight (){  return this.weight; }
+    public int getHeight (){  return this.height; }
+    public String getGender (){  return this.gender; }
+    public String getCountry (){  return this.country; }
+    public String getRegion (){  return this.region; }
+    public String getCity (){  return this.city; }
+    public String getAddress (){  return this.address; }
 
-    // printer personens detaljer ud
+
     void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
-    }
-    public static void main(String[] args) {
-        ArrayList<Person> list_with_persons = new ArrayList<>();
-        Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
-                "Sjælland", "Smørum", "Erantishaven 4");
-        Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5");
-
-        // tilføjer den nye person til vores arraylist med personer
-        list_with_persons.add(Hussein);
-        list_with_persons.add(Line);
-
-        // assigner andre attributes end den personen fik tildelt i starten.
-        Hussein.setAge(23);
-        Hussein.setFirstName("Karl");
-        Hussein.setLastName("Karlsen");
-        Hussein.setAddress("Erantishaven 5");
-        Hussein.setCity("København");
-        Hussein.setCountry("Sverige");
-        Hussein.setGender("female");
-        Hussein.setWeight(119);
-        Hussein.setHeight(215);
-        Hussein.setRegion("Jylland");
-
-        for(Person a_person_in_theList : list_with_persons){
-            a_person_in_theList.print_person_details();
-        }
     }
 }

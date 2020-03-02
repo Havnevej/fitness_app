@@ -16,7 +16,7 @@ public class Client {
         //NAME
         System.out.print("Name: ");
         String User_Name = user_input.nextLine();
-        //LAST NAME
+
         System.out.print("Last name: ");
         String User_lastname = user_input.nextLine();
         //AGE
