@@ -14,6 +14,18 @@ public class Person {
     private String city;
     private String address;
 
+    Person (){
+        firstName = "";
+        lastName = "";
+        weight = -1;
+        height = -1;
+        gender = "";
+        country = "";
+        region = "";
+        city = "";
+        address = "";
+    }
+
     Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
         lastName = setLastName;
