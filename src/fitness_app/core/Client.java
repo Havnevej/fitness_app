@@ -9,29 +9,29 @@ public class Client {
 
     //takes userinput and processes it
     public static void take_input() {
+        Scanner user_input = new Scanner(System.in);    //Take input from system.in (stdin)
+        Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
 
-        Scanner user_input = new Scanner(System.in);
-        //For future work the inputs with characters and numbers can be split into two cases where the scanner is limited to only number etc. input.
-        System.out.print("Name: ");
-        String User_Name = user_input.nextLine();
+        try {
+            //firstname
+            System.out.print("first name:");
+            user_we_are_creating.setFirstName(user_input.nextLine());
+            //lastname
+            System.out.print("last name:");
+            user_we_are_creating.setLastName(user_input.nextLine());
+            //optional weight, we could continue to add all the fields under here and allow empty input
+            System.out.print("weight (optional):");
+            user_we_are_creating.setWeight(user_input.nextFloat());
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
+            String response = user_input.reset().nextLine();
+            if(response.toUpperCase().equals("A")) {
+                take_input();
+            } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
+            return;
+        }
 
-        System.out.print("Last name: ");
-        String User_lastname = user_input.nextLine();
-
-        System.out.print("Age: ");
-        int User_Age = user_input.nextInt();
-        //Case can also possibly be used for option conditions?
-        System.out.print("weight(optional): ");
-        int User_weight = user_input.nextInt();
-
-        System.out.print("Height(optional): ");
-        int User_height = user_input.nextInt();
-
-        //create new person with fields from input, store this new person in a temponary variable
-        Person new_user = new Person(User_Name, User_lastname, User_weight, User_height, User_Age, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5");
-        //Puts the new user in the list we have
-        list_with_people.add(new_user);
+        list_with_people.add(user_we_are_creating);
     }
     public static void main(String[] args) {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
@@ -45,6 +45,7 @@ public class Client {
         main_loop();
     }
     static void main_loop()  {
+        //needs cleanup
         Scanner input_reader = new Scanner(System.in);
         System.out.println("Type: 'Create person'");
         try {
