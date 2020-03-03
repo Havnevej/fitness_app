@@ -13,9 +13,10 @@ public class Person {
     private String address;
     private boolean valid_person = false;
 
-    Person (){
+    public Person (){
         firstName = "";
         lastName = "";
+        age = -1;
         weight = -1;
         height = -1;
         gender = "";
@@ -25,7 +26,7 @@ public class Person {
         address = "";
     }
     //overloaded constructor for when we have all the data.
-    Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+    public Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
