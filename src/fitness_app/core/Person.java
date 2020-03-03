@@ -14,7 +14,7 @@ public class Person {
     private String city;
     private String address;
 
-    Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+    public Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -28,7 +28,7 @@ public class Person {
     }
 
     // setters
-    void setAge(int age){ this.age = age; }
+    public void setAge(int age){ this.age = age; }
     public void setFirstName (String firstName){ this.firstName = firstName; }
     public void setLastName (String lastName){ this.lastName = lastName; }
     public void setWeight (float weight){ this.weight = weight; }
@@ -52,7 +52,7 @@ public class Person {
     public String getAddress (){  return this.address; }
 
 
-    void print_person_details(){
+    public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
