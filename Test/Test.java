@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-class personTest {
+class PersonTest {
     Person hussein = new Person("Hussein", "Miari", 92, 190, 20, "male"
             ,"Denmark", "Sjælland", "Smørum", "Erantishaven 4");
 
