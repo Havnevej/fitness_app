@@ -27,7 +27,7 @@ public class Person {
         region = "";
         city = "";
         address = "";
-        bmi = -1;
+        // bmi = -1; Vi vil ikke sætte bmi manuelt, never
 
 
     }
@@ -44,7 +44,7 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
-        bmi = setBmi;
+        // bmi = setBmi; Vi vil ikke sætte bmi manuelt, never
 
 
     }
@@ -74,8 +74,15 @@ public class Person {
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
-    public float getBmi (){ return this.bmi; }
-
+    //public float getBmi (){ return this.bmi; } //Dette vil virke men se her:
+    public float getBmi(){
+        bmi = weight/(height/100); //først laver vi udregningen og sætter faktisk klassens felt (variabel) til udregningen
+        return bmi; // vi returnere variabelet vi lige udregnet
+    }
+    public float getBmi2(){
+        return weight/(height/100); // Her returnere vi bare udregningen istedet for at gemme resultatet i et felt
+        //det her vil virke ligeså godt i vores case, men det andet eksempel er mere fremtidssikkert, hvis nu vi skal bruge mere logik
+    }
 
     //not implemented
     //Could be moved to "Person handler wrapper class" around "Person" class
@@ -89,9 +96,4 @@ public class Person {
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s \n bmi: %s", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, bmi);
     }
-    public void getBMI(){
-        getBmi();
-        System.out.println(getBmi());
-    }
-
 }
