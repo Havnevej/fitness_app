@@ -1,7 +1,9 @@
 package fitness_app.core;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class Client {
     private static ArrayList<Person> list_with_people = new ArrayList<>();
@@ -23,10 +25,8 @@ public class Client {
             user_we_are_creating.setWeight(user_input.nextFloat());
             System.out.print("height (optional):");
             user_we_are_creating.setHeight(user_input.nextFloat());
-            user_we_are_creating.getBMI();
 
 
-            //user_we_are_creating.setBmi();
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.reset().nextLine();
@@ -41,9 +41,9 @@ public class Client {
     public static void main(String[] args) {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
-                "Sjælland", "Smørum", "Erantishaven 4", -1);
+                "Sjælland", "Smørum", "Erantishaven 4");
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5", -1);
+                "Sjælland", "Roskilde", "CoronaVirus 5");
         list_with_people.add(Hussein);
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
@@ -61,6 +61,7 @@ public class Client {
 
                     for(Person a_person_in_theList : list_with_people){
                         a_person_in_theList.print_person_details();
+
                     }
                 } else if(!(input.equals("quit"))){
                     System.out.println("Input is unacceptable - Type: 'Create person'");
