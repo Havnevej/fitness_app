@@ -16,6 +16,7 @@ public class Person {
     private float bmi;
 
 
+
     public Person (){
         firstName = "";
         lastName = "";
@@ -72,12 +73,19 @@ public class Person {
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
-    //public float getBmi (){ return this.bmi; } //Dette vil virke men se her:
     public float getBmi(){
-        bmi = (float) (weight/Math.pow(height/100,2));  //først laver vi udregningen og sætter faktisk klassens felt (variabel) til udregningen
-        return bmi; // vi returnere variabelet vi lige har udregnet
+        //We first calculate the bmi itself, and then we're assigning the calculation to the variable. Rounding the value too.
+        calcBMI();
+
+        //bmi = (float) Math.round(weight/Math.pow(height/100,2));
+
+        //returning the value we just calculated
+        return bmi;
     }
 
+    public void calcBMI(){
+        bmi = (float) Math.round(weight/Math.pow(height/100,2));
+    }
 
     //not implemented
     //Could be moved to "Person handler wrapper class" around "Person" class
@@ -89,6 +97,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s \n bmi: %s", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, getBmi());
+                "%s, %s, %s and has the address %s\nBMI: " + this.bmi + ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
 }

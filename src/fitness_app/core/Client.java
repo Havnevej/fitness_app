@@ -61,7 +61,6 @@ public class Client {
 
                     for(Person a_person_in_theList : list_with_people){
                         a_person_in_theList.print_person_details();
-
                     }
                 } else if(!(input.equals("quit"))){
                     System.out.println("Input is unacceptable - Type: 'Create person'");
