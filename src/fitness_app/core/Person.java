@@ -15,8 +15,6 @@ public class Person {
     private boolean valid_person = false;
     private float bmi;
 
-
-
     public Person (){
         firstName = "";
         lastName = "";
@@ -28,9 +26,8 @@ public class Person {
         region = "";
         city = "";
         address = "";
-
-
     }
+
     //overloaded constructor for when we have all the data.
     public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress
     ){
@@ -44,7 +41,6 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
-
 
     }
     // setters
@@ -60,8 +56,6 @@ public class Person {
     public void setAddress (String address){ this.address = address; }
     public void setBmi(float bmi){ this.bmi = bmi; }
 
-
-
     //getters
     public int getAge (){  return this.age; }
     public String getFirstName (){  return this.firstName; }
@@ -76,15 +70,14 @@ public class Person {
     public float getBmi(){
         //We first calculate the bmi itself, and then we're assigning the calculation to the variable. Rounding the value too.
         calcBMI();
-
         //bmi = (float) Math.round(weight/Math.pow(height/100,2));
-
         //returning the value we just calculated
         return bmi;
     }
 
-    public void calcBMI(){
+    public float calcBMI(){
         bmi = (float) Math.round(weight/Math.pow(height/100,2));
+        return bmi;
     }
 
     //not implemented
@@ -97,6 +90,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s\nBMI: " + this.bmi + ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
+                "%s, %s, %s and has the address %s\nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
 }
