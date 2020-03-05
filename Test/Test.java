@@ -5,17 +5,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-class test {
+class personTest {
     Person hussein = new Person("Hussein", "Miari", 92, 190, 20, "male"
             ,"Denmark", "Sjælland", "Smørum", "Erantishaven 4");
 
     @Test
     public void bmiTest(){
         Person julie = new Person("Julie", "W", 100, 200, 20, "female", "denmark", "s", "s", "s");
+        //setting new values to this person, to test if the bmicalculater calculates new values too.
         julie.setWeight(57);
         julie.setHeight(160);
         julie.getBmi();
-        assertEquals(julie.getBmi(), 22.265625);
+        // Julies BMI should be equal to 22,25, but we round down to 22 (math.round function), since the formula for BMI is weight divided by height in meters squared.
+        assertEquals(julie.getBmi(), 22);
     }
 
     @Test
@@ -47,6 +49,4 @@ class test {
         hussein.print_person_details();
         assertEquals(21, hussein.getAge());
    }
-
-
 }
