@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
-    private static ArrayList<Person> list_with_people = new ArrayList<>();
+    public static ArrayList<Person> list_with_people = new ArrayList<>();
 
     //takes userinput and processes it
     public static void take_input() {
@@ -23,7 +23,7 @@ public class Client {
             user_we_are_creating.setWeight(user_input.nextFloat());
             System.out.print("height (optional):");
             user_we_are_creating.setHeight(user_input.nextFloat());
-            user_we_are_creating.getBMI();
+            user_we_are_creating.getBmi();
 
 
             //user_we_are_creating.setBmi();
@@ -38,12 +38,12 @@ public class Client {
 
         list_with_people.add(user_we_are_creating);
     }
-    public static void main(String[] args) {
+    public static void main() {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
-                "Sjælland", "Smørum", "Erantishaven 4", -1);
+                "Sjælland", "Smørum", "Erantishaven 4");
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5", -1);
+                "Sjælland", "Roskilde", "CoronaVirus 5");
         list_with_people.add(Hussein);
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////

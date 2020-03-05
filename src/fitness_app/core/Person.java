@@ -32,8 +32,7 @@ public class Person {
 
     }
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, float setBmi
-    ){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -48,6 +47,7 @@ public class Person {
 
 
     }
+
     // setters
     public void setAge(int age){ this.age = age; }
     public void setFirstName (String firstName){ this.firstName = firstName; }
