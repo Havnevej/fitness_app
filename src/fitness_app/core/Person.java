@@ -1,10 +1,11 @@
 package fitness_app.core;
 
+
 public class Person {
     private String firstName;
     private String lastName;
     private float weight;
-    private int height;
+    private float height;
     private int age;
     private String gender;
     private String country;
@@ -12,6 +13,7 @@ public class Person {
     private String city;
     private String address;
     private boolean valid_person = false;
+    private float bmi;
 
     public Person (){
         firstName = "";
@@ -25,8 +27,10 @@ public class Person {
         city = "";
         address = "";
     }
+
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, int setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress
+    ){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -37,30 +41,44 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
+
     }
     // setters
     public void setAge(int age){ this.age = age; }
     public void setFirstName (String firstName){ this.firstName = firstName; }
     public void setLastName (String lastName){ this.lastName = lastName; }
     public void setWeight (float weight){ this.weight = weight; }
-    public void setHeight(int height){ this.height = height; }
+    public void setHeight(float height){ this.height = height; }
     public void setGender (String gender){ this.gender = gender; }
     public void setCountry(String country){ this.country = country; }
     public void setRegion (String region){ this.region = region; }
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
+    public void setBmi(float bmi){ this.bmi = bmi; }
 
     //getters
     public int getAge (){  return this.age; }
     public String getFirstName (){  return this.firstName; }
     public String getLastName (){  return this.lastName; }
     public float getWeight (){  return this.weight; }
-    public int getHeight (){  return this.height; }
+    public float getHeight (){  return this.height; }
     public String getGender (){  return this.gender; }
     public String getCountry (){  return this.country; }
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
+    public float getBmi(){
+        //We first calculate the bmi itself, and then we're assigning the calculation to the variable. Rounding the value too.
+        calcBMI();
+        //bmi = (float) Math.round(weight/Math.pow(height/100,2));
+        //returning the value we just calculated
+        return bmi;
+    }
+
+    public float calcBMI(){
+        bmi = (float) Math.round(weight/Math.pow(height/100,2));
+        return bmi;
+    }
 
     //not implemented
     //Could be moved to "Person handler wrapper class" around "Person" class
@@ -72,6 +90,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s \n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
+                "%s, %s, %s and has the address %s\nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
 }
