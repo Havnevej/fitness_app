@@ -13,21 +13,26 @@ public class Client {
         Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
         try {
             //firstname
-            System.out.print("first name:");
+            System.out.println("first name:");
             user_we_are_creating.setFirstName(user_input.nextLine());
             //lastname
-            System.out.print("last name:");
+            System.out.println("last name:");
             user_we_are_creating.setLastName(user_input.reset().nextLine());
             //optional weight, we could continue to add all the fields under here and allow empty input
-            System.out.print("Weight (optional):");
-            float optional_weight = Float.parseFloat(user_input.nextLine());
-            optional();
-            user_we_are_creating.setWeight(optional_weight);
 
+            System.out.println("Weight (optional):");
+            String optional_input = user_input.nextLine();
+            if(optional_input.isEmpty()){user_we_are_creating.setWeight(0f);}else
+                {user_we_are_creating.setWeight(Float.parseFloat(optional_input));
+            }
+            System.out.println("Height (optional):");
+            optional_input = user_input.nextLine();
+            if(optional_input.isEmpty()){user_we_are_creating.setHeight(0);}else
+            {user_we_are_creating.setHeight(Integer.parseInt(optional_input));
+            }
 
-        } catch (InputMismatchException e) {
+        } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
-            user_input.nextLine();
             String response = user_input.nextLine();
             if(response.toUpperCase().equals("A")) {
                 take_input();
@@ -73,11 +78,5 @@ public class Client {
             System.out.println("Error: " + e + " Input can only be numbers" );
         }
     }
-    static void optional(){
-        Scanner input = new Scanner(System.in);
-        if(input.nextLine() == null){
-            user_we_are_creating.setWeight(0);
-        }
-
-        }
-    }
+    
+}
