@@ -1,7 +1,9 @@
 package fitness_app.core;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class Client {
     public static ArrayList<Person> list_with_people = new ArrayList<>();
@@ -23,10 +25,8 @@ public class Client {
             user_we_are_creating.setWeight(user_input.nextFloat());
             System.out.print("height (optional):");
             user_we_are_creating.setHeight(user_input.nextFloat());
-            user_we_are_creating.getBmi();
 
 
-            //user_we_are_creating.setBmi();
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.reset().nextLine();

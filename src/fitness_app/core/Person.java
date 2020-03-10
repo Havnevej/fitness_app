@@ -1,5 +1,6 @@
 package fitness_app.core;
 
+
 public class Person {
     private String firstName;
     private String lastName;
@@ -13,8 +14,6 @@ public class Person {
     private String address;
     private boolean valid_person = false;
     private float bmi;
-    //private void setBmi (float bmi){this.bmi = (weight / height); }
-
 
     public Person (){
         firstName = "";
@@ -27,10 +26,8 @@ public class Person {
         region = "";
         city = "";
         address = "";
-        // bmi = -1; Vi vil ikke sætte bmi manuelt, never
-
-
     }
+
     //overloaded constructor for when we have all the data.
     public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
         firstName = setFirstName;
@@ -43,8 +40,6 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
-        // bmi = setBmi; Vi vil ikke sætte bmi manuelt, never
-
 
     }
 
@@ -59,9 +54,7 @@ public class Person {
     public void setRegion (String region){ this.region = region; }
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
-    public void setBmi(float bmi){ this.bmi = this.weight / (this.height/100); }
-
-
+    public void setBmi(float bmi){ this.bmi = bmi; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -74,14 +67,17 @@ public class Person {
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
-    //public float getBmi (){ return this.bmi; } //Dette vil virke men se her:
     public float getBmi(){
-        bmi = weight/(height/100); //først laver vi udregningen og sætter faktisk klassens felt (variabel) til udregningen
-        return bmi; // vi returnere variabelet vi lige udregnet
+        //We first calculate the bmi itself, and then we're assigning the calculation to the variable. Rounding the value too.
+        calcBMI();
+        //bmi = (float) Math.round(weight/Math.pow(height/100,2));
+        //returning the value we just calculated
+        return bmi;
     }
-    public float getBmi2(){
-        return weight/(height/100); // Her returnere vi bare udregningen istedet for at gemme resultatet i et felt
-        //det her vil virke ligeså godt i vores case, men det andet eksempel er mere fremtidssikkert, hvis nu vi skal bruge mere logik
+
+    public float calcBMI(){
+        bmi = (float) Math.round(weight/Math.pow(height/100,2));
+        return bmi;
     }
 
     //not implemented
@@ -94,6 +90,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s \n bmi: %s", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, bmi);
+                "%s, %s, %s and has the address %s\nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
 }
