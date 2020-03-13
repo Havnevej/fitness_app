@@ -14,6 +14,7 @@ public class Person {
     private String address;
     private boolean valid_person = false;
     private float bmi;
+    private int id = Client.list_with_people.size();
 
     public Person (){
         firstName = "";
@@ -40,7 +41,6 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
-
     }
 
     // setters
@@ -67,6 +67,7 @@ public class Person {
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
+    public int getId() { return id; }
     public float getBmi(){
         //We first calculate the bmi itself, and then we're assigning the calculation to the variable. Rounding the value too.
         calcBMI();
@@ -89,6 +90,7 @@ public class Person {
     }
 
     public void print_person_details(){
+        System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s\nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
     }
