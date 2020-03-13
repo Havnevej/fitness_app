@@ -1,5 +1,6 @@
 package fitness_app.core;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -18,12 +19,30 @@ public class Client {
             //lastname
             System.out.println("last name:");
             user_we_are_creating.setLastName(user_input.reset().nextLine());
-            //optional weight, we could continue to add all the fields under here and allow empty input
+
+            //age
+            System.out.println("Date of birth: (dd/MM/yyyy)");
+
+            System.out.println("dd");
+            int day = Integer.parseInt(user_input.nextLine());
+            System.out.println("MM");
+            int month = Integer.parseInt(user_input.nextLine());
+            System.out.println("yyyy");
+            int year = Integer.parseInt(user_input.nextLine());
+
+            LocalDate start = LocalDate.of(year, month, day);
+            LocalDate end = LocalDate.now();
+            // Calculates how long it has been since input date:
+            long years = ChronoUnit.YEARS.between(start, end);
+            // convert long to int since setAge expects an int.
+            int years_int = (int)years;
+            user_we_are_creating.setAge(years_int);
+
 
             System.out.println("Weight (optional):");
             String optional_input = user_input.nextLine();
             if(optional_input.isEmpty()){user_we_are_creating.setWeight(0f);}else
-                {user_we_are_creating.setWeight(Float.parseFloat(optional_input));
+            {user_we_are_creating.setWeight(Float.parseFloat(optional_input));
             }
             System.out.println("Height (optional):");
             optional_input = user_input.nextLine();
@@ -78,5 +97,4 @@ public class Client {
             System.out.println("Error: " + e + " Input can only be numbers" );
         }
     }
-    
 }
