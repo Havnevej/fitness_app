@@ -84,6 +84,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s\nBMI: " + getBmi() + ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
+                "%s, %s, %s and has the address %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, getBmi());
     }
 }
