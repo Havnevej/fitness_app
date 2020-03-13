@@ -20,6 +20,8 @@ public class Client {
             //lastname
             System.out.print("last name:");
             user_we_are_creating.setLastName(user_input.nextLine());
+            System.out.print("email: ");
+            user_we_are_creating.setEmail(user_input.nextLine());
             //optional weight, we could continue to add all the fields under here and allow empty input
             System.out.print("weight (optional):");
             user_we_are_creating.setWeight(user_input.nextFloat());
@@ -41,10 +43,10 @@ public class Client {
     public static void main() {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
-                "Sjælland", "Smørum", "Erantishaven 4");
-        Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5");
+                "Sjælland", "Smørum", "Erantishaven 4", "sona.miari@gmail.com");
         list_with_people.add(Hussein);
+        Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
+                "Sjælland", "Roskilde", "CoronaVirus 5", "unknown email");
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         main_loop();
