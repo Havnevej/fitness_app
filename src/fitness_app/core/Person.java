@@ -1,5 +1,6 @@
 package fitness_app.core;
 
+import java.util.Arrays;
 
 public class Person {
     private String firstName;
@@ -14,6 +15,7 @@ public class Person {
     private String address;
     private boolean valid_person = false;
     private float bmi;
+    private int ID;
 
     public Person (){
         firstName = "";
@@ -26,6 +28,7 @@ public class Person {
         region = "";
         city = "";
         address = "";
+
     }
 
     //overloaded constructor for when we have all the data.
@@ -42,6 +45,7 @@ public class Person {
         city = setCity;
         address = setAddress;
 
+
     }
     // setters
     public void setAge(int age){ this.age = age; }
@@ -55,6 +59,7 @@ public class Person {
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
     public void setBmi(float bmi){ this.bmi = bmi; }
+    public void setID(int bmi){this.ID = ID; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -74,6 +79,15 @@ public class Person {
         //returning the value we just calculated
         return bmi;
     }
+    public int getID(){
+        personalID();
+        return ID;
+    }
+
+    public int personalID(){
+        ID++;
+        return ID;
+    }
 
     public float calcBMI(){
         bmi = (float) Math.round(weight/Math.pow(height/100,2));
@@ -90,6 +104,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s\nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address);
+                "%s, %s, %s and has the address %s\nID: " + getID() + ", BMI: " +  calcBMI() + ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, ID);
     }
 }
