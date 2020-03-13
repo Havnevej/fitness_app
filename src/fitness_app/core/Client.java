@@ -17,7 +17,6 @@ public class Client {
             //firstname
             System.out.print("first name:");
             user_we_are_creating.setFirstName(user_input.nextLine());
-            //user_we_are_creating.personalID();
             //lastname
             System.out.print("last name:");
             user_we_are_creating.setLastName(user_input.nextLine());
@@ -36,7 +35,7 @@ public class Client {
             } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
             return;
         }
-        user_we_are_creating.personalID();
+
         list_with_people.add(user_we_are_creating);
     }
     public static void main() {
@@ -61,7 +60,6 @@ public class Client {
                     take_input();
 
                     for(Person a_person_in_theList : list_with_people){
-                        a_person_in_theList.getID();
                         a_person_in_theList.print_person_details();
                     }
                 } else if(!(input.equals("quit"))){
