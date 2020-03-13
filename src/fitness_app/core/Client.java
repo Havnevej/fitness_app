@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 
 public class Client {
-    private static ArrayList<Person> list_with_people = new ArrayList<>();
+    public static ArrayList<Person> list_with_people = new ArrayList<>();
 
     //takes userinput and processes it
     public static void take_input() {
@@ -39,7 +39,7 @@ public class Client {
         user_we_are_creating.personalID();
         list_with_people.add(user_we_are_creating);
     }
-    public static void main(String[] args) {
+    public static void main() {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
                 "Sjælland", "Smørum", "Erantishaven 4");
