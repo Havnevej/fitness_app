@@ -51,7 +51,6 @@ public class Datastore {
         }
     }
     public static void main(String[] args) {
-        Client.main();
         insert_person(Client.list_with_people.get(0));
     }
 }
