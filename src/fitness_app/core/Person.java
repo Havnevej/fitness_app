@@ -4,8 +4,8 @@ package fitness_app.core;
 public class Person {
     private String firstName;
     private String lastName;
-    private float weight;
-    private float height;
+    public float weight;
+    public float height;
     private int age;
     private String gender;
     private String country;

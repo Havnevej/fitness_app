@@ -1,4 +1,6 @@
 package fitness_app.core;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -8,8 +10,31 @@ import java.util.Scanner;
 public class Client {
     public static ArrayList<Person> list_with_people = new ArrayList<>();
 
+    private static void optional_input(String field, Person p) throws NoSuchFieldException, IllegalAccessException { // field is not found in class
+        Scanner user_input = new Scanner(System.in); //start a new user input scanner
+        Field the_field = Person.class.getField(field); //gets the field from the string (if it does not exist eg. we type weighs and not weight like it is in person class, it throws no such field)
+        Type t = the_field.getType(); //gets the field from the field
+
+        System.out.printf("%s (optional):", field); //prints eg. weight (optional):
+        String optional_input = user_input.nextLine();
+        System.out.println(t.getTypeName()); // prints the type of the field that we got (debugging)
+        if(!optional_input.isEmpty()) {
+            switch (t.getTypeName()) {
+                case "String":
+                    the_field.set(p, optional_input);
+                    break;
+                case "integer":
+                    the_field.set(p, Integer.parseInt(optional_input));
+                    break;
+                case "float":
+                    the_field.set(p, Float.parseFloat(optional_input));
+                    break;
+            }
+        }
+        //if the input is empty we dont do anything because it is already null, we will handle this case when we insert into database.
+    }
     //takes userinput and processes it
-    public static void take_input() {
+    private static void take_input() {
         Scanner user_input = new Scanner(System.in);    //Take input from system.in (stdin)
         Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
         try {
@@ -39,16 +64,14 @@ public class Client {
             user_we_are_creating.setAge(years_int);
 
 
-            System.out.println("Weight (optional):");
-            String optional_input = user_input.nextLine();
-            if(optional_input.isEmpty()){user_we_are_creating.setWeight(0f);}else
-            {user_we_are_creating.setWeight(Float.parseFloat(optional_input));
-            }
-            System.out.println("Height (optional):");
-            optional_input = user_input.nextLine();
-            if(optional_input.isEmpty()){user_we_are_creating.setHeight(0);}else
-            {user_we_are_creating.setHeight(Integer.parseInt(optional_input));
-            }
+            optional_input("weight", user_we_are_creating);
+
+
+           // System.out.println("Height (optional):");
+            //optional_input = user_input.nextLine();
+            //if(optional_input.isEmpty()){user_we_are_creating.setHeight(0);}else
+            //{user_we_are_creating.setHeight(Integer.parseInt(optional_input));
+            //}
 
         } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
@@ -73,7 +96,7 @@ public class Client {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         main_loop();
     }
-    static void main_loop()  {
+    private static void main_loop()  {
         //needs cleanup
         Scanner input_reader = new Scanner(System.in);
         System.out.println("Type: 'Create person'");
