@@ -1,4 +1,4 @@
-# fitness_app Flutter version
+# fitness_app Java-Prototype
 
-
-## UML Diagram - Laves af Hussein
+## Branching strategy
+![alt text](BranchingStrategy.png "Branching Strategy for Java-Prototype")

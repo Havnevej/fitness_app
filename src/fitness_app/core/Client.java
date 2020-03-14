@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
-    private static ArrayList<Person> list_with_people = new ArrayList<>();
+    public static ArrayList<Person> list_with_people = new ArrayList<>();
 
     //takes userinput and processes it
     public static void take_input() {
@@ -68,6 +68,7 @@ public class Client {
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
                 "Sjælland", "Roskilde", "CoronaVirus 5");
         list_with_people.add(Hussein);
+        Hussein.getBmi();
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         main_loop();
