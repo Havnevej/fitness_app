@@ -45,6 +45,8 @@ public class Client {
         list_with_people.add(Hussein);
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
                 "Sjælland", "Roskilde", "CoronaVirus 5");
+        list_with_people.add(Hussein);
+        Hussein.getBmi();
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         main_loop();
