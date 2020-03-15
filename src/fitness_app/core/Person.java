@@ -14,6 +14,7 @@ public class Person {
     private String address;
     private boolean valid_person = false;
     private float bmi;
+    private String email;
 
     public Person (){
         firstName = "";
@@ -26,10 +27,11 @@ public class Person {
         region = "";
         city = "";
         address = "";
+        email = "";
     }
 
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -40,6 +42,7 @@ public class Person {
         region = setRegion;
         city = setCity;
         address = setAddress;
+        email = setEmail;
     }
 
     // setters
@@ -53,6 +56,7 @@ public class Person {
     public void setRegion (String region){ this.region = region; }
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
+    public void setEmail (String email) { this.email = email; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -65,6 +69,7 @@ public class Person {
     public String getRegion (){  return this.region; }
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
+    public String getEmail (){ return this.email; }
     public float getBmi(){
         calcBMI();
         return bmi;
@@ -84,6 +89,6 @@ public class Person {
 
     public void print_person_details(){
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, getBmi());
+                "%s, %s, %s and has the address %s, Email: %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, getBmi());
     }
 }

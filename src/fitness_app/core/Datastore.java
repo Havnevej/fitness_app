@@ -1,9 +1,7 @@
 package fitness_app.core;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+
 
 public class Datastore {
     //Ignore this, for future use
@@ -39,19 +37,41 @@ public class Datastore {
     }
 
     public static void insert_person(Person p) {
-        String sql = "INSERT INTO PERSON(person_firstname,person_lastname) VALUES(?,?)"; //statement
+        String sql = "INSERT INTO PERSON(person_firstname,person_lastname, person_email) VALUES(?,?,?)"; //statement
 
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, p.getFirstName());
             statement.setString(2, p.getLastName());
+            statement.setString(3, p.getEmail());
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void selectData(Person p){
+        String sql2 = "SELECT * FROM PERSON WHERE person_email = 'hkmiari@ruc.dk'";
+
+        try (Connection conn = get_connection();
+             Statement statement = conn.createStatement()) {
+
+            ResultSet rs = statement.executeQuery(sql2);
+                while (rs.next()){
+                    System.out.println(rs.getString("person_firstname") + "\t" +
+                            rs.getString("person_lastname"));
+                }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
-        Client.main();
-        insert_person(Client.list_with_people.get(0));
+
+        Person hussein = new Person("Ha", "Hansen", 92, 190, 20, "male", "Denmark",
+                "Sjælland", "Smørum", "Erantishaven 4", "hkmiari@ruc.dk");
+        insert_person(hussein);
+        selectData(hussein);
     }
 }
