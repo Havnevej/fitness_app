@@ -42,6 +42,7 @@ public class Client {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
                 "Sjælland", "Smørum", "Erantishaven 4");
+        list_with_people.add(Hussein);
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
                 "Sjælland", "Roskilde", "CoronaVirus 5");
         list_with_people.add(Hussein);
