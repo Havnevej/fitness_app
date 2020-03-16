@@ -20,6 +20,8 @@ public class Client {
             //lastname
             System.out.print("last name:");
             user_we_are_creating.setLastName(user_input.nextLine());
+            System.out.println("email");
+            user_we_are_creating.setEmail(user_input.nextLine());
             //optional weight, we could continue to add all the fields under here and allow empty input
             System.out.print("weight (optional):");
             user_we_are_creating.setWeight(user_input.nextFloat());
