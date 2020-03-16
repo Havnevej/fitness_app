@@ -28,7 +28,6 @@ public class Client {
             System.out.print("height (optional):");
             user_we_are_creating.setHeight(user_input.nextFloat());
 
-
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.reset().nextLine();
@@ -37,17 +36,16 @@ public class Client {
             } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
             return;
         }
-
         list_with_people.add(user_we_are_creating);
     }
-    public static void main() {
+    public static void main(String[] args) {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         Person Hussein = new Person("Hussein", "Miari", 92, 190, 20, "male", "Denmark",
                 "Sjælland", "Smørum", "Erantishaven 4", "sona.miari@gmail.com");
-        list_with_people.add(Hussein);
         Person Line = new Person("Line", "noob", 112, 157, 57, "female", "Denmark",
-                "Sjælland", "Roskilde", "CoronaVirus 5", "unknown email");
-
+                "Sjælland", "Roskilde", "CoronaVirus 5", "hkmiari@ruc.dk");
+        list_with_people.add(Hussein);
+        Hussein.getBmi();
         list_with_people.add(Line);
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
         main_loop();
@@ -70,7 +68,6 @@ public class Client {
                 }
                 System.out.println("To exit type: 'quit'");
                 if(input.equals("quit")){break;}
-
             }
         }
         catch (Exception e){ //InputMismatchException

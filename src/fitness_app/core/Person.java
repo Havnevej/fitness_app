@@ -33,8 +33,7 @@ public class Person {
     }
 
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress
-    , String setEmail){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -46,7 +45,6 @@ public class Person {
         city = setCity;
         address = setAddress;
         email = setEmail;
-
     }
 
     // setters
@@ -60,8 +58,7 @@ public class Person {
     public void setRegion (String region){ this.region = region; }
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
-    public void setEmail (String email){this.email = email; }
-
+    public void setEmail (String email) { this.email = email; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -96,6 +93,6 @@ public class Person {
     public void print_person_details(){
         System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s.\nEmail address: %s. \nBMI: " + calcBMI()+ ".\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email);
+                "%s, %s, %s and has the address %s, Email: %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, getBmi());
     }
 }

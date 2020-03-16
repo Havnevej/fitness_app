@@ -3,15 +3,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-
 class PersonTest {
     Person hussein = new Person("Hussein", "Miari", 92, 190, 20, "male"
             ,"Denmark", "Sjælland", "Smørum", "Erantishaven 4", "sona.miari@gmail.com");
 
     @Test
     public void bmiTest(){
-        Person julie = new Person("Julie", "W", 100, 200, 20, "female", "denmark", "s", "s", "s", "unknown email");
+        Person julie = new Person("Julie", "W", 100, 200, 20, "female", "denmark", "s", "s", "s", "hkmiari@ruc.dk");
         //setting new values to this person, to test if the bmicalculater calculates new values too.
         julie.setWeight(57);
         julie.setHeight(160);
