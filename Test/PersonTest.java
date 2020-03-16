@@ -29,7 +29,7 @@ class PersonTest {
 
     @Test
     public void createNewPersonTest(){
-     Person anton = new Person("Anton", "Due", 98, 216, 21, "Male", "Denmark", "Sjælland", "Roskilde", "Pas", "hkmiari@ruc.dk");
+     Person anton = new Person("Anton", "Due", 98, 216, 21, "Male", "Denmark", "Sjælland", "Roskilde", "Pas", "abdue@ruc.dk");
      assertEquals(anton.getAge(), 21);
      anton.setAge(22);
      assertEquals(anton.getAge(), 22);

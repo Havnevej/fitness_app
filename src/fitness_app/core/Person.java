@@ -15,6 +15,8 @@ public class Person {
     private boolean valid_person = false;
     private float bmi;
     private String email;
+    private int id = Client.list_with_people.size();
+
 
     public Person (){
         firstName = "";
@@ -70,6 +72,7 @@ public class Person {
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
     public String getEmail (){ return this.email; }
+    public int getId() { return id; }
     public float getBmi(){
         calcBMI();
         return bmi;
@@ -88,6 +91,7 @@ public class Person {
     }
 
     public void print_person_details(){
+        System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
                 "%s, %s, %s and has the address %s, Email: %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, getBmi());
     }
