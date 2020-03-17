@@ -4,14 +4,15 @@ package fitness_app.core;
 public class Person {
     private String firstName;
     private String lastName;
-    private float weight;
-    private float height;
+    public float weight;
+    public float height;
     private int age;
     private String gender;
     private String country;
     private String region;
     private String city;
     private String address;
+    private String email;
     private boolean valid_person = false;
     private float bmi;
     private String email;
@@ -93,6 +94,6 @@ public class Person {
     public void print_person_details(){
         System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s, Email: %s\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, getBmi());
+                "%s, %s, %s and has the address %s, Email: %s, \nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address,email, getBmi());
     }
 }

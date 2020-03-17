@@ -1,5 +1,6 @@
 import fitness_app.core.Person;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,6 +30,7 @@ class PersonTest {
 
     @Test
     public void createNewPersonTest(){
+
      Person anton = new Person("Anton", "Due", 98, 216, 21, "Male", "Denmark", "Sjælland", "Roskilde", "Pas", "abdue@ruc.dk");
      assertEquals(anton.getAge(), 21);
      anton.setAge(22);
