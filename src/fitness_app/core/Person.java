@@ -15,7 +15,6 @@ public class Person {
     private String email;
     private boolean valid_person = false;
     private float bmi;
-    private String email;
     private int id = Client.list_with_people.size();
 
 
