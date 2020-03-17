@@ -73,23 +73,18 @@ public class Client {
             Period diff1 = Period.between(l1, now1);
             user_we_are_creating.setAge(diff1.getYears());
 
-            //Weight
+            //Weight(optional)
             optional_input("weight", user_we_are_creating);
-            //Height
+            //Height(optional)
             optional_input("height", user_we_are_creating);
-
-            //Country
-            System.out.println("Country: ");
-            user_we_are_creating.setCountry(user_input.nextLine());
-            //Region
-            System.out.println("Region: ");
-            user_we_are_creating.setRegion(user_input.nextLine());
-            //City
-            System.out.println("City: ");
-            user_we_are_creating.setCity(user_input.nextLine());
-            //Address
-            System.out.println("Address: ");
-            user_we_are_creating.setAddress(user_input.nextLine());
+            //Country(optional)
+            optional_input("Country", user_we_are_creating);
+            //Region(optional)
+            optional_input("Region", user_we_are_creating);
+            //City(optional)
+            optional_input("City", user_we_are_creating);
+            //Address(optional)
+            optional_input("Address", user_we_are_creating);
 
             //email
             System.out.println("Email: ");
@@ -97,8 +92,6 @@ public class Client {
             if(isValidEmailAddress(mail_input) == true){ //temporary
                 user_we_are_creating.setEmail(mail_input);
             }
-
-
 
         } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
