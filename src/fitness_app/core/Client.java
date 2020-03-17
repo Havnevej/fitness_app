@@ -108,7 +108,6 @@ public class Client {
             } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
             return;
         }
-
         list_with_people.add(user_we_are_creating);
     }
     public static void main(String[] args) {
@@ -140,7 +139,6 @@ public class Client {
                 }
                 System.out.println("To exit type: 'quit'");
                 if(input.equals("quit")){break;}
-
             }
         }
         catch (InputMismatchException e){ //InputMismatchException
