@@ -1,6 +1,7 @@
 package fitness_app.core;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -22,7 +23,7 @@ public class Client {
 
         if(!optional_input.isEmpty()) {
             switch (t.getTypeName()) {
-                case "String":
+                case "string":
                     the_field.set(p, optional_input);
                     break;
                 case "integer":
@@ -61,7 +62,7 @@ public class Client {
             System.out.println("Date of birth: (dd/MM/yyyy)");
 
             String s =  user_input.nextLine();
-            user_we_are_creating(age_calculator(s));
+            user_we_are_creating.setAge(age_calculator(s));
 
             //Weight(optional)
             optional_input("weight", user_we_are_creating);
