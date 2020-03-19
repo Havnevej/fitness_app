@@ -1,6 +1,7 @@
 package fitness_app.core;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -22,7 +23,7 @@ public class Client {
 
         if(!optional_input.isEmpty()) {
             switch (t.getTypeName()) {
-                case "String":
+                case "string":
                     the_field.set(p, optional_input);
                     break;
                 case "integer":
@@ -61,17 +62,7 @@ public class Client {
             System.out.println("Date of birth: (dd/MM/yyyy)");
 
             String s =  user_input.nextLine();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date d = sdf.parse(s);
-            Calendar c = Calendar.getInstance();
-            c.setTime(d);
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH) + 1;
-            int date = c.get(Calendar.DATE);
-            LocalDate l1 = LocalDate.of(year, month, date);
-            LocalDate now1 = LocalDate.now();
-            Period diff1 = Period.between(l1, now1);
-            user_we_are_creating.setAge(diff1.getYears());
+            user_we_are_creating.setAge(age_calculator(s));
 
             //Weight(optional)
             optional_input("weight", user_we_are_creating);
@@ -103,6 +94,19 @@ public class Client {
         }
         Datastore.insert_person(user_we_are_creating);
         list_with_people.add(user_we_are_creating);
+    }
+    public static int age_calculator(String s) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = sdf.parse(s);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int date = c.get(Calendar.DATE);
+        LocalDate l1 = LocalDate.of(year, month, date);
+        LocalDate now1 = LocalDate.now();
+        Period diff1 = Period.between(l1, now1);
+        return diff1.getYears();
     }
     public static void main(String[] args) {
         // DEBUG PEOPLE, SHOULD BE A TEST FOR THE FUTURE ///////////////////////////
