@@ -101,6 +101,7 @@ public class Client {
             } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
             return;
         }
+        Datastore.insert_person(user_we_are_creating);
         list_with_people.add(user_we_are_creating);
     }
     public static void main(String[] args) {

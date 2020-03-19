@@ -38,13 +38,23 @@ public class Datastore {
     }
 
     public static void insert_person(Person p) {
-        String sql = "INSERT INTO PERSON(person_firstname,person_lastname, person_email) VALUES(?,?,?)"; //statement
+        String sql = "INSERT INTO PERSON(person_firstname,person_lastname, person_email, person_weight, person_height," +
+                "person_age, person_gender, person_country, person_region, person_city, person_adress) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
 
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, p.getFirstName());
             statement.setString(2, p.getLastName());
             statement.setString(3, p.getEmail());
+            statement.setInt(4, (int) p.getWeight());
+            statement.setInt(5, (int) p.getHeight());
+            statement.setInt(6, p.getAge());
+            statement.setString(7, p.getGender());
+            statement.setString(8, p.getCountry());
+            statement.setString(9, p.getRegion());
+            statement.setString(10, p.getCity());
+            statement.setString(11, p.getAddress());
+
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
