@@ -1,4 +1,5 @@
 package fitness_app.core;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -11,6 +12,10 @@ import java.util.regex.Pattern;
 
 public class Client {
     public static ArrayList<Person> list_with_people = new ArrayList<>();
+    private static ArrayList<String> commands = new ArrayList<>(Arrays.asList("QUIT",
+            "CREATE_PERSON",
+            "LOGIN"));
+
 
     public static void main(String[] args) {
         while(!login_user()){
@@ -30,17 +35,19 @@ public class Client {
         System.out.println("To create a person type: 'create person'");
         try {
             while(true){
-                String input =input_reader.nextLine();
-                if (input.toUpperCase().equals("CREATE PERSON")) {
-                    Database_functions.take_input();
-                    for(Person a_person_in_theList : list_with_people){
-                        a_person_in_theList.print_person_details();
+                String input = input_reader.nextLine().toUpperCase();
+                if(commands.contains(input)){
+                    if(input.equals("QUIT")){System.exit(0);} // quit
+                    else if(input.equals("CREATE PERSON")){
+                        Database_functions.create_person_from_user_input(); //need implementation
+                    } else if(input.equals("DELETE PERSON")){
+                        Database_functions.delete_person(); //need implementation
+                    } else if(input.equals("LOGIN")){
+                        Database_functions.login_user(); //need implementation
                     }
-                } else if(!(input.equals("quit"))){
-                    System.out.println("Input is unacceptable - Type: 'Create person'");
+
                 }
-                System.out.println("To exit type: 'quit'");
-                if(input.equals("quit")){break;}
+
             }
         }
         catch (InputMismatchException e){ //InputMismatchException
