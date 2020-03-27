@@ -38,8 +38,8 @@ public class Datastore {
     }
 
     public static void insert_person(Person p) {
-        String sql = "INSERT INTO PERSON(person_firstname,person_lastname, person_email, person_weight, person_height," +
-                "person_age, person_gender, person_country, person_region, person_city, person_adress) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
+        String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
+                "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
 
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -63,14 +63,14 @@ public class Datastore {
 
     public static Person select_data(String email){
         Person person = new Person();
-        String sql = String.format("SELECT * FROM PERSON WHERE person_email = '%s'", email);
+        String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
 
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
             ResultSet rs = statement.executeQuery(sql);
-            person.setFirstName(rs.getString("person_firstname"));
-            person.setLastName(rs.getString("person_lastname"));
+            person.setFirstName(rs.getString("firstname"));
+            person.setLastName(rs.getString("lastname"));
             person.setEmail(email);
 
         } catch (SQLException e) {
