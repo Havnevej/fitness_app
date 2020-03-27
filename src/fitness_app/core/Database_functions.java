@@ -20,11 +20,11 @@ public class Database_functions {
 
         System.out.printf("%s (optional):", field); //prints eg. weight (optional):
         String optional_input = user_input.nextLine();
-        System.out.println(t.getTypeName()); // prints the type of the field that we got (debugging)
+        //System.out.println(t.getTypeName()); // prints the type of the field that we got (debugging)
 
         if(!optional_input.isEmpty()) {
             switch (t.getTypeName()) {
-                case "string":
+                case "java.lang.String":
                     the_field.set(p, optional_input);
                     break;
                 case "integer":
@@ -71,18 +71,18 @@ public class Database_functions {
             //Height(optional)
             optional_input("height", user_we_are_creating);
             //Country(optional)
-            optional_input("Country", user_we_are_creating);
+            optional_input("country", user_we_are_creating);
             //Region(optional)
-            optional_input("Region", user_we_are_creating);
+            optional_input("region", user_we_are_creating);
             //City(optional)
-            optional_input("City", user_we_are_creating);
+            optional_input("city", user_we_are_creating);
             //Address(optional)
-            optional_input("Address", user_we_are_creating);
+            optional_input("address", user_we_are_creating);
 
             //email
             System.out.println("Email: ");
             String mail_input = user_input.nextLine();
-            if(isValidEmailAddress(mail_input)){ //temporary
+            if(email_is_valid_Address(mail_input)){ //temporary
                 user_we_are_creating.setEmail(mail_input);
             }
 
@@ -111,19 +111,25 @@ public class Database_functions {
         return diff1.getYears();
     }
 
-    private static boolean isValidEmailAddress(String email) {
+    private static boolean email_is_valid_Address(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"; //Reg-ex Provided from OWASP Validation Regex repository.
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
         return m.matches();
-        //System.out.println(isValidEmailAddress("asfas@hotmail.com"));
     }
 
-    public static void delete_person() {
-
+    public static void delete_person_by_email(String email) { //   needs implementation
+        if(email_is_valid_Address(email)) {
+            System.out.printf("Delete by email: %s", email);
+        } else {
+            System.out.printf("Email format not valid for: %s", email);
+        }
+    }
+    public static void delete_person_by_id(int id) {   //   needs implementation
+        System.out.printf("Delete by id: %s", id);
     }
 
-    public static void login_user() {
+    public static void login_user() {           //    needs implementation
 
     }
 
