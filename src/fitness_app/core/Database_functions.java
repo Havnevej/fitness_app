@@ -37,9 +37,8 @@ public class Database_functions {
         }
         //if the input is empty we dont do anything because it is already null, we will handle this case when we insert into database.
     }
-
     //takes userinput and processes it
-    private static void create_user_manual_take_input() {
+    static void take_input() {
         Scanner user_input = new Scanner(System.in);    //Take input from system.in (stdin)
         Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
         try {
@@ -52,7 +51,7 @@ public class Database_functions {
             }
             else {
                 System.out.println("invalid input - try again:");
-                create_user_manual_take_input();
+                take_input();
             }
             //firstname
             System.out.println("first name:");
@@ -82,7 +81,7 @@ public class Database_functions {
             //email
             System.out.println("Email: ");
             String mail_input = user_input.nextLine();
-            if(isValidEmailAddress(mail_input)){ //temporary
+            if(isValidEmailAddress(mail_input) == true){ //temporary
                 user_we_are_creating.setEmail(mail_input);
             }
 
@@ -90,14 +89,13 @@ public class Database_functions {
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.nextLine();
             if(response.toUpperCase().equals("A")) {
-                create_user_manual_take_input();
+                take_input();
             } // if the user does not enter "a" the function quits, which also prevents the adding of the person to the list
             return;
         }
         Datastore.insert_person(user_we_are_creating);
     }
-
-    private static int age_calculator(String s) throws ParseException {
+    public static int age_calculator(String s) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date d = sdf.parse(s);
         Calendar c = Calendar.getInstance();
@@ -110,24 +108,11 @@ public class Database_functions {
         Period diff1 = Period.between(l1, now1);
         return diff1.getYears();
     }
-
-    private static boolean isValidEmailAddress(String email) {
+    public static boolean isValidEmailAddress (String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"; //Reg-ex Provided from OWASP Validation Regex repository.
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
         return m.matches();
         //System.out.println(isValidEmailAddress("asfas@hotmail.com"));
-    }
-
-    public static void delete_person() {
-
-    }
-
-    public static void login_user() {
-
-    }
-
-    static void create_person_from_user_input(){
-        create_user_manual_take_input();
     }
 }
