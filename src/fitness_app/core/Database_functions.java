@@ -2,6 +2,10 @@ package fitness_app.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,6 +15,8 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static fitness_app.core.Datastore.get_connection;
 
 public class Database_functions {
     private static void optional_input(String field, Person p) throws NoSuchFieldException, IllegalAccessException { // field is not found in class
@@ -129,8 +135,42 @@ public class Database_functions {
         System.out.printf("Delete by id: %s", id);
     }
 
-    public static void login_user() {           //    needs implementation
+    public static void login_user(String email) {           //    needs implementation
+        Scanner input_reader = new Scanner(System.in);
+        if(email_is_valid_Address(email)) {
+            System.out.printf("Login by email: %s", email);
+            String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
+            try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
+
+                ResultSet rs = statement.executeQuery(sql);
+                String Username = (rs.getString("username"));
+                System.out.println("Username: " + Username); //Debug
+                String Password = (rs.getString("password"));
+
+                System.out.println("Enter your Username and Password");
+
+                String [] user_credentials = input_reader.nextLine().split(" ");
+                String user_username = user_credentials[0];
+                String user_password = user_credentials[1];
+
+                if(Username.equals(user_username) && Password.equals(user_password)){
+                    System.out.println("Login successful!");
+                }
+                else{
+                    System.out.println("Login failed: Username and or password are wrong");
+                }
+
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+
+
+        } else {
+            System.out.printf("Email format not valid for: %s", email);
+        }
     }
 
     static void create_person_from_user_input(){
