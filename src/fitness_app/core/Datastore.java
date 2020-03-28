@@ -46,8 +46,8 @@ public class Datastore {
             statement.setString(1, p.getFirstName());
             statement.setString(2, p.getLastName());
             statement.setString(3, p.getEmail());
-            statement.setInt(4, (int) p.getWeight());
-            statement.setInt(5, (int) p.getHeight());
+            statement.setFloat(4, p.getWeight());
+            statement.setFloat(5, p.getHeight());
             statement.setInt(6, p.getAge());
             statement.setString(7, p.getGender());
             statement.setString(8, p.getCountry());
