@@ -62,7 +62,9 @@ public class Client {
                             }
                         break;
                     case "LOGIN":
-                        Database_functions.login_user();
+                        System.out.println("Enter your email");
+                        String email = input_reader.nextLine();
+                        Database_functions.login_user(email);
                         break;
                     default:
                         System.out.println("Command not found");

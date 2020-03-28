@@ -138,14 +138,12 @@ public class Database_functions {
     public static void login_user(String email) {           //    needs implementation
         Scanner input_reader = new Scanner(System.in);
         if(email_is_valid_Address(email)) {
-            System.out.printf("Login by email: %s", email);
             String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
             try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
 
                 ResultSet rs = statement.executeQuery(sql);
                 String Username = (rs.getString("username"));
-                System.out.println("Username: " + Username); //Debug
                 String Password = (rs.getString("password"));
 
                 System.out.println("Enter your Username and Password");
