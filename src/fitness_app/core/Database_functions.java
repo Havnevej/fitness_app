@@ -2,6 +2,10 @@ package fitness_app.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,6 +15,8 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static fitness_app.core.Datastore.get_connection;
 
 public class Database_functions {
     private static void optional_input(String field, Person p) throws NoSuchFieldException, IllegalAccessException { // field is not found in class
@@ -121,8 +127,21 @@ public class Database_functions {
     public static void delete_person_by_email(String email) { //   needs implementation
         if(email_is_valid_Address(email)) {
             System.out.printf("Delete by email: %s", email);
-        } else {
-            System.out.printf("Email format not valid for: %s", email);
+            if(email_is_valid_Address(email)) {
+                System.out.printf("Delete by email: %s", email);
+                String sql = String.format("DELETE FROM PERSON WHERE email = '%s';\n" +
+                        "DELETE FROM PERSON_DETAILS WHERE email = '%s';",email, email);
+                try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
+
+                    statement.executeUpdate(sql);
+
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+
+            } else {
+                System.out.printf("Email format not valid for: %s", email);
+            }
         }
     }
     public static void delete_person_by_id(int id) {   //   needs implementation
