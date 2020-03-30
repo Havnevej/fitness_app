@@ -106,6 +106,6 @@ public class Person {
     public void print_person_details(){
         System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s, Email: %s, Username: %s, Password: %s ,\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address,email,username,password, getBmi());
+                "%s, %s, %s and has the address %s, Email: %s, Username: %s, Password: %s ,\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, username, password, getBmi());
     }
 }
