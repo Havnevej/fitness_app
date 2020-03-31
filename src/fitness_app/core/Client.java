@@ -7,22 +7,18 @@ public class Client {
     private static ArrayList<String> commands = new ArrayList<>(Arrays.asList("QUIT",
             "CREATE PERSON",
             "DELETE PERSON",
-            "LOGIN"));
+            "LOGIN",
+            "LOGOUT"
+    ));
+    static Person this_person = new Person();
 
 
     public static void main(String[] args) {
         main_loop();
-        while(!login_user()){
-
-        }
-    }
-
-    private static boolean login_user() {
-
-        return false;
     }
 
     private static void print_commands_available(){
+        if(this_person.is_logged_in()){System.out.printf("Logged in as: %s", this_person.getUsername());}
         System.out.println("\nCommands:");
         for(String s : commands){
             System.out.printf("|%s", s);
@@ -44,6 +40,7 @@ public class Client {
                         Database_functions.create_person_from_user_input();
                         break;
                     case "DELETE PERSON":
+                        if(!this_person.is_logged_in()){break;}
                         System.out.print("delete user by: 'email'|'id'\n:");
                         input = input_reader.nextLine().toUpperCase();
                         switch (input) {
@@ -62,8 +59,13 @@ public class Client {
                             }
                         break;
                     case "LOGIN":
-                        Database_functions.login_user();
+                        System.out.println("Enter your email");
+                        String email = input_reader.nextLine();
+                        Database_functions.login_user(email);
                         break;
+                    case "LOGOUT":
+                        this_person = new Person();
+                        System.out.println("Logged out user");
                     default:
                         System.out.println("Command not found");
                 }

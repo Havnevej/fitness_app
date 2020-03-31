@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
     Person hussein = new Person("Hussein", "Miari", 92, 190, 20, "male"
-            ,"Denmark", "Sjælland", "Smørum", "Erantishaven 4", "sona.miari@gmail.com");
+            ,"Denmark", "Sjælland", "Smørum", "Erantishaven 4", "sona.miari@gmail.com", "hussi123", "Hussein123");
 
     @Test
     public void bmiTest(){
-        Person julie = new Person("Julie", "W", 100, 200, 20, "female", "denmark", "s", "s", "s", "hkmiari@ruc.dk");
+        Person julie = new Person("Julie", "W", 100, 200, 20, "female", "denmark", "s", "s", "s", "hkmiari@ruc.dk", "Julie", "Julie123");
         //setting new values to this person, to test if the bmicalculater calculates new values too.
         julie.setWeight(57);
         julie.setHeight(160);
@@ -31,7 +31,7 @@ class PersonTest {
     @Test
     public void createNewPersonTest(){
 
-     Person anton = new Person("Anton", "Due", 98, 216, 21, "Male", "Denmark", "Sjælland", "Roskilde", "Pas", "abdue@ruc.dk");
+     Person anton = new Person("Anton", "Due", 98, 216, 21, "Male", "Denmark", "Sjælland", "Roskilde", "Pas", "abdue@ruc.dk","antonio","Catanddogs123");
      assertEquals(anton.getAge(), 21);
      anton.setAge(22);
      assertEquals(anton.getAge(), 22);

@@ -36,7 +36,9 @@ public class Datastore {
         }
         return conn;
     }
-
+    public boolean login_user(String email, String username, String password){
+        return false;
+    }
     public static void insert_person(Person p) {
         String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
                 "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
@@ -64,7 +66,6 @@ public class Datastore {
     public static Person select_data(String email){
         Person person = new Person();
         String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
-
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
@@ -72,6 +73,17 @@ public class Datastore {
             person.setFirstName(rs.getString("firstname"));
             person.setLastName(rs.getString("lastname"));
             person.setEmail(email);
+            person.setWeight(rs.getInt("weight"));
+            person.setHeight(rs.getInt("height"));
+            person.setAge(rs.getInt("age"));
+            person.setGender(rs.getString("gender"));
+            person.setCountry(rs.getString("country"));
+            person.setRegion(rs.getString("region"));
+            person.setCity(rs.getString("city"));
+            person.setAddress(rs.getString("address"));
+            rs = statement.executeQuery(String.format("SELECT * FROM PERSON_DETAILS WHERE email = '%s'", email));
+            person.setUsername(rs.getString("username"));
+            person.setPassword(rs.getString("password"));
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
