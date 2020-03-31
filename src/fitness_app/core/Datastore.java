@@ -36,7 +36,9 @@ public class Datastore {
         }
         return conn;
     }
-
+    public boolean login_user(String email, String username, String password){
+        return false;
+    }
     public static void insert_person(Person p) {
         String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
                 "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
@@ -64,8 +66,6 @@ public class Datastore {
     public static Person select_data(String email){
         Person person = new Person();
         String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
-
-
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
