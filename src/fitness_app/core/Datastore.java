@@ -65,6 +65,7 @@ public class Datastore {
         Person person = new Person();
         String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
 
+
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
@@ -80,6 +81,7 @@ public class Datastore {
             person.setRegion(rs.getString("region"));
             person.setCity(rs.getString("city"));
             person.setAddress(rs.getString("address"));
+            rs = statement.executeQuery(String.format("SELECT * FROM PERSON_DETAILS WHERE email = '%s'", email));
             person.setUsername(rs.getString("username"));
             person.setPassword(rs.getString("password"));
 
