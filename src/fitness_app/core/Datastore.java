@@ -46,8 +46,8 @@ public class Datastore {
             statement.setString(1, p.getFirstName());
             statement.setString(2, p.getLastName());
             statement.setString(3, p.getEmail());
-            statement.setInt(4, (int) p.getWeight());
-            statement.setInt(5, (int) p.getHeight());
+            statement.setFloat(4, p.getWeight());
+            statement.setFloat(5, p.getHeight());
             statement.setInt(6, p.getAge());
             statement.setString(7, p.getGender());
             statement.setString(8, p.getCountry());
@@ -72,6 +72,16 @@ public class Datastore {
             person.setFirstName(rs.getString("firstname"));
             person.setLastName(rs.getString("lastname"));
             person.setEmail(email);
+            person.setWeight(rs.getInt("weight"));
+            person.setHeight(rs.getInt("height"));
+            person.setAge(rs.getInt("age"));
+            person.setGender(rs.getString("gender"));
+            person.setCountry(rs.getString("country"));
+            person.setRegion(rs.getString("region"));
+            person.setCity(rs.getString("city"));
+            person.setAddress(rs.getString("address"));
+            person.setUsername(rs.getString("username"));
+            person.setPassword(rs.getString("password"));
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
