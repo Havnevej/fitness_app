@@ -16,6 +16,7 @@ public class Person {
     public String username;
     public String password;
 
+    private boolean is_logged_in = false;
     private boolean valid_person = false;
     private float bmi;
     private int id = Client.list_with_people.size();
@@ -69,6 +70,7 @@ public class Person {
     public void setEmail (String email) { this.email = email; }
     public void setUsername (String username) { this.username = username; }
     public void setPassword (String password) { this.password = password; }
+    public void setIs_logged_in(boolean is_logged_in) { this.is_logged_in = is_logged_in; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -84,6 +86,7 @@ public class Person {
     public String getEmail (){ return this.email; }
     public String getUsername() {return this.username; }
     public String getPassword() {return this.password; }
+    public boolean isIs_logged_in() { return is_logged_in; }
 
     public int getId() { return id; }
     public float getBmi(){
