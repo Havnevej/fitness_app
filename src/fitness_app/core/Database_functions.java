@@ -16,8 +16,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static fitness_app.core.Datastore.get_connection;
-
 public class Database_functions {
     private static void optional_input(String field, Person p) throws NoSuchFieldException, IllegalAccessException { // field is not found in class
         Scanner user_input = new Scanner(System.in); //start a new user input scanner
@@ -149,7 +147,7 @@ public class Database_functions {
         if(email_is_valid_Address(email)) {
             String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
-            try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
+            try (Connection conn = Datastore.get_connection(); Statement statement = conn.createStatement()) {
 
                 ResultSet rs = statement.executeQuery(sql);
                 String Username = (rs.getString("username"));
@@ -163,6 +161,8 @@ public class Database_functions {
 
                 if(Username.equals(user_username) && Password.equals(user_password)){
                     System.out.println("Login successful!");
+                    Client.this_person = Datastore.select_data(email);
+                    Client.this_person.setIs_logged_in(true);
                 }
                 else{
                     System.out.println("Login failed: Username and or password are wrong");

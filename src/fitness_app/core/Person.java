@@ -86,7 +86,7 @@ public class Person {
     public String getEmail (){ return this.email; }
     public String getUsername() {return this.username; }
     public String getPassword() {return this.password; }
-    public boolean isIs_logged_in() { return is_logged_in; }
+    public boolean is_logged_in() { return is_logged_in; }
 
     public int getId() { return id; }
     public float getBmi(){
