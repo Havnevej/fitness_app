@@ -92,6 +92,15 @@ public class Database_functions {
                 user_we_are_creating.setEmail(mail_input);
             }
 
+            //username
+            System.out.println("Enter Username: ");
+            user_we_are_creating.setUsername(user_input.nextLine());
+
+            //password
+            System.out.println("Enter password");
+            user_we_are_creating.setPassword(user_input.nextLine());
+
+
         } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.nextLine();

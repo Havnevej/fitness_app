@@ -13,6 +13,9 @@ public class Person {
     public String city;
     public String address;
     public String email;
+    public String username;
+    public String password;
+
     private boolean valid_person = false;
     private float bmi;
     private int id = Client.list_with_people.size();
@@ -30,10 +33,12 @@ public class Person {
         city = "";
         address = "";
         email = "";
+        username = "";
+        password = "";
     }
 
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail, String setUsername, String setPassword){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -45,6 +50,9 @@ public class Person {
         city = setCity;
         address = setAddress;
         email = setEmail;
+        username = setUsername;
+        password = setPassword;
+
     }
 
     // setters
@@ -59,6 +67,8 @@ public class Person {
     public void setCity (String city){ this.city = city; }
     public void setAddress (String address){ this.address = address; }
     public void setEmail (String email) { this.email = email; }
+    public void setUsername (String username) { this.username = username; }
+    public void setPassword (String password) { this.password = password; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -72,6 +82,9 @@ public class Person {
     public String getCity (){  return this.city; }
     public String getAddress (){  return this.address; }
     public String getEmail (){ return this.email; }
+    public String getUsername() {return this.username; }
+    public String getPassword() {return this.password; }
+
     public int getId() { return id; }
     public float getBmi(){
         calcBMI();
@@ -93,6 +106,6 @@ public class Person {
     public void print_person_details(){
         System.out.println(getId());
         System.out.printf("Person: %s %s weighs %s, is %s cm tall, and is %s years old. %s is %s, lives in " +
-                "%s, %s, %s and has the address %s, Email: %s, \nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address,email, getBmi());
+                "%s, %s, %s and has the address %s, Email: %s, Username: %s, Password: %s ,\nBMI: %s.\n", firstName, lastName, weight, height, age, firstName, gender, country, region, city, address, email, username, password, getBmi());
     }
 }
