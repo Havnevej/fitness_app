@@ -84,6 +84,7 @@ public class Datastore {
             rs = statement.executeQuery(String.format("SELECT * FROM PERSON_DETAILS WHERE email = '%s'", email));
             person.setUsername(rs.getString("username"));
             person.setPassword(rs.getString("password"));
+            person.setDate(rs.getLong("date"));
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
