@@ -52,7 +52,7 @@ public class Client {
                             case "EMAIL":
                                 System.out.print("email: ");
                                 String email = input_reader.nextLine();
-                                Database_functions.delete_person_by_email(email);
+                                Database_functions.insert_person_to_delete(email);
                                 break;
                             default:
                                 System.out.println("Input should be 'email' or 'id'");
