@@ -92,6 +92,15 @@ public class Database_functions {
                 user_we_are_creating.setEmail(mail_input);
             }
 
+            //username
+            System.out.println("Enter Username: ");
+            user_we_are_creating.setUsername(user_input.nextLine());
+
+            //password
+            System.out.println("Enter password");
+            user_we_are_creating.setPassword(user_input.nextLine());
+
+
         } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
             String response = user_input.nextLine();
@@ -148,8 +157,42 @@ public class Database_functions {
         System.out.printf("Delete by id: %s", id);
     }
 
-    public static void login_user() {           //    needs implementation
+    public static void login_user(String email) {           //    needs implementation
+        Scanner input_reader = new Scanner(System.in);
+        if(email_is_valid_Address(email)) {
+            String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
+            try (Connection conn = Datastore.get_connection(); Statement statement = conn.createStatement()) {
+
+                ResultSet rs = statement.executeQuery(sql);
+                String Username = (rs.getString("username"));
+                String Password = (rs.getString("password"));
+
+                System.out.println("Enter your Username and Password");
+
+                String [] user_credentials = input_reader.nextLine().split(" ");
+                String user_username = user_credentials[0];
+                String user_password = user_credentials[1];
+
+                if(Username.equals(user_username) && Password.equals(user_password)){
+                    System.out.println("Login successful!");
+                    Client.this_person = Datastore.select_data(email);
+                    Client.this_person.setIs_logged_in(true);
+                }
+                else{
+                    System.out.println("Login failed: Username and or password are wrong");
+                }
+
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+
+
+        } else {
+            System.out.printf("Email format not valid for: %s", email);
+        }
     }
 
     static void create_person_from_user_input(){
