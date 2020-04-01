@@ -2,10 +2,7 @@ package fitness_app.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -133,10 +130,42 @@ public class Database_functions {
         return m.matches();
     }
 
+    public static Person insert_person_to_delete(String email){
+        Person person = new Person();
+        String sql = String.format("INSERT INTO USER_TO_DELETE (username, password, email, last_ip_login)\n" +
+                "SELECT *\n" +
+                "FROM PERSON_DETAILS\n" +
+                "WHERE EMAIL = '%s';", email);
+        String sql_to_delete = String.format("SELECT username from USER_TO_DELETE where EMAIL = '%s'", email);
+        String sql_person_details = String.format("SELECT username from PERSON_DETAILS where EMAIL = '%s'", email);
+       try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
+
+           statement.executeUpdate(sql);
+
+           ResultSet rs = statement.executeQuery(sql_to_delete);
+           String Username = (rs.getString("username"));
+           ResultSet rs2 = statement.executeQuery(sql_person_details);
+           String Username2 = (rs2.getString("username"));
+           System.out.println(Username);
+           System.out.println(Username2);
+
+           if(Username.equals(Username2)){
+               System.out.println("sandt");
+           }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+       return person;
+    }
+
     public static void delete_person_by_email(String email) { //   needs implementation
         if(email_is_valid_Address(email)) {
             System.out.printf("Delete by email: %s", email);
             if(email_is_valid_Address(email)) {
+                insert_person_to_delete(email);
+
+                //System.out.println(); //debug
                 System.out.printf("Delete by email: %s", email);
                 String sql = String.format("DELETE FROM PERSON WHERE email = '%s';\n" +
                         "DELETE FROM PERSON_DETAILS WHERE email = '%s';",email, email);
