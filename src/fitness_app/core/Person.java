@@ -1,5 +1,5 @@
 package fitness_app.core;
-
+import java.util.Date;
 
 public class Person {
     private String firstName;
@@ -15,6 +15,7 @@ public class Person {
     public String email;
     public String username;
     public String password;
+    public long date;
 
     private boolean is_logged_in = false;
     private boolean valid_person = false;
@@ -36,10 +37,11 @@ public class Person {
         email = "";
         username = "";
         password = "";
+        date = 1;
     }
 
     //overloaded constructor for when we have all the data.
-    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail, String setUsername, String setPassword){
+    public Person(String setFirstName, String setLastName, float setWeight, float setHeight, int setAge, String setGender, String setCountry, String setRegion, String setCity, String setAddress, String setEmail, String setUsername, String setPassword, Long setDate){
         firstName = setFirstName;
         lastName = setLastName;
         weight = setWeight;
@@ -53,6 +55,7 @@ public class Person {
         email = setEmail;
         username = setUsername;
         password = setPassword;
+        date = setDate;
 
     }
 
@@ -71,6 +74,7 @@ public class Person {
     public void setUsername (String username) { this.username = username; }
     public void setPassword (String password) { this.password = password; }
     public void setIs_logged_in(boolean is_logged_in) { this.is_logged_in = is_logged_in; }
+    public void setDate(long date) { this.date = date; }
 
     //getters
     public int getAge (){  return this.age; }
@@ -87,6 +91,7 @@ public class Person {
     public String getUsername() {return this.username; }
     public String getPassword() {return this.password; }
     public boolean is_logged_in() { return is_logged_in; }
+    public long getDate() { return this.date; }
 
     public int getId() { return id; }
     public float getBmi(){
