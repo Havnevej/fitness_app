@@ -60,8 +60,7 @@ public class Client {
                         break;
                     case "LOGIN":
                         System.out.println("Enter your email");
-                        String email = input_reader.nextLine();
-                        Database_functions.login_user(email);
+                        Database_functions.login_user();
                         break;
                     case "LOGOUT":
                         this_person = new Person();
