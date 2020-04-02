@@ -23,7 +23,6 @@ public class Database_functions {
 
         System.out.printf("%s (optional):", field); //prints eg. weight (optional):
         String optional_input = user_input.nextLine();
-        //System.out.println(t.getTypeName()); // prints the type of the field that we got (debugging)
 
         if(!optional_input.isEmpty()) {
             switch (t.getTypeName()) {
@@ -46,7 +45,6 @@ public class Database_functions {
         Scanner user_input = new Scanner(System.in);    //Take input from system.in (stdin)
         Person user_we_are_creating = new Person();     //using the first constructor as we pass no arguments
         try {
-
             //Gender
             System.out.println("Gender: Male || Female ");
             String gender = user_input.nextLine();
@@ -81,22 +79,19 @@ public class Database_functions {
             optional_input("city", user_we_are_creating);
             //Address(optional)
             optional_input("address", user_we_are_creating);
-
             //email
             System.out.println("Email: ");
             String mail_input = user_input.nextLine();
-            if(email_is_valid_Address(mail_input)){ //temporary
+            if(email_is_valid_Address(mail_input)){
                 user_we_are_creating.setEmail(mail_input);
             }
 
             //username
             System.out.println("Enter Username: ");
             user_we_are_creating.setUsername(user_input.nextLine());
-
             //password
             System.out.println("Enter password");
             user_we_are_creating.setPassword(user_input.nextLine());
-
 
         } catch (Exception e) { //InputMismatchException
             System.out.println(e.getMessage() + "You have entered a wrong datatype for a field, try [A]gain or press any key to exit creating a person");
@@ -131,20 +126,15 @@ public class Database_functions {
     }
 
     public static void insert_person_to_delete(String email) {
-        if (email_is_valid_Address(email)) {
             if (email_is_valid_Address(email)) {
-
                 String sql_insert_into_to_delete_table = String.format("INSERT INTO USER_TO_DELETE (username, password, email, last_ip_login)\n" +
                         "SELECT *\n" +
                         "FROM PERSON_DETAILS\n" +
                         "WHERE EMAIL = '%s';", email);
-                //String sql_to_delete = String.format("SELECT username from USER_TO_DELETE where EMAIL = '%s'", email);
-                //String sql_person_details = String.format("SELECT username from PERSON_DETAILS where EMAIL = '%s'", email);
                 String sql_delete_user_from_tables = String.format("DELETE FROM PERSON WHERE email = '%s';\n" +
                         "DELETE FROM PERSON_DETAILS WHERE email = '%s';", email, email);
 
                 try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
-
                     if(statement.executeUpdate(sql_insert_into_to_delete_table) == 1){
                         System.out.println("Backed up user with email: " + email + " in to_delete_table");
                         int delete_number = statement.executeUpdate(sql_delete_user_from_tables);
@@ -158,37 +148,20 @@ public class Database_functions {
                     } else {
                         System.out.println("Could not backup user data, refusing to delete user");
                     }
-                    //ResultSet rs = statement.executeQuery(sql_to_delete);
-                    //String Username = (rs.getString("username"));
-                    //ResultSet rs2 = statement.executeQuery(sql_person_details);
-                    //String Username2 = (rs2.getString("username"));
-
-                   // if (Username.equals(Username2)) {
-
-                    //}
-
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
-
             } else {
                 System.out.printf("Email format not valid for: %s", email);
-
             }
-        }
     }
 
-    public static void delete_person_by_id(int id) {   //
-        System.out.printf("Delete by id: %s", id);
-    }
-
-    public static void login_user(String email) {           //
+    public static void login_user(String email) {
         Scanner input_reader = new Scanner(System.in);
         if(email_is_valid_Address(email)) {
             String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
             try (Connection conn = Datastore.get_connection(); Statement statement = conn.createStatement()) {
-
                 ResultSet rs = statement.executeQuery(sql);
                 String Username = (rs.getString("username"));
                 String Password = (rs.getString("password"));
@@ -207,13 +180,9 @@ public class Database_functions {
                 else{
                     System.out.println("Login failed: Username and or password are wrong");
                 }
-
-
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-
-
 
         } else {
             System.out.printf("Email format not valid for: %s", email);
