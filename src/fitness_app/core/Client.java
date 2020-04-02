@@ -59,12 +59,12 @@ public class Client {
                             }
                         break;
                     case "LOGIN":
-                        System.out.println("Enter your email");
                         Database_functions.login_user();
                         break;
                     case "LOGOUT":
                         this_person = new Person();
                         System.out.println("Logged out user");
+                        break;
                     default:
                         System.out.println("Command not found");
                 }
