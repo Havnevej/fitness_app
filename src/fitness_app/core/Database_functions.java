@@ -124,57 +124,43 @@ public class Database_functions {
         return diff1.getYears();
     }
 
-    private static boolean email_is_valid_Address(String email) {
+    public static boolean email_is_valid_Address(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"; //Reg-ex Provided from OWASP Validation Regex repository.
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
         return m.matches();
     }
 
-    public static void delete_person_by_email(String email) { //   needs implementation
+    public static void delete_person_by_email(String email) { 
         if(email_is_valid_Address(email)) {
             System.out.printf("Delete by email: %s", email);
         } else {
             System.out.printf("Email format not valid for: %s", email);
         }
     }
-    public static void delete_person_by_id(int id) {   //   needs implementation
+    public static void delete_person_by_id(int id) {
         System.out.printf("Delete by id: %s", id);
     }
 
-    public static void login_user(String email) {           //    needs implementation
-        Scanner input_reader = new Scanner(System.in);
+    public static void login_user() {
+
+    Scanner input_reader = new Scanner(System.in);
+
+        System.out.print("Email: ");
+        String email = input_reader.nextLine();
+
         if(email_is_valid_Address(email)) {
-            String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
+            System.out.print("Username: ");
+            String username = input_reader.nextLine();
+            System.out.print("Password: ");
+            String password = input_reader.nextLine();
 
-            try (Connection conn = Datastore.get_connection(); Statement statement = conn.createStatement()) {
-
-                ResultSet rs = statement.executeQuery(sql);
-                String Username = (rs.getString("username"));
-                String Password = (rs.getString("password"));
-
-                System.out.println("Enter your Username and Password");
-
-                String [] user_credentials = input_reader.nextLine().split(" ");
-                String user_username = user_credentials[0];
-                String user_password = user_credentials[1];
-
-                if(Username.equals(user_username) && Password.equals(user_password)){
-                    System.out.println("Login successful!");
-                    Client.this_person = Datastore.select_data(email);
-                    Client.this_person.setIs_logged_in(true);
-                }
-                else{
-                    System.out.println("Login failed: Username and or password are wrong");
-                }
-
-
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            if(Datastore.login_user(email,username,password)){
+                Client.this_person = Datastore.select_data(email);
+                Client.this_person.setIs_logged_in(true);
+            } else {
+                System.out.println("Could not login. Try again. ");
             }
-
-
-
         } else {
             System.out.printf("Email format not valid for: %s", email);
         }
