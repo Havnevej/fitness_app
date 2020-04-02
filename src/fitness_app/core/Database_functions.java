@@ -146,21 +146,21 @@ public class Database_functions {
 
     Scanner input_reader = new Scanner(System.in);
 
-        System.out.println("Email: ");
+        System.out.print("Email: ");
         String email = input_reader.nextLine();
 
         if(email_is_valid_Address(email)) {
-            System.out.println("Username: ");
+            System.out.print("Username: ");
             String username = input_reader.nextLine();
-            System.out.println("Password: ");
+            System.out.print("Password: ");
             String password = input_reader.nextLine();
 
             if(Datastore.login_user(email,username,password)){
-
+                Client.this_person = Datastore.select_data(email);
+                Client.this_person.setIs_logged_in(true);
             } else {
-
+                System.out.println("Could not login. Try again. ");
             }
-
         } else {
             System.out.printf("Email format not valid for: %s", email);
         }
