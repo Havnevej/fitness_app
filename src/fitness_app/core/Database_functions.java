@@ -142,9 +142,24 @@ public class Database_functions {
         System.out.printf("Delete by id: %s", id);
     }
 
-    public static void login_user(String email) {
+    public static void login_user() {
+
+    Scanner input_reader = new Scanner(System.in);
+
+        System.out.println("Email: ");
+        String email = input_reader.nextLine();
+
         if(email_is_valid_Address(email)) {
-            Datastore.log_in_database(email);
+            System.out.println("Username: ");
+            String username = input_reader.nextLine();
+            System.out.println("Password: ");
+            String password = input_reader.nextLine();
+
+            if(Datastore.login_user(email,username,password)){
+
+            } else {
+
+            }
 
         } else {
             System.out.printf("Email format not valid for: %s", email);
