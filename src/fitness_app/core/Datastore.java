@@ -1,7 +1,7 @@
 package fitness_app.core;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Datastore {
@@ -36,12 +36,11 @@ public class Datastore {
         }
         return conn;
     }
-    public boolean login_user(String email, String username, String password){
-        return false;
-    }
+
+
     public static void insert_person(Person p) {
         String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
-                "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
+                "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -92,8 +91,27 @@ public class Datastore {
         return person;
     }
 
+    public static boolean login_user (String email, String username, String password){
+        String sql = ("SELECT count(1) FROM PERSON_DETAILS WHERE email LIKE ? AND username LIKE ? AND password LIKE ?");
+
+        try (Connection conn = Datastore.get_connection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            statement.setString(2, username);
+            statement.setString(3, password);
+
+            ResultSet rs = statement.executeQuery();
+
+            return (rs.getInt(1)==1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    
     public static void main(String[] args) {
         Person person = select_data("abdue@ruc.dk");
         System.out.println(person.getFirstName() + person.getLastName());
     }
 }
+
