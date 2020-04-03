@@ -1,6 +1,7 @@
 package fitness_app.core;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -57,11 +58,56 @@ public class Datastore {
             statement.setString(10, p.getCity());
             statement.setString(11, p.getAddress());
 
+
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void insert_person(Person p, String table) {
+        String sql = "INSERT INTO "+table+" (firstname,lastname, email, weight, height," +
+                "age, gender, country, region, city, address, username, password, delete_date_initiate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //statement
+
+        try (Connection conn = get_connection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, p.getFirstName());
+            statement.setString(2, p.getLastName());
+            statement.setString(3, p.getEmail());
+            statement.setFloat(4, p.getWeight());
+            statement.setFloat(5, p.getHeight());
+            statement.setInt(6, p.getAge());
+            statement.setString(7, p.getGender());
+            statement.setString(8, p.getCountry());
+            statement.setString(9, p.getRegion());
+            statement.setString(10, p.getCity());
+            statement.setString(11, p.getAddress());
+            statement.setString(12,p.getUsername());
+            statement.setString(13,p.getPassword());
+            statement.setString(14, LocalDate.now().toString());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public static boolean backup_user_to_delete(String email){
+        String sql = "INSERT INTO USER_TO_DELETE(username, password, email, ip)";
+
+
+
+
+
+
+        return false;
+    }
+
+    public static void delete_user(String email){
+
+    }
+
+
+
 
     public static Person select_data(String email){
         Person person = new Person();
@@ -85,7 +131,6 @@ public class Datastore {
             rs = statement.executeQuery(String.format("SELECT * FROM PERSON_DETAILS WHERE email = '%s'", email));
             person.setUsername(rs.getString("username"));
             person.setPassword(rs.getString("password"));
-            person.setDate(rs.getLong("date"));
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
