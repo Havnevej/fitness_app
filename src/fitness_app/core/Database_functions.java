@@ -126,7 +126,14 @@ public class Database_functions {
     }
 
     public static void insert_person_to_delete(String email) {
-            if (email_is_valid_Address(email)) {
+
+        Person person;
+        person = Datastore.select_data(email);
+        Datastore.insert_person(person,"USER_TO_DELETE");
+
+            /*if (email_is_valid_Address(email)) {
+
+
                 String sql_insert_into_to_delete_table = String.format("INSERT INTO USER_TO_DELETE (username, password, email, last_ip_login)\n" +
                         "SELECT *\n" +
                         "FROM PERSON_DETAILS\n" +
@@ -153,7 +160,7 @@ public class Database_functions {
                 }
             } else {
                 System.out.printf("Email format not valid for: %s", email);
-            }
+            }*/
     }
 
     public static void login_user(String email) {
