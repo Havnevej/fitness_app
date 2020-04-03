@@ -2,8 +2,6 @@ package fitness_app.core;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-
 
 public class Datastore {
     //Ignore this, for future use
@@ -37,12 +35,11 @@ public class Datastore {
         }
         return conn;
     }
-    public boolean login_user(String email, String username, String password){
-        return false;
-    }
+
+
     public static void insert_person(Person p) {
         String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
-                "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)"; //statement
+                "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -57,7 +54,6 @@ public class Datastore {
             statement.setString(9, p.getRegion());
             statement.setString(10, p.getCity());
             statement.setString(11, p.getAddress());
-
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -111,8 +107,7 @@ public class Datastore {
 
     public static Person select_data(String email){
         Person person = new Person();
-        String sql = String.format("SELECT* FROM PERSON WHERE email = '%s'", email);
-
+        String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
@@ -136,6 +131,24 @@ public class Datastore {
             System.out.println(e.getMessage());
         }
         return person;
+    }
+
+    public static boolean login_user (String email, String username, String password){
+        String sql = ("SELECT count(1) FROM PERSON_DETAILS WHERE email LIKE ? AND username LIKE ? AND password LIKE ?");
+
+        try (Connection conn = Datastore.get_connection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+            statement.setString(2, username);
+            statement.setString(3, password);
+
+            ResultSet rs = statement.executeQuery();
+
+            return (rs.getInt(1)==1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
     public static void main(String[] args) {

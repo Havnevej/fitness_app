@@ -118,7 +118,7 @@ public class Database_functions {
         return diff1.getYears();
     }
 
-    private static boolean email_is_valid_Address(String email) {
+    public static boolean email_is_valid_Address(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"; //Reg-ex Provided from OWASP Validation Regex repository.
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
@@ -190,7 +190,6 @@ public class Database_functions {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
-
         } else {
             System.out.printf("Email format not valid for: %s", email);
         }
