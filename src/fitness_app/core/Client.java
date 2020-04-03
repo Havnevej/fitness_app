@@ -47,7 +47,6 @@ public class Client {
                             case "ID":
                                 System.out.print("id: ");
                                 int id = input_reader.nextInt();
-                                Database_functions.delete_person_by_id(id);
                                 break;
                             case "EMAIL":
                                 System.out.print("email: ");

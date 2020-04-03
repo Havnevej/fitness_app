@@ -65,7 +65,8 @@ public class Datastore {
 
     public static Person select_data(String email){
         Person person = new Person();
-        String sql = String.format("SELECT * FROM PERSON WHERE email = '%s'", email);
+        String sql = String.format("SELECT* FROM PERSON WHERE email = '%s'", email);
+
         try (Connection conn = get_connection();
              Statement statement = conn.createStatement()) {
 
