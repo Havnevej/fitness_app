@@ -37,10 +37,9 @@ public class Datastore {
     }
 
 
-    public static void insert_person(Person p) {
+    public static boolean insert_person(Person p) {
         String sql = "INSERT INTO PERSON(firstname,lastname, email, weight, height," +
                 "age, gender, country, region, city, address) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, p.getFirstName());
@@ -55,18 +54,19 @@ public class Datastore {
             statement.setString(10, p.getCity());
             statement.setString(11, p.getAddress());
 
-            statement.executeUpdate();
+            return statement.executeUpdate() == 1; // returns if 1 row was affected
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
-    public static void insert_person(Person p, String table) {
+    public static boolean insert_person(Person p, String table) {
         String sql = "INSERT INTO "+table+" (firstname,lastname, email, weight, height," +
                 "age, gender, country, region, city, address, username, password, delete_date_initiate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; //statement
-
         try (Connection conn = get_connection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
+
             statement.setString(1, p.getFirstName());
             statement.setString(2, p.getLastName());
             statement.setString(3, p.getEmail());
@@ -82,28 +82,41 @@ public class Datastore {
             statement.setString(13,p.getPassword());
             statement.setString(14, LocalDate.now().toString());
 
-            statement.executeUpdate();
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-    public static boolean backup_user_to_delete(String email){
-        String sql = "INSERT INTO USER_TO_DELETE(username, password, email, ip)";
-
-
-
-
-
-
         return false;
     }
 
     public static void delete_user(String email){
+        //PERSON table
+        try (Connection conn = get_connection();
+             PreparedStatement statement = conn.prepareStatement("DELETE FROM PERSON WHERE email LIKE ?")) {
+            statement.setString(1,email);
 
+            if(statement.executeUpdate() == 1){ // does rows affected return 1?
+                System.out.println("Deleted " + email + " from PERSON table");
+            } else {
+                System.out.println("Could not delete " + email + " from PERSON table, does it exist?");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        //PERSON_DETAILS table
+        try (Connection conn = get_connection();
+             PreparedStatement statement = conn.prepareStatement("DELETE FROM PERSON_DETAILS WHERE email LIKE ?")) {
+            statement.setString(1,email);
+
+            if(statement.executeUpdate() == 1){ // does rows affected return 1?
+                System.out.println("Deleted " + email + " from PERSON_DETAILS table");
+            } else {
+                System.out.println("Could not delete " + email + " from PERSON_DETAILS table, does it exist?");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
-
-
 
     public static Person select_data(String email){
         Person person = new Person();
