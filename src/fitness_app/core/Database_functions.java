@@ -1,5 +1,6 @@
 package fitness_app.core;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.sql.*;
@@ -12,8 +13,6 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static fitness_app.core.Datastore.get_connection;
 
 public class Database_functions {
     private static void optional_input(String field, Person p) throws NoSuchFieldException, IllegalAccessException { // field is not found in class
@@ -126,45 +125,22 @@ public class Database_functions {
     }
 
     public static void insert_person_to_delete(String email) {
-
-        Person person;
-        person = Datastore.select_data(email);
-        Datastore.insert_person(person,"USER_TO_DELETE");
-
-            /*if (email_is_valid_Address(email)) {
-
-
-                String sql_insert_into_to_delete_table = String.format("INSERT INTO USER_TO_DELETE (username, password, email, last_ip_login)\n" +
-                        "SELECT *\n" +
-                        "FROM PERSON_DETAILS\n" +
-                        "WHERE EMAIL = '%s';", email);
-                String sql_delete_user_from_tables = String.format("DELETE FROM PERSON WHERE email = '%s';\n" +
-                        "DELETE FROM PERSON_DETAILS WHERE email = '%s';", email, email);
-
-                try (Connection conn = get_connection(); Statement statement = conn.createStatement()) {
-                    if(statement.executeUpdate(sql_insert_into_to_delete_table) == 1){
-                        System.out.println("Backed up user with email: " + email + " in to_delete_table");
-                        int delete_number = statement.executeUpdate(sql_delete_user_from_tables);
-                        if(delete_number == 2){
-                            System.out.printf("Deleted user %s completely",email);
-                        } else if (delete_number == 1){
-                            System.out.println("Deleted user in 1 table, something might have gone wrong with our DATA-INTEGRITY");
-                        } else {
-                            System.out.println("User deletion encountered ");
-                        }
-                    } else {
-                        System.out.println("Could not backup user data, refusing to delete user");
-                    }
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+            if (email_is_valid_Address(email)) {
+                Person person;
+                person = Datastore.select_data(email);
+                if (Datastore.insert_person(person,"USER_TO_DELETE")) {
+                    Datastore.delete_user(email);
+                } else {
+                    System.out.println("Could not backup user, refusing to delete");
                 }
             } else {
                 System.out.printf("Email format not valid for: %s", email);
-            }*/
+            }
     }
 
-    public static void login_user(String email) {
+    public static void login_user() {
         Scanner input_reader = new Scanner(System.in);
+        String email = input_reader.nextLine();
         if(email_is_valid_Address(email)) {
             String sql = String.format("SELECT username,password FROM PERSON_DETAILS WHERE email = '%s'",email);
 
