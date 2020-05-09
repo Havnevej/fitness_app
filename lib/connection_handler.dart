@@ -1,3 +1,4 @@
+import 'dart:convert' show utf8;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -31,12 +32,15 @@ class Connection {
   Future<void> getMyUserData () async{
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("get_person");
-    socketWriteLine("as@ruc.dk");
+    socketWriteLine(_username);
+    socket.encoding = utf8;
     await for(var data in socket) {
-      String jsonString = new String.fromCharCodes(data).trim();
-      if(jsonString == "0"){print("server returns NO");return;}
-      Map userMap = jsonDecode(jsonString);
+      String dataRaw = utf8.decode(data);
+      if(dataRaw == "0"){print("server returns NO");return;}
+      Map userMap = jsonDecode(dataRaw);
+      print(dataRaw);
       loggedInPerson = Person.fromJson(userMap);
+      loggedIn = true;
       print("got user data");
       return;
     }
@@ -79,7 +83,6 @@ class Connection {
       } else if (dataFromSocket.contains("UID:")) { //if this is in the message we have the right credentials
         UID = dataFromSocket.split("UID:")[1];
         _username = user;
-        loggedIn = true;
         print("Logged in, i have uid: " + UID);
         await getMyUserData();
         socket.destroy();
@@ -126,5 +129,18 @@ class Connection {
     print("Socket done");
     socket.destroy();
     server_online = false;
+  }
+
+  Future<bool> register(Person user) async {
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("register_user");
+    socketWriteLine(json.encode(user.toJson()));
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      if(dataFromSocket == "1"){
+        print("register successfull");
+      }
+    }
+    return true;
   }
 }

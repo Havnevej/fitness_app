@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness_app/person.dart';
 import 'dart:io';
 import 'connection_handler.dart';
 import 'my_profile.dart';
@@ -49,12 +50,23 @@ class HomeState extends State<Home> {
   var txtUsername = TextEditingController();
   var txtPassword = TextEditingController();
   var _bigBoxController = TextEditingController();
+  var _firstname = TextEditingController();
+  var _lastname = TextEditingController();
+  var _country = TextEditingController();
+  var _email = TextEditingController();
+  var _password = TextEditingController();
+  var _age = TextEditingController();
 
   String name;
   @override
   Widget build(BuildContext context) {
     txtUsername.text = "ch@ruc.dk";
-    setupServerConnect();
+    _firstname.text = "anton";
+    _lastname.text = "due";
+    _country.text = "dk";
+    _email.text = "anton@ruc.dk";
+    _password.text = "anton123";
+    _age.text = "22";
     print(_server_connection.loggedIn);
     return Scaffold(
       appBar: new HeaderWidget(
@@ -148,14 +160,57 @@ class HomeState extends State<Home> {
               )
             ],
           ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "Firstname",
+            ),
+            cursorColor: Colors.green,
+            controller: _firstname,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "Lastname",
+            ),
+            cursorColor: Colors.green,
+            controller: _lastname,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "email",
+            ),
+            cursorColor: Colors.green,
+            controller: _email,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "age",
+            ),
+            cursorColor: Colors.green,
+            controller: _age,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "countrycode",
+            ),
+            cursorColor: Colors.green,
+            controller: _country,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "password",
+            ),
+            cursorColor: Colors.green,
+            controller: _password,
+          ),
         ],
       ),
 
         floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _server_connection.logout();
           print("New actionbutton clicked");
-          setState(() {
+          setState(() async {
+            Person p = new Person(_firstname.text, _lastname.text, _password.text, _email.text, int.parse(_age.text), _country.text);
+            await _server_connection.register(p);
             txt.text = "not hello";
           });
         } ,
@@ -167,13 +222,5 @@ class HomeState extends State<Home> {
         ),
       ),
       );
-  }
-
-  void setupServerConnect() async{
-
-  }
-  void update_state(bool b){
-      login = b;
-      print(login);
   }
 }

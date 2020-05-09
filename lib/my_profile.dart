@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
@@ -26,10 +28,10 @@ class FitnessDefaultStyle {
 
 class MyProfileState extends State<MyProfile>{
   Person user;
-
   @override
   void initState() {
     user = widget.user;
+    var json = jsonEncode(user.toJson());
     super.initState();
   }
   @override
