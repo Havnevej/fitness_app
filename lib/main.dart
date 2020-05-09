@@ -64,7 +64,7 @@ class HomeState extends State<Home> {
     _firstname.text = "anton";
     _lastname.text = "due";
     _country.text = "dk";
-    _email.text = "anton@ruc.dk";
+    _email.text = "hussein123333@ruc.dk";
     _password.text = "anton123";
     _age.text = "22";
     print(_server_connection.loggedIn);
@@ -208,10 +208,10 @@ class HomeState extends State<Home> {
         floatingActionButton: FloatingActionButton(
         onPressed: () async {
           print("New actionbutton clicked");
-          setState(() async {
-            Person p = new Person(_firstname.text, _lastname.text, _password.text, _email.text, int.parse(_age.text), _country.text);
-            await _server_connection.register(p);
-            txt.text = "not hello";
+          Person p = new Person(_firstname.text, _lastname.text, _password.text, _email.text, int.parse(_age.text), _country.text);
+          bool register = await _server_connection.register(p);
+          setState(() {
+            _showDialog(p, register);
           });
         } ,
         child: Text(
@@ -222,5 +222,28 @@ class HomeState extends State<Home> {
         ),
       ),
       );
+  }
+  // user defined function
+  void _showDialog(Person p, bool register) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Register $register"),
+          content: new Text("Tried to register ${p.email} response was $register"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

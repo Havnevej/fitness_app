@@ -135,12 +135,18 @@ class Connection {
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("register_user");
     socketWriteLine(json.encode(user.toJson()));
+    bool returns = false;
     await for(var response in socket){
       String dataFromSocket = new String.fromCharCodes(response).trim();
       if(dataFromSocket == "1"){
         print("register successfull");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("email already taken");
+        returns = false;
       }
     }
-    return true;
+    socket.destroy();
+    return returns;
   }
 }
