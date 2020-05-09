@@ -113,7 +113,7 @@ class _LoginState extends State<Login> {
             onPressed: () async {
               print("New actionbutton clicked");
               setState(() async {
-                Person p = new Person(_firstname.text, _lastname.text, _password.text, _email.text, int.parse(_age.text), _country.text);
+                Person p = new Person(_firstname.text, _lastname.text, _password.text, _email.text, double.parse(_age.text), _country.text);
                 await _server_connection.register(p);
                 txt.text = "not hello";
               });

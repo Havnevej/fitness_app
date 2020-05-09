@@ -1,3 +1,6 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_cupertino.dart';
+import 'package:country_pickers/country_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_fitness_app/person.dart';
 import 'connection_handler.dart';
 import 'constants.dart';
 
+import 'package:flutter/cupertino.dart';
 
 class Register extends StatefulWidget {
 
@@ -28,17 +32,14 @@ class _RegisterState extends State<Register> {
   String _password = '';
   String _firstName ="";
   String  _lastName ="";
-  String  _country ="";
+  String  _country = "";
   String  _email = "";
-  String  _age = "-1";
+  double _age = -1;
   String _weight = "-1";
   String _height = "-1";
-  String _id = "";
-  String _gender = "";
   String _region = "";
   String _city="";
   String _address="";
-
 
   Connection connection;
   List<String> _genders = ['Male', 'Female', 'Non binary gender fluid'];
@@ -144,21 +145,31 @@ class _RegisterState extends State<Register> {
                       setState(() => _lastName = val);
                     }
                 ),
-                SizedBox(height: 15.0,),
-                TextFormField( //Needs implementation
-                  decoration: textInputDecoration.copyWith(hintText: 'Age'),
-                  cursorColor: Colors.green,
-                    onChanged: (val) {
-                      setState(() => _age = val);
-                    }
+                SizedBox(height: 15.0),
+                SizedBox(height: 100,
+                child: CupertinoDatePicker(
+                    initialDateTime: DateTime.now(),
+                    maximumDate: DateTime.now(),
+                    mode: CupertinoDatePickerMode.date,
+                    onDateTimeChanged: (dateTime) {
+                      print(_age);
+                      setState(() {
+                        int daysDifference = DateTime.now().difference(dateTime).inDays;
+                        if(daysDifference > 0){
+                          _age = daysDifference/365;
+                          print(_age);
+                        }
+                      });
+                    }),
                 ),
-                SizedBox(height: 15.0,),
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Country'),
-                  cursorColor: Colors.green,
-                    onChanged: (val) {
-                      setState(() => _country = val);
-                    }
+                SizedBox(height: 15.0),
+                FlatButton(
+                  child: Text("Country", style: TextStyle(
+
+                  ),),
+                  onPressed: (){
+                    _showCountryPicker(new Country(isoCode: "DK"));
+                  },
                 ),
 
                 SizedBox(height: 15.0,),
@@ -173,7 +184,7 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     print("New actionbutton clicked");
                     setState(() async {
-                      Person p = new Person(_firstName, _lastName, _password,_email, int.parse(_age),_country,_address,_region,double.parse(_weight),double.parse(_height),_selected_gender,_username,0,_city);
+                      Person p = new Person(_firstName, _lastName, _password,_email, _age,_country,_address,_region,double.parse(_weight),double.parse(_height),_selected_gender,_username,0,_city);
                       await connection.register(p);
                       //txt.text = "not hello";
                     });
@@ -191,4 +202,22 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+  void _showCountryPicker(Country initial) => showDialog(
+    // flutter defined function
+      context: context,
+      builder: (context) => Theme(
+        data: Theme.of(context).copyWith(primaryColor: Colors.greenAccent),
+        // return object of type Dialog
+        child: CupertinoAlertDialog(
+          content: CountryPickerCupertino(
+            pickerSheetHeight: 500,
+            pickerItemHeight: 100,
+            onValuePicked: (selectedCountry) {
+              _country = selectedCountry.name;
+            },),
+
+        ),
+
+      ),
+    );
 }
