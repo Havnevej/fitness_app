@@ -5,7 +5,7 @@ class Person {
   String lastName;
   double weight;
   double height;
-  int age;
+  double age;
   int id;
   String gender;
   String country;
