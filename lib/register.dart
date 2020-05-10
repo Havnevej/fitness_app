@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
   String  _lastName ="";
   String  _country = "";
   String  _email = "";
-  double _age = -1;
+  int _age = -1;
   String _weight = "-1";
   String _height = "-1";
   String _region = "";
@@ -178,7 +178,7 @@ class _RegisterState extends State<Register> {
 
                     if(_formkey.currentState.validate()){
                       setState(() => loading = true);
-                      Person p = new Person(_firstName, _lastName, _password,_email, int.parse(_age),_country,_address,_region,double.parse(_weight),double.parse(_height),_selected_gender,_username,0,_city);
+                      Person p = new Person(_firstName, _lastName, _password,_email, _age,_country,_address,_region,double.parse(_weight),double.parse(_height),_selected_gender,_username,0,_city);
                       await connection.register(p);
                       setState(()=> loading=false);
                     }
@@ -234,7 +234,7 @@ class _RegisterState extends State<Register> {
               setState(() {
                 int daysDifference = DateTime.now().difference(dateTime).inDays;
                 if(daysDifference > 0){
-                  _age = daysDifference/365;
+                  _age = (daysDifference/365).round();
                   print(_age);
                 }
               });
