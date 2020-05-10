@@ -8,7 +8,7 @@ import 'package:flutter_fitness_app/person.dart';
 class Connection {
   SecureSocket socket;
   int _port = 9001;
-  String _address = "192.168.8.102";
+  String _address = "10.18.28.65"; // 192.168.8.102
   bool server_online = false;
   bool cert_loaded = false;
   bool _verbose = false;
@@ -135,12 +135,20 @@ class Connection {
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("register_user");
     socketWriteLine(json.encode(user.toJson()));
+    bool returns = false;
     await for(var response in socket){
       String dataFromSocket = new String.fromCharCodes(response).trim();
       if(dataFromSocket == "1"){
         print("register successfull");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("email already taken");
+        returns = false;
       }
+      socket.destroy();
+      return returns;
     }
-    return true;
+    socket.destroy();
+    return returns;
   }
 }

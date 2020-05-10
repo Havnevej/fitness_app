@@ -4,6 +4,7 @@ import 'package:flutter_fitness_app/person.dart';
 
 import 'connection_handler.dart';
 import 'constants.dart';
+import 'loading.dart';
 
 
 class Register extends StatefulWidget {
@@ -58,7 +59,7 @@ class _RegisterState extends State<Register> {
     _password.text = "anton123";
     _age.text = "22";*/
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
@@ -171,12 +172,15 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(color: Colors.blueGrey[900])
                   ),
                   onPressed: () async {
-                    print("New actionbutton clicked");
-                    setState(() async {
+
+                    if(_formkey.currentState.validate()){
+                      setState(() => loading = true);
                       Person p = new Person(_firstName, _lastName, _password,_email, int.parse(_age),_country,_address,_region,double.parse(_weight),double.parse(_height),_selected_gender,_username,0,_city);
                       await connection.register(p);
-                      //txt.text = "not hello";
-                    });
+                      setState(()=> loading=false);
+                    }
+                    print("New actionbutton clicked");
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
                   },
                 ),
                 SizedBox(height: 12),

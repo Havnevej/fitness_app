@@ -8,8 +8,10 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'dart:math';
 
 import 'connection_handler.dart';
+import 'leaderboard.dart';
 import 'login.dart';
 import 'my_profile.dart';
+import 'loading.dart';
 
 
 class Home extends StatefulWidget {
@@ -23,10 +25,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int level = 1;
-  int percentage = 0;
   Person user;
   Connection connection;
+  bool loading = false;
+  int level = 1;
+  int xpRequired = 1; //level*
+  int xpCurrent = 0;
+  int xpProgress = 0;
   @override
   void initState() {
     user = widget.connection.loggedInPerson;
@@ -35,7 +40,7 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
@@ -81,7 +86,7 @@ class _HomeState extends State<Home> {
                         label: Text('Leaderboard'),
                         textColor: Colors.blueGrey[800],
                         onPressed: (){
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(user: user)));
                           },
                       ),
                     ),
@@ -121,8 +126,10 @@ class _HomeState extends State<Home> {
                         label: Text('My profile'),
                         textColor: Colors.blueGrey[800],
                         onPressed: () async{
+                          setState(()=> loading = true);
                           await connection.getMyUserData();
                           setState(() {
+                            setState(() => loading = false);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(user: user)));
                           });
                           },
@@ -136,19 +143,26 @@ class _HomeState extends State<Home> {
                 tooltip: 'Add lvl',
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  if(percentage == 100){
+                  setState(() {
+                    xpRequired = level*1000;
+                  });
+
+                  if(xpCurrent == xpRequired){
                     setState(() {
-                      percentage=0;
+                      xpCurrent=0;
                       level++;
                     });
                   }
-                  if(percentage != 100){
+                  if(xpCurrent != xpRequired){
                     setState(() {
-                      percentage+=10;
-                      print(level);
-                      print(percentage);
+                      xpCurrent+=200;
                     });
                   }
+                  setState(() => xpProgress = (((xpCurrent*100)~/xpRequired)));
+                  print(level);
+                  print(xpCurrent);
+                  print(xpRequired);
+                  print(xpProgress);
                 },
               ),
               CircularPercentIndicator(
@@ -156,7 +170,7 @@ class _HomeState extends State<Home> {
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
-                percent: ((percentage.toDouble())/100), //0.1
+                percent: ((xpProgress.toDouble())/100), //0.1
                 center: new Text('LVL $level',
                   style:
                   new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.greenAccent),
