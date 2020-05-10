@@ -101,37 +101,30 @@ class _RegisterState extends State<Register> {
                     }
                 ),
                 SizedBox(height: 15,),
-                /*TextFormField(
-                    decoration: textInputDecoration.copyWith(hintText: 'Confirm password'),
-                    obscureText: true,
-                    validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
-                    onChanged: (val) {
-                      setState(() => password = val);
-                    }
-                ),*/
 
-                SizedBox(height: 15.0,),
-
-                DropdownButton(
-                  iconEnabledColor: Colors.greenAccent,
-                  hint: Text('Please choose a gender'),
-                  value:_selected_gender,
-                  onChanged: (newValue){
-                    setState(() {
-                      _selected_gender = newValue;
-                    });
-                  },
-                  items: _genders.map((location){
-                  return DropdownMenuItem(
-                    child: new Text(location),
-                    value: location,
-                  );
-                }).toList(),
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: DropdownButton(
+                    iconEnabledColor: Colors.black,
+                    hint: Text('Please choose a gender'),
+                    value:_selected_gender,
+                    onChanged: (newValue){
+                      setState(() {
+                        _selected_gender = newValue;
+                      });
+                    },
+                    items: _genders.map((location){
+                    return DropdownMenuItem(
+                      child: new Text(location),
+                      value: location,
+                    );
+                  }).toList(),
+                  ),
                 ),
-
                 SizedBox(height: 15.0,),
                 TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Firstname'),
+                  decoration: textInputDecoration.copyWith(hintText: 'First name'),
                   cursorColor: Colors.green,
                   onChanged: (val) {
                     setState(() => _firstName = val);
@@ -139,40 +132,39 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 15.0,),
                 TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Lastname'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Last name'),
                   cursorColor: Colors.green,
                     onChanged: (val) {
                       setState(() => _lastName = val);
                     }
                 ),
                 SizedBox(height: 15.0),
-                SizedBox(height: 100,
-                child: CupertinoDatePicker(
-                    initialDateTime: DateTime.now(),
-                    maximumDate: DateTime.now(),
-                    mode: CupertinoDatePickerMode.date,
-                    onDateTimeChanged: (dateTime) {
-                      print(_age);
-                      setState(() {
-                        int daysDifference = DateTime.now().difference(dateTime).inDays;
-                        if(daysDifference > 0){
-                          _age = daysDifference/365;
-                          print(_age);
-                        }
-                      });
-                    }),
+
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: FlatButton.icon(
+                   icon: Icon(Icons.arrow_drop_down, color: Colors.black,), label: Text("dd/mm/yyyy",
+                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4), fontSize: 15),
+                  ),
+                    onPressed: (){
+                      _showDatePicker(new DateTime.now());
+                    },
+                  ),
                 ),
                 SizedBox(height: 15.0),
-                FlatButton(
-                  child: Text("Country", style: TextStyle(
-
-                  ),),
-                  onPressed: (){
-                    _showCountryPicker(new Country(isoCode: "DK"));
-                  },
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: FlatButton.icon(
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black,), label: Text("Denmark",
+                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.4), fontSize: 15),
+                  ),
+                    onPressed: (){
+                      _showCountryPicker(new Country(isoCode: "DK"));
+                    },
+                  ),
                 ),
-
-                SizedBox(height: 15.0,),
 
                 SizedBox(height: 20.0),
                 RaisedButton(
@@ -202,6 +194,7 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
   void _showCountryPicker(Country initial) => showDialog(
     // flutter defined function
       context: context,
@@ -217,7 +210,34 @@ class _RegisterState extends State<Register> {
             },),
 
         ),
-
       ),
     );
+
+  void _showDatePicker(DateTime initial) => showDialog(
+    // flutter defined function
+    context: context,
+    builder: (context) => Theme(
+      data: Theme.of(context).copyWith(primaryColor: Colors.greenAccent),
+      // return object of type Dialog
+      child: CupertinoAlertDialog(
+        content: SizedBox(height: 500,
+          child: CupertinoDatePicker(
+            initialDateTime: DateTime.now(),
+            maximumDate: DateTime.now(),
+            mode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: (dateTime) {
+              print(_age);
+              setState(() {
+                int daysDifference = DateTime.now().difference(dateTime).inDays;
+                if(daysDifference > 0){
+                  _age = daysDifference/365;
+                  print(_age);
+                }
+              });
+            },
+          ),
+        ),
+      ),
+    ),
+  );
 }
