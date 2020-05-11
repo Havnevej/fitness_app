@@ -177,7 +177,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                       onPressed: () {
                         if(_formkey.currentState.validate()){
                             Navigator.of(context).push(MaterialPageRoute(builder: (
-                                BuildContext context) => RegisterThird(connection: connection, person: p,)));
+                                BuildContext context) => RegisterThird(connection: connection, person: p)));
                         }
                       },
                     ),
