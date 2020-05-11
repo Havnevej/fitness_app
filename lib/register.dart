@@ -153,7 +153,7 @@ class _RegisterState extends State<Register> {
                           setState(() {
                             p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", "", 0, "");
                             Navigator.of(context).push(MaterialPageRoute(builder: (
-                                BuildContext context) => RegisterSecond(person: p,)));
+                                BuildContext context) => RegisterSecond(connection: connection, person: p,)));
                           });
                         }
                       },

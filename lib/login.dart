@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
-import 'package:flutter_fitness_app/my_profile.dart';
-import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register.dart';
-
 import 'connection_handler.dart';
 import 'constants.dart';
 import 'loading.dart';
+
 Socket socket;
 Connection _server_connection = new Connection();
 
@@ -22,28 +20,13 @@ class _LoginState extends State<Login> {
   final _formkey = GlobalKey<FormState>();
   bool login = false;
   var txt = TextEditingController();
-  var txtUsername = TextEditingController();
-  var txtPassword = TextEditingController();
-  var _bigBoxController = TextEditingController();
-  var _firstname = TextEditingController();
-  var _lastname = TextEditingController();
-  var _country = TextEditingController();
-  var _email = TextEditingController();
-  var _password = TextEditingController();
-  var _age = TextEditingController();
+  String username;
+  String password;
   bool loading = false;
   String name;
   String error='';
   @override
   Widget build(BuildContext context) {
-    txtUsername.text = "ch@ruc.dk";
-    _firstname.text = "anton";
-    _lastname.text = "due";
-    _country.text = "dk";
-    _email.text = "anton@ruc.dk";
-    _password.text = "anton123";
-    _age.text = "22";
-    print(_server_connection.loggedIn);
 
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
@@ -83,7 +66,7 @@ class _LoginState extends State<Login> {
                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 validator: (val) => val.isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
-                  setState(() => txtUsername.text = val);
+                  setState(() => username = val);
                 }
             ),
             SizedBox(height: 20.0),
@@ -92,7 +75,7 @@ class _LoginState extends State<Login> {
                 obscureText: true,
                 validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
-                  setState(() => txtPassword.text = val);
+                  setState(() => password = val);
                 }
             ),
 
@@ -104,8 +87,7 @@ class _LoginState extends State<Login> {
               onPressed: () async {
                 if(_formkey.currentState.validate()){
                   setState(()=> loading = true);
-
-                  if(await _server_connection.loginUser(txtUsername.text,txtPassword.text)){
+                  if(await _server_connection.loginUser(username, password)){
                     setState(() {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
                     });
