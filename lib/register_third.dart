@@ -144,14 +144,14 @@ class _RegisterThirdState extends State<RegisterThird> {
                       setState(() => p.weight = double.parse(val));
                     }
                 ),
-                SizedBox(height: 15,),
+                SizedBox(height: 80,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(error,style: TextStyle(color: Colors.red),),
+                    Text(error,style: TextStyle(color: Colors.red,),),
                   ],
                 ),
-                SizedBox(height: 100),
+                SizedBox(height: 35),
                 ////////////////////////////////////////////////////////////////BUTTON///////////////////////////////////////////////////////////////////////////////////////////
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -163,9 +163,10 @@ class _RegisterThirdState extends State<RegisterThird> {
                           style: TextStyle(color: Colors.blueGrey[900])
                       ),
                       onPressed: () async {
+                        setState(() => loading = true);
                         if(await connection.register(p)){
-                          setState(() => loading = true);
                           setState(() {
+                            //loading = false;
                             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
                           });
                         } else {
