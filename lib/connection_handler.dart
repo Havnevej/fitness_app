@@ -8,7 +8,7 @@ import 'package:flutter_fitness_app/person.dart';
 class Connection {
   SecureSocket socket;
   int _port = 9001;
-  String _address = "192.168.8.102";
+  String _address = "192.168.8.102"; // 192.168.8.102
   bool server_online = false;
   bool cert_loaded = false;
   bool _verbose = false;
@@ -55,9 +55,8 @@ class Connection {
   }
 
   void setupConnection() async {
-    await loadCert().then((s){
-      checkConnection();
-    });
+    await loadCert();
+    //could add a call to checkconnection() with a small timeout and indicate if the server is online on the login screen
   }
   Future<SecurityContext> loadCert() async{
       ByteData data = await rootBundle.load('assets/etc/new.jks');
@@ -71,24 +70,28 @@ class Connection {
   }
 
   Future<bool> loginUser(String user, String pass) async {
-    socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("login");
-    socketWriteLine(user+"#NEXT#"+pass);
-    print(user + " " + pass);
-    await for(var data in socket){
-      String dataFromSocket = new String.fromCharCodes(data).trim();
-      if(dataFromSocket == "0"){
-        print("Could not login with the supplied crendentials");
+    try{
+      socket = await SecureSocket.connect(_address, _port, context: context, timeout: new Duration(seconds: 15));
+      socketWriteLine("login");
+      socketWriteLine(user+"#NEXT#"+pass);
+      print(user + " " + pass);
+      await for(var data in socket){
+        String dataFromSocket = new String.fromCharCodes(data).trim();
+        if(dataFromSocket == "0"){
+          print("Could not login with the supplied crendentials");
+          return false;
+        } else if (dataFromSocket.contains("UID:")) { //if this is in the message we have the right credentials
+          UID = dataFromSocket.split("UID:")[1];
+          _username = user;
+          print("Logged in, i have uid: " + UID);
+          await getMyUserData();
+          socket.destroy();
+          return true;
+        }
+        server_online = true;
         return false;
-      } else if (dataFromSocket.contains("UID:")) { //if this is in the message we have the right credentials
-        UID = dataFromSocket.split("UID:")[1];
-        _username = user;
-        print("Logged in, i have uid: " + UID);
-        await getMyUserData();
-        socket.destroy();
-        return true;
       }
-      server_online = true;
+    } on SocketException {
       return false;
     }
   }
@@ -135,12 +138,20 @@ class Connection {
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("register_user");
     socketWriteLine(json.encode(user.toJson()));
+    bool returns = false;
     await for(var response in socket){
       String dataFromSocket = new String.fromCharCodes(response).trim();
       if(dataFromSocket == "1"){
         print("register successfull");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("email already taken");
+        returns = false;
       }
+      socket.destroy();
+      return returns;
     }
-    return true;
+    socket.destroy();
+    return returns;
   }
 }

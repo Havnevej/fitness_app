@@ -8,6 +8,7 @@ import 'package:flutter_fitness_app/register.dart';
 
 import 'connection_handler.dart';
 import 'constants.dart';
+import 'loading.dart';
 Socket socket;
 Connection _server_connection = new Connection();
 
@@ -18,6 +19,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+  final _formkey = GlobalKey<FormState>();
   bool login = false;
   var txt = TextEditingController();
   var txtUsername = TextEditingController();
@@ -29,8 +31,9 @@ class _LoginState extends State<Login> {
   var _email = TextEditingController();
   var _password = TextEditingController();
   var _age = TextEditingController();
-
+  bool loading = false;
   String name;
+  String error='';
   @override
   Widget build(BuildContext context) {
     txtUsername.text = "ch@ruc.dk";
@@ -42,7 +45,7 @@ class _LoginState extends State<Login> {
     _age.text = "22";
     print(_server_connection.loggedIn);
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
@@ -70,45 +73,53 @@ class _LoginState extends State<Login> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         children: <Widget>[
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+      Form(
+        key: _formkey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
 
-          TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Email'),
-              validator: (val) => val.isEmpty ? 'Enter an email' : null,
-              onChanged: (val) {
-                setState(() => txtUsername.text = val);
-              }
-          ),
-          SizedBox(height: 20.0),
-          TextFormField(
-              decoration: textInputDecoration.copyWith(hintText: 'Password'),
-              obscureText: true,
-              validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
-              onChanged: (val) {
-                setState(() => txtPassword.text = val);
-              }
-          ),
-
-          SizedBox(height: 20,),
-
-          FlatButton(
-            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-            color: Colors.greenAccent,
-            onPressed: () async {
-              await _server_connection.loginUser(txtUsername.text,txtPassword.text);
-              setState(() {
-                if(_server_connection.loggedIn){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection))); //user: _server_connection.loggedInPerson
+            TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                onChanged: (val) {
+                  setState(() => txtUsername.text = val);
                 }
-              });
-            },
-            child: Text("Login"),
-          ),
+            ),
+            SizedBox(height: 20.0),
+            TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                obscureText: true,
+                validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                onChanged: (val) {
+                  setState(() => txtPassword.text = val);
+                }
+            ),
 
-          SizedBox(height: 10,),
-        ],
+            SizedBox(height: 20,),
+
+            FlatButton(
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              color: Colors.greenAccent,
+              onPressed: () async {
+                if(_formkey.currentState.validate()){
+                  setState(()=> loading = true);
+
+                  if(await _server_connection.loginUser(txtUsername.text,txtPassword.text)){
+                    setState(() {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
+                    });
+                  }else{
+                    setState(() => loading = false);
+                    setState(() => error = 'could not sign in with those credentials');
+                  }
+                }
+              },
+              child: Text("Login"),
+            ),
+            SizedBox(height: 10,),
+          ],
+        ),
       ),
     ],
       ),

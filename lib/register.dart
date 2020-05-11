@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 
 import 'connection_handler.dart';
 import 'constants.dart';
+import 'loading.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -59,7 +60,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
