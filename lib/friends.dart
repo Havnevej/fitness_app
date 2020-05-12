@@ -3,6 +3,7 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/search.dart';
 
 import 'connection_handler.dart';
+import 'my_profile.dart';
 
 class Friends extends StatefulWidget {
   final Person user;
@@ -30,13 +31,20 @@ class _FriendsState extends State<Friends> {
       backgroundColor: Colors.blueGrey[900],
         appBar: AppBar(
           backgroundColor: Colors.blueGrey[900],
-          title: const Text('ExpansionTile',style: TextStyle(color: Colors.greenAccent),),
+          title: Center(
+            child: Text.rich(
+              TextSpan(
+                style: FitnessDefaultStyle.displayHeader(context),
+                text: "Hello ${user.firstName}",
+              ),
+            ),
+          ),
           actions: <Widget>[
             FlatButton.icon(
                 icon: Icon(Icons.search,color: Colors.greenAccent,),
                 label: Text(""),
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Search()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Search(user:user,connection: connection,)));
               },
             ),
 

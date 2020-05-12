@@ -33,8 +33,7 @@ class _SearchState extends State<Search> {
   bool isReplay = false;
 
   List<String>friends;
-
-
+  
 
   Future<List<Post>> search(String text) async {
     await Future.delayed(Duration(seconds: 1));

@@ -292,7 +292,7 @@ class _HomeState extends State<Home> {
               FlatButton.icon(
                 label: Text("Friends"),
                 icon: Icon(Icons.person,color: Colors.blueGrey[900],),
-                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Friends()));},
+                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Friends(user:user, connection: connection,)));},
 
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
