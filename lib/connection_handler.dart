@@ -154,4 +154,50 @@ class Connection {
     socket.destroy();
     return returns;
   }
+  Future<bool> sendFriendRequest(String to) async {
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("send_friend_request");
+    socketWriteLine(to);
+    bool returns = false;
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      if(dataFromSocket == "1"){
+        print("Sent friend request");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("could not send friend request");
+        returns = false;
+      } else if (dataFromSocket.contains("-2")){
+        print("User: " + to + " is not found in the databse");
+        returns = false;
+      }
+      socket.destroy();
+      return returns;
+    }
+    socket.destroy();
+    return returns;
+  }
+  Future<bool> acceptFriendRequest(String from) async {
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("accept_friend_request");
+    socketWriteLine(from);
+    bool returns = false;
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      if(dataFromSocket == "1"){
+        print("Accepted friendrequest");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("could not send friend request");
+        returns = false;
+      } else if (dataFromSocket.contains("-2")){
+        print("User: " + from + " is not found in the databse");
+        returns = false;
+      }
+      socket.destroy();
+      return returns;
+    }
+    socket.destroy();
+    return returns;
+  }
 }

@@ -131,7 +131,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     onChanged: (val) {
-                      setState(() => p.height= double.parse(val));
+                      setState(() => p.height = int.parse(val));
                     }
                 ),
                 SizedBox(height: 15.0),
@@ -141,7 +141,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     onChanged: (val) {
-                      setState(() => p.weight = double.parse(val));
+                      setState(() => p.weight = int.parse(val));
                     }
                 ),
                 SizedBox(height: 80,),
