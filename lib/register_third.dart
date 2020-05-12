@@ -29,7 +29,7 @@ class _RegisterThirdState extends State<RegisterThird> {
 
   // text field state
   String error = '';
-
+  bool errorOn = false;
   double weight = -1;
   double height = -1;
   String gender = "";

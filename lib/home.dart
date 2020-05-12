@@ -53,8 +53,17 @@ class _HomeState extends State<Home> {
             color: Colors.greenAccent,
           ),
         ),
+        leading: GestureDetector(
+          onTap: (){return DropdownMenuItem(
+            //value: challenge,
+            child: Text('challenges'), //$challenge
+          );},
+          child: Icon(Icons.notifications, color: Colors.greenAccent,),
+        ),
         centerTitle: true,
         actions: <Widget>[
+
+
           FlatButton.icon(
             icon: Icon(Icons.person, color: Colors.greenAccent),
             label: Text('Logout', style: TextStyle( color: Colors.greenAccent),),
@@ -65,7 +74,7 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: ListView( // changed from container to listview  ***** BrewList(),
+      body: ListView(
         children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -166,6 +175,7 @@ class _HomeState extends State<Home> {
                 },
               ),
               CircularPercentIndicator(
+                animateFromLastPercent: true,
                 radius: 130.0,
                 animation: true,
                 animationDuration: 1200,
