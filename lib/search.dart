@@ -4,6 +4,9 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/constants.dart';
+import 'package:flutter_fitness_app/person.dart';
+
+import 'connection_handler.dart';
 
 
 class Post {
@@ -13,9 +16,12 @@ class Post {
   Post(this.title, this.body);
 }
 class Search extends StatefulWidget {
+  final Person user;
+  final Connection connection;
+
   final String title;
   final String body;
-  const Search({Key key, this.title, this.body}) : super(key: key);
+  const Search({Key key, this.title, this.body, this.connection, this.user}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -47,6 +53,15 @@ class _SearchState extends State<Search> {
       posts.add(Post("$text $i", "body random number : ${random.nextInt(100)}"));
     }*/
     return posts;
+  }
+  Person user;
+  Connection connection;
+
+  @override
+  void initState() {
+    user = widget.connection.loggedInPerson;
+    connection = widget.connection;
+    super.initState();
   }
 
   @override

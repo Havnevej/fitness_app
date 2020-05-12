@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/search.dart';
 
+import 'connection_handler.dart';
+
 class Friends extends StatefulWidget {
+  final Person user;
+  final Connection connection;
+
+  const Friends({Key key, this.user, this.connection}) : super(key: key);
   @override
   _FriendsState createState() => _FriendsState();
 }
 
 class _FriendsState extends State<Friends> {
+  Person user;
+  Connection connection;
+
+  @override
+  void initState() {
+    user = widget.connection.loggedInPerson;
+    connection = widget.connection;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
         appBar: AppBar(
