@@ -52,6 +52,11 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Find friends",style: TextStyle(color: Colors.greenAccent),),
+        backgroundColor: Colors.blueGrey[900],
+        elevation: 1,
+      ),
      /* appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.blueGrey[900],

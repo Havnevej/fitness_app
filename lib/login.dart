@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        elevation: 0.0,
+        elevation: 1.0,
         title: Text('Fit2Gether',
           style: TextStyle(
             fontSize: 20,
@@ -56,6 +56,11 @@ class _LoginState extends State<Login> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         children: <Widget>[
+        CircleAvatar(
+          radius: 140,
+          backgroundImage: NetworkImage('https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/77/57/32/7757329d-e5cb-f401-3576-ed3c2e86988b/mza_2306268303586606653.jpg/600x600bb.jpg'),
+        ),
+        Divider(height: 30, color: Colors.greenAccent,),
       Form(
         key: _formkey,
         child: Column(

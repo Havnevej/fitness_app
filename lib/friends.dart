@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/search.dart';
 
-class Friends extends StatelessWidget {
+class Friends extends StatefulWidget {
+  @override
+  _FriendsState createState() => _FriendsState();
+}
+
+class _FriendsState extends State<Friends> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
