@@ -151,7 +151,7 @@ class _RegisterState extends State<Register> {
                       onPressed: () {
                         if(_formkey.currentState.validate()){
                           setState(() {
-                            p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", "", 0, "");
+                            p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", 0, "");
                             Navigator.of(context).push(MaterialPageRoute(builder: (
                                 BuildContext context) => RegisterSecond(connection: connection, person: p,)));
                           });
