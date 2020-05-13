@@ -1,11 +1,16 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:intl/intl.dart';
+
 import 'connection_handler.dart';
 import 'constants.dart';
 
 import 'package:flutter/cupertino.dart';
+
+import 'loading.dart';
 
 class RegisterThird extends StatefulWidget {
 
@@ -24,7 +29,7 @@ class _RegisterThirdState extends State<RegisterThird> {
 
   // text field state
   String error = '';
-
+  bool errorOn = false;
   double weight = -1;
   double height = -1;
   String gender = "";
@@ -49,7 +54,7 @@ class _RegisterThirdState extends State<RegisterThird> {
     String _genderText = _selected_gender == null ? "Please select a gender" : _selected_gender;
     String _dateText = dateText == null ? "Age: dd/mm/yyyy" : dateText;
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
@@ -126,7 +131,7 @@ class _RegisterThirdState extends State<RegisterThird> {
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     onChanged: (val) {
-                      setState(() => p.height= double.parse(val));
+                      setState(() => p.height = int.parse(val));
                     }
                 ),
                 SizedBox(height: 15.0),
@@ -136,10 +141,17 @@ class _RegisterThirdState extends State<RegisterThird> {
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     onChanged: (val) {
-                      setState(() => p.weight = double.parse(val));
+                      setState(() => p.weight = int.parse(val));
                     }
                 ),
-                SizedBox(height: 150),
+                SizedBox(height: 80,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(error,style: TextStyle(color: Colors.red,),),
+                  ],
+                ),
+                SizedBox(height: 35),
                 ////////////////////////////////////////////////////////////////BUTTON///////////////////////////////////////////////////////////////////////////////////////////
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -151,17 +163,21 @@ class _RegisterThirdState extends State<RegisterThird> {
                           style: TextStyle(color: Colors.blueGrey[900])
                       ),
                       onPressed: () async {
-                        print(p);
-                        await connection.register(p);
+                        setState(() => loading = true);
+                        if(await connection.register(p)){
+                          setState(() {
+                            //loading = false;
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
+                          });
+                        } else {
+                          setState(() => loading = false);
+                          setState(() => error = 'Email is either invalid or already taken.');
+                        }
                       },
                     ),
                   ],
                 ),
                 SizedBox(height: 12),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
               ],
             ),
           ),
@@ -169,7 +185,7 @@ class _RegisterThirdState extends State<RegisterThird> {
       ),
     );
   }
-
+////////////////////////////////////////////////////////////////DatePicker///////////////////////////////////////////////////////////////////////////////////////////
   void _showDatePicker(DateTime initial) => showDialog(
     // flutter defined function
     context: context,

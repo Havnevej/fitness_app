@@ -3,10 +3,11 @@ import 'package:sprintf/sprintf.dart'; //sprintf: https://pub.dev/packages/sprin
 class Person {
   String firstName;
   String lastName;
-  double weight;
-  double height;
+  int weight;
+  int height;
   int age;
   int id;
+  int exp;
   String gender;
   String country;
   String region;
@@ -15,7 +16,11 @@ class Person {
   String email;
   String username;
   String password;
-  bool me = false;
+  List<String> friendslist;
+  List<String> friendRequestsIncoming;
+  List<String> friendRequestsOutgoing;
+  String registerDate;
+
 
   //dart magi den sætter variablerne bare ved at gøre det her
   Person(this.firstName,this.lastName,this.password,this.email,this.age,this.country,
@@ -35,7 +40,12 @@ class Person {
         country = json['country'],
         region = json['region'],
         city = json['city'],
-        address = json['address'];
+        address = json['address'],
+        exp = json['exp'],
+        registerDate = json['registerDate'],
+        friendslist = (json['friendslist'] as List<dynamic>).cast<String>(),
+        friendRequestsIncoming = (json['friendRequestsIncoming'] as List<dynamic>).cast<String>(),
+        friendRequestsOutgoing = (json['friendRequestsOutgoing'] as List<dynamic>).cast<String>();
 
   Map<String, dynamic> toJson() =>
       {
@@ -53,6 +63,7 @@ class Person {
         'region': region,
         'city': city,
         'address': address,
+        'exp':exp,
       };
   @override
   String toString() {

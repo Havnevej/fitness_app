@@ -1,8 +1,12 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_second.dart';
+import 'package:intl/intl.dart';
+
 import 'connection_handler.dart';
 import 'constants.dart';
 import 'loading.dart';
@@ -93,7 +97,7 @@ class _RegisterState extends State<Register> {
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
                     style: TextStyle(fontWeight: FontWeight.bold),
                     validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                    onChanged: (val) { //p.email = val;
+                    onChanged: (val) {
                       setState(() => _email = val);
                     }
                 ),
@@ -109,7 +113,7 @@ class _RegisterState extends State<Register> {
                     obscureText: _obscureText,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
-                    onChanged: (val) { //p.password = val;
+                    onChanged: (val) {
                       setState(() => _password = val);
                     }
                 ),
@@ -147,9 +151,9 @@ class _RegisterState extends State<Register> {
                       onPressed: () {
                         if(_formkey.currentState.validate()){
                           setState(() {
-                            p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", 0, "");
+                            p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", "", 0, "");
                             Navigator.of(context).push(MaterialPageRoute(builder: (
-                                BuildContext context) => RegisterSecond(person: p, connection: connection,)));
+                                BuildContext context) => RegisterSecond(connection: connection, person: p,)));
                           });
                         }
                       },

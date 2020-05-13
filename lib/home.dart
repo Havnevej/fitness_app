@@ -8,6 +8,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'dart:math';
 
 import 'connection_handler.dart';
+import 'friends.dart';
 import 'leaderboard.dart';
 import 'login.dart';
 import 'my_profile.dart';
@@ -45,7 +46,19 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         elevation: 0.0,
-        title: Text('Fit2Gether',
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+
+          FlatButton.icon(
+            padding: EdgeInsets.only(right: 100),
+            icon: Icon(Icons.more_vert, color: Colors.greenAccent),
+            label: Text('', style: TextStyle( color: Colors.greenAccent),),
+            onPressed: () { _showbuttons();
+            },
+          ),
+
+          Text('Fit2Gether',
           style: TextStyle(
             fontSize: 20,
             letterSpacing: 2.0,
@@ -53,19 +66,19 @@ class _HomeState extends State<Home> {
             color: Colors.greenAccent,
           ),
         ),
-        centerTitle: true,
-        actions: <Widget>[
           FlatButton.icon(
+            padding: EdgeInsets.only(left: 55),
             icon: Icon(Icons.person, color: Colors.greenAccent),
             label: Text('Logout', style: TextStyle( color: Colors.greenAccent),),
             onPressed: () async{
               await connection.logout();
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
             },
-          )
+          ),
         ],
+        ),
       ),
-      body: ListView( // changed from container to listview  ***** BrewList(),
+      body: ListView(
         children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -166,6 +179,7 @@ class _HomeState extends State<Home> {
                 },
               ),
               CircularPercentIndicator(
+                animateFromLastPercent: true,
                 radius: 130.0,
                 animation: true,
                 animationDuration: 1200,
@@ -256,4 +270,44 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  void _showbuttons() => showDialog(context: context, builder: (context) => Theme(
+
+
+    // flutter defined function
+      data: Theme.of(context).copyWith(primaryColor: Colors.greenAccent),
+      // return object of type Dialog
+      child: AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(0, 0, 200, 420),
+        elevation: 0,
+        //AlertDialog
+        backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+        content: Container(
+          padding: EdgeInsets.fromLTRB(0, 0,0, 0),
+          color: Colors.greenAccent,
+          width: 200,
+          height: 400,
+          child: ListView(
+            children: <Widget>[
+              FlatButton.icon(
+                label: Text("Friends"),
+                icon: Icon(Icons.person,color: Colors.blueGrey[900],),
+                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Friends(user:user, connection: connection,)));},
+
+              ),
+              Divider(height:0 ,color: Colors.blueGrey[900],),
+              FlatButton.icon(
+                label: Text("Amazing"),
+                icon: Icon(Icons.settings,color: Colors.blueGrey[900],),
+                onPressed:() {},
+              ),
+              Divider(height:0 ,color: Colors.blueGrey[900],),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
+
+
