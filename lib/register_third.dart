@@ -6,7 +6,7 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:intl/intl.dart';
 
 import 'connection_handler.dart';
-import 'constants.dart';
+import 'utils/constants.dart';
 
 import 'package:flutter/cupertino.dart';
 

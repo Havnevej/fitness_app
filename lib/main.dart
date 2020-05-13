@@ -8,7 +8,7 @@ import 'package:flutter_fitness_app/register_third.dart';
 
 
 void main() => runApp(MaterialApp(
-  home: myProfilePage(),
+  home: Login(),
   debugShowCheckedModeBanner: false,
   title: "123",
 ));

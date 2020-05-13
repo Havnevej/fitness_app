@@ -20,7 +20,7 @@ class _FriendsState extends State<Friends> {
 
   @override
   void initState() {
-    user = widget.connection.loggedInPerson;
+    user = widget.user;
     connection = widget.connection;
     super.initState();
   }

@@ -8,7 +8,7 @@ import 'package:flutter_fitness_app/register_second.dart';
 import 'package:intl/intl.dart';
 
 import 'connection_handler.dart';
-import 'constants.dart';
+import 'utils/constants.dart';
 import 'loading.dart';
 
 import 'package:flutter/cupertino.dart';
