@@ -8,6 +8,7 @@ import 'friends.dart';
 import 'loading.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'connection_handler.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class myProfilePage extends StatefulWidget {
@@ -39,20 +40,20 @@ class _myProfileState extends State<myProfilePage> {
   Widget build(BuildContext context) {
 
     return loading ? Loading() : Scaffold(
-      backgroundColor: Color.fromRGBO(90, 125, 124, 1),
+      backgroundColor: Color.fromRGBO(255, 252, 232, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(90, 125, 124, 1),
+        backgroundColor: Colors.green[600],
         elevation: (1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('My profile', style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
+            Text('My profile', style: TextStyle(color: Colors.white),),
             SizedBox(),
             FlatButton.icon(
               icon: Icon(
-                Icons.people, color: Color.fromRGBO(236, 203, 217, 1),),
+                Icons.people, color: Colors.yellow,),
               label: Text(
-                '', style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
+                '', style: TextStyle(color: Colors.white),),
               onPressed: () {
                Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (BuildContext context) => Friends(user: user, connection: connection,)));
@@ -60,9 +61,9 @@ class _myProfileState extends State<myProfilePage> {
             ),
             FlatButton.icon(
               icon: Icon(
-                Icons.exit_to_app, color: Color.fromRGBO(236, 203, 217, 1),),
+                Icons.exit_to_app, color: Colors.white,),
               label: Text(
-                'Log out', style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
+                'Log out', style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (BuildContext context) => Login()));
@@ -89,11 +90,11 @@ class _myProfileState extends State<myProfilePage> {
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 60, 0, 20),
-                color: Color.fromRGBO(86, 85, 84, 1),
+                color: Colors.green[600],
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Center(child: Text("${user.firstName} ${user.lastName}", style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1), fontSize: 20),)),
+                    Text("${user.firstName} ${user.lastName}", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, fontSize: 20)),),
                     SizedBox(width: 15),
                     CircularPercentIndicator(
                       animateFromLastPercent: true,
@@ -104,25 +105,26 @@ class _myProfileState extends State<myProfilePage> {
                       percent: 0.2, //0.1
                       center: new Text('$level',
                         style:
-                        new TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0, color: Color.fromRGBO(236, 203, 217, 1)),
+                        GoogleFonts.kalam(textStyle: TextStyle(color: Colors.yellow, fontSize: 22)),
                       ),
                       circularStrokeCap: CircularStrokeCap.butt,
                       backgroundColor: Colors.white,
-                      progressColor: Color.fromRGBO(236, 203, 217, 1),
+                      progressColor: Colors.yellow,
                     ),
                   ],
                 ),
               ),
-              Divider(height: 0, color: Color.fromRGBO(201, 202, 217, 1), thickness: 2,),
+              Divider(height: 0, color: Colors.yellow, thickness: 2,),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                color: Color.fromRGBO(86, 85, 84, 1),
+                color: Colors.green[600],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Text("Weight: ${user.weight} kg", style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
-                    Text("Height: ${user.height} cm", style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
-                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1)),),
+                    //Icon(Icons.fitness_center),
+                    Text("Weight: ${user.weight} kg", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, )),),
+                    Text("Height: ${user.height} cm", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, )),),
+                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white,)),),
                   ],
                 ),
               ),
@@ -132,7 +134,7 @@ class _myProfileState extends State<myProfilePage> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(top: 5),
-                    child: Text('Weight progression', style: TextStyle(color: Color.fromRGBO(236, 203, 217, 1), fontSize: 15, fontWeight: FontWeight.bold),),
+                    child: Text('Weight progression', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.green[600], fontSize: 20)), ),
                   ),
                 ],
               ),
@@ -141,10 +143,10 @@ class _myProfileState extends State<myProfilePage> {
                   child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5,1, 2.5, 2, 4],
                     sharpCorners: true,
                     lineWidth: 2,
-                    lineColor: Color.fromRGBO(225, 239, 210, 1),
+                    lineColor: Colors.green[600],
                     fillMode: FillMode.below,
                     fillColor: Color.fromRGBO(128, 255, 232,1 ),
-                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color.fromRGBO(86, 85, 84, 1), Color.fromRGBO(86, 85, 84, 1),]
+                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.yellow[300], Colors.yellow[400],]
                     ),
                   ),
                 ),
