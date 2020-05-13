@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/search.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'connection_handler.dart';
 import 'my_profile.dart';
@@ -24,97 +26,234 @@ class _FriendsState extends State<Friends> {
     connection = widget.connection;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    List<String> friendsList = <String>[];
+   friendsList.add("${user.friendslist}");
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey[900],
-          title: Center(
-            child: Text.rich(
-              TextSpan(
-                style: FitnessDefaultStyle.displayHeader(context),
-                text: "Hello ${user.firstName}",
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey[900],
+        title: Center(
+          child: Text.rich(
+            TextSpan(
+              style: FitnessDefaultStyle.displayHeader(context),
+              text: "Hello ${user.firstName}",
             ),
           ),
-          actions: <Widget>[
-            FlatButton.icon(
-                icon: Icon(Icons.search,color: Colors.greenAccent,),
-                label: Text(""),
-              onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Search(user:user,connection: connection,)));
-              },
-            ),
-
-          ],
-
         ),
-        body: ListView.builder(
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.search, color: Colors.greenAccent,),
+            label: Text(""),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      Search(user: user, connection: connection,)));
+            },
+          ),
 
-          itemBuilder: (BuildContext context, int index) =>
-              EntryItem(data[index],),
-          itemCount: data.length,
-        ),
-      );
-  }
-}
+        ],
 
-// One entry in the multilevel list displayed by this app.
-class Entry {
-  Entry(this.title, [this.children = const <Entry>[]]);
+      ),
+      body: Column(
+        children: <Widget>[
+          ExpansionTile(
+            backgroundColor: Colors.blueGrey[900],
+            title: Text("Incoming friend requests", style: TextStyle(fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.greenAccent),),
+            children: <Widget>[
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: user.friendRequestsIncoming.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                            Expanded(
+                              child: Container(
+                               child: Card(
+                                  //color: Colors.blue[200],
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: ListTile(
+                                            leading: const Icon(Icons.person_add),
+                                            title: Text(user.friendRequestsIncoming[index],style: TextStyle(fontWeight: FontWeight.bold),),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),),
+                              ),
 
-  final String title;
-  final List<Entry> children;
-}
+                            ),
 
-// The entire multilevel list displayed by this app.
-final List<Entry> data = <Entry>[
-  Entry(
-    'Incoming Friend Requests',
-    <Entry>[
-      Entry('Section A0'),
-      Entry('Section A1'),
-      Entry('Section A2'),
-    ],
-  ),
-  Entry(
-    'Friendslist',
-    <Entry>[
-      Entry('Section B0'),
-      Entry('Section B1'),
-    ],
-  ),
-  Entry(
-    'Outgoing Friend Requests',
-    <Entry>[
-      Entry('Section C0'),
-      Entry('Section C1'),
-      Entry('Section C2',),
-    ],
-  ),
-];
+                          Container(
+                                padding: EdgeInsets.all(20),
+                                color: Colors.blueGrey[900],
+                                child:
+                                Center(
+                                  child: CircularPercentIndicator(
+                                    animateFromLastPercent: true,
+                                    radius: 35.0,
+                                    animation: true,
+                                    animationDuration: 1200,
+                                    lineWidth: 4.0,
+                                    percent: (0.2), //0.1
+                                    center: new Text('1',
+                                      style:
+                                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
+                                    ),
+                                    circularStrokeCap: CircularStrokeCap.square,
+                                    backgroundColor: Colors.deepOrange,
+                                    progressColor: Colors.orange,
+                                  ),
+                                ),
+                          ),
+                          ],
+                      ),
+                      Divider(height: 0,),
+                      Row(
+                        children: <Widget>[
+                          Container(padding: EdgeInsets.only(left: 5),),
+                          Expanded(
+                            child: Container(
+                              color:Colors.green,
+                              child: FlatButton(
+                                child: Text("Accept"),
+                                onPressed: (){},
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              color:Colors.red,
+                              child: FlatButton(
+                                child: Text("Deny"),
+                                onPressed: (){},
+                              ),
+                            ),
+                          ),
+                          Container(padding: EdgeInsets.only(right: 80),),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+          ExpansionTile(
+            initiallyExpanded: true,
+            backgroundColor: Colors.blueGrey[900],
+            title: Text("Friendslist", style: TextStyle(fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.greenAccent),),
+            children: <Widget>[
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: user.friendslist.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Card(
+                          color: Colors.blue[200],
+                          child: ListTile(
+                            leading: const Icon(Icons.person_outline),
+                            title: Text(user.friendslist[index],style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        color: Colors.blueGrey[900],
+                        child:
+                        Center(
+                          child: CircularPercentIndicator(
+                            animateFromLastPercent: true,
+                            radius: 35.0,
+                            animation: true,
+                            animationDuration: 1200,
+                            lineWidth: 4.0,
+                            percent: (0.2), //0.1
+                            center: new Text('1',
+                              style:
+                              new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.square,
+                            backgroundColor: Colors.deepOrange,
+                            progressColor: Colors.orange,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
 
-// Displays one Entry. If the entry has children then it's displayed
-// with an ExpansionTile.
-class EntryItem extends StatelessWidget {
-  const EntryItem(this.entry);
-
-  final Entry entry;
-  Widget _buildTiles(Entry root) {
-
-    if (root.children.isEmpty) return ListTile(title: Text(root.title,style: TextStyle(color: Colors.greenAccent),));
-    return ExpansionTile(
-      backgroundColor: Colors.blueGrey[900],
-      key: PageStorageKey<Entry>(root),
-      title: Text(root.title,style: TextStyle(fontSize: 20 ,fontWeight: FontWeight.bold,color: Colors.greenAccent),),
-      children: root.children.map(_buildTiles).toList(),
+          ExpansionTile(
+            backgroundColor: Colors.blueGrey[900],
+            title: Text("Outgoing friend requests", style: TextStyle(fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.greenAccent),),
+            children: <Widget>[
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: user.friendRequestsOutgoing.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Card(
+                          color: Colors.blue[200],
+                          child: ListTile(
+                            leading: const Icon(Icons.person_add),
+                            title: Text(user.friendRequestsOutgoing[index],style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        color: Colors.blueGrey[900],
+                        child:
+                        Center(
+                          child: CircularPercentIndicator(
+                            animateFromLastPercent: true,
+                            radius: 35.0,
+                            animation: true,
+                            animationDuration: 1200,
+                            lineWidth: 4.0,
+                            percent: (0.2), //0.1
+                            center: new Text('1',
+                              style:
+                              new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.square,
+                            backgroundColor: Colors.deepOrange,
+                            progressColor: Colors.orange,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
-  }
+}}
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildTiles(entry,);
-  }
-}
+
+
