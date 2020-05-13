@@ -1,10 +1,7 @@
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:intl/intl.dart';
-
 import 'connection_handler.dart';
 import 'constants.dart';
 
@@ -154,9 +151,8 @@ class _RegisterThirdState extends State<RegisterThird> {
                           style: TextStyle(color: Colors.blueGrey[900])
                       ),
                       onPressed: () async {
+                        print(p);
                         await connection.register(p);
-                        setState(() {
-                        });
                       },
                     ),
                   ],

@@ -177,7 +177,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                       onPressed: () {
                         if(_formkey.currentState.validate()){
                             Navigator.of(context).push(MaterialPageRoute(builder: (
-                                BuildContext context) => RegisterThird(person: p,)));
+                                BuildContext context) => RegisterThird(person: p, connection: connection,)));
                         }
                       },
                     ),
@@ -207,6 +207,9 @@ class _RegisterSecondState extends State<RegisterSecond> {
               ),
             ),
             child: CountryPickerCupertino(
+              // Initial country
+              scrollController: FixedExtentScrollController(initialItem: 1),
+              initialCountry: Country(name: 'Denmark'),
               backgroundColor: Colors.blueGrey[900],
               pickerSheetHeight: 300,
               pickerItemHeight: 100,
