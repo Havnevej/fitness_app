@@ -8,6 +8,7 @@ class Person {
   int age;
   int id;
   int exp;
+  int level;
   String gender;
   String country;
   String region;
@@ -42,6 +43,7 @@ class Person {
         city = json['city'],
         address = json['address'],
         exp = json['exp'],
+        level = json['level'],
         registerDate = json['registerDate'],
         friendslist = (json['friendslist'] as List<dynamic>).cast<String>(),
         friendRequestsIncoming = (json['friendRequestsIncoming'] as List<dynamic>).cast<String>(),

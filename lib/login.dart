@@ -6,6 +6,7 @@ import 'package:flutter_fitness_app/register.dart';
 import 'connection_handler.dart';
 import 'constants.dart';
 import 'loading.dart';
+import 'person.dart';
 
 Socket socket;
 Connection _server_connection = new Connection();
@@ -80,7 +81,6 @@ class _LoginState extends State<Login> {
             ),
 
             SizedBox(height: 20,),
-
             FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               color: Colors.greenAccent,
@@ -88,6 +88,7 @@ class _LoginState extends State<Login> {
                 if(_formkey.currentState.validate()){
                   setState(()=> loading = true);
                   if(await _server_connection.loginUser(username, password)){
+                     Map<String, dynamic> results = await _server_connection.searchByEmail("hkmiari@ruc.dk");
                     setState(() {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
                     });

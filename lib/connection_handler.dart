@@ -200,4 +200,36 @@ class Connection {
     socket.destroy();
     return returns;
   }
+  Future<Person> getFriendData(String email) async {
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_friend");
+    socketWriteLine(email);
+    String lastResponse = "99";
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      if(lastResponse == "1"){
+        print(dataFromSocket);
+        Map userMap = jsonDecode(dataFromSocket);
+        socket.destroy();
+        return new Person.fromJson(userMap);
+      }
+      if(dataFromSocket != "1"){
+        socket.destroy();
+        return null;
+      }
+      lastResponse = dataFromSocket;
+    }
+  }
+  Future<Map<dynamic,dynamic>> searchByEmail(String search) async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("search_by_email");
+    socketWriteLine(search);
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      Map userMap = jsonDecode(dataFromSocket);
+      print(userMap);
+      socket.destroy();
+      return userMap;
+    }
+  }
 }
