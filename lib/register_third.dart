@@ -6,7 +6,7 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:intl/intl.dart';
 
 import 'connection_handler.dart';
-import 'constants.dart';
+import 'utils/constants.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -29,7 +29,7 @@ class _RegisterThirdState extends State<RegisterThird> {
 
   // text field state
   String error = '';
-
+  bool errorOn = false;
   double weight = -1;
   double height = -1;
   String gender = "";
