@@ -110,21 +110,50 @@ class _myProfileState extends State<myProfilePage> {
                   ],
                 ),
               ),
-              Divider(height: 0, color: Colors.yellow, thickness: 2,),
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                color: Colors.green[400],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    //Icon(Icons.fitness_center),
-                    Text("Weight: ${user.weight} kg", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
-                    Text("Height: ${user.height} cm", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
-                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
-                  ],
-                ),
+              Divider(height: 0, color: Color.fromRGBO(255, 252, 232, 1), thickness: 2,),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      //Icon(Icons.fitness_center),
+                      Expanded(
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              color: Colors.green[400],
+                              child: Center(
+                                  child: Text("Weight: ${user.weight} kg", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),
+                                  ),
+                              ),
+                          ),
+                      ),
+                      VerticalDivider(width: 2, color: Colors.yellow, thickness: 2),
+                      Expanded(
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              color: Colors.green[400],
+                              child: Center(
+                                  child: Text("Height: ${user.height} cm", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),
+                                  ),
+                              ),
+                          ),
+                      ),
+                      VerticalDivider(width: 2, color: Colors.blue, thickness: 2),
+                      Expanded(
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                              color: Colors.green[400],
+                              child: Center(
+                                  child: Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, letterSpacing: 1)),
+                                  ),
+                              ),
+                          ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              Divider(height: 0, color: Color.fromRGBO(201, 202, 217, 1), thickness: 2,),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -140,7 +169,8 @@ class _myProfileState extends State<myProfilePage> {
                     sharpCorners: true,
                     lineWidth: 3,
                     lineColor: Colors.green[400],
-                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.green[400], Colors.green[400],
+                    fillMode: FillMode.below,
+                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.green[200], Colors.green[800],
                     ]
                     ),
                   ),
