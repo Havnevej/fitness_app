@@ -61,14 +61,14 @@ class _RegisterThirdState extends State<RegisterThird> {
         elevation: (1),
         title: Text('Previous page', style: TextStyle(color: Colors.greenAccent),),
         actions: <Widget>[
-          FlatButton.icon(
+          /*FlatButton.icon(
             icon: Icon(
               Icons.person, color: Colors.greenAccent,),
             label: Text('Sign in', style: TextStyle(color: Colors.greenAccent),),
             onPressed: (){
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
             },
-          ),
+          ),*/
         ],
       ),
 

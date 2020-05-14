@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
 import 'package:flutter_fitness_app/register.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'connection_handler.dart';
 import 'utils/constants.dart';
 import 'loading.dart';
@@ -98,7 +99,7 @@ class _LoginState extends State<Login> {
                   children: [
                     FlatButton(
                     color: Colors.blueGrey[900],
-                    child: Text('New to the app? Sign up here', style: TextStyle(color: Colors.white, fontSize: 13),),
+                    child: Text('New to the app? Sign up here',style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 13)),),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Register(connection: _server_connection,)));
                     },
