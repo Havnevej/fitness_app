@@ -88,8 +88,6 @@ class _FriendsState extends State<Friends> {
                                 bottomRight: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0),
                               ),
-
-
                             ),
                             height: 30,
                             //width: 20,
@@ -110,8 +108,6 @@ class _FriendsState extends State<Friends> {
                                 bottomRight: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0),
                               ),
-
-
                             ),
                             height: 30,
                             //width: 20,
@@ -134,12 +130,8 @@ class _FriendsState extends State<Friends> {
                                 topLeft: Radius.circular(0.0),
                                 bottomRight: Radius.circular(0.0),
                                 topRight: Radius.circular(30),
-
-
                             ),
-
                           ),
-
                           //color: Colors.grey[100],
                           height:65,
                           child: Row(
@@ -201,14 +193,39 @@ class _FriendsState extends State<Friends> {
                 itemCount: user.friendslist.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Container(
-                          color: Colors.blue[200],
-                          child: ListTile(
-                            leading: const Icon(Icons.person_outline),
-                            title: Text(user.friendslist[index],style: TextStyle(fontWeight: FontWeight.bold),),
-                          ),),
+                          margin: EdgeInsets.only(left: 10),
+                          decoration:
+                          BoxDecoration(
+                            color: Colors.teal[300],
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              topLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          //color: Colors.grey[100],
+                          height:65,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(left: 20),
+                                child: Icon(Icons.person_add, ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 17),
+                                  child: Text(user.friendslist[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.all(20),
@@ -240,8 +257,9 @@ class _FriendsState extends State<Friends> {
           ),
 
           ExpansionTile(
+            initiallyExpanded: true,
             backgroundColor: Colors.blueGrey[900],
-            title: Text("Outgoing friend requests", style: TextStyle(fontSize: 20,
+            title: Text("Outgoing friends requests", style: TextStyle(fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.greenAccent),),
             children: <Widget>[
@@ -251,14 +269,39 @@ class _FriendsState extends State<Friends> {
                 itemCount: user.friendRequestsOutgoing.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Card(
-                          color: Colors.blue[200],
-                          child: ListTile(
-                            leading: const Icon(Icons.person_add),
-                            title: Text(user.friendRequestsOutgoing[index],style: TextStyle(fontWeight: FontWeight.bold),),
-                          ),),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          decoration:
+                          BoxDecoration(
+                            color: Colors.teal[300],
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              topLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          //color: Colors.grey[100],
+                          height:65,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(left: 20),
+                                child: Icon(Icons.person_add, ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 17),
+                                  child: Text(user.friendRequestsOutgoing[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.all(20),
