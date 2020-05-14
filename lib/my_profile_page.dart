@@ -24,10 +24,6 @@ class myProfilePage extends StatefulWidget {
 class _myProfileState extends State<myProfilePage> {
   Person user;
   Connection connection;
-  int level = 1;
-  int xpRequired = 1; //level*
-  int xpCurrent = 1500;
-  int xpProgress = 1500;
   @override
   bool loading = false;
   void initState() {
@@ -42,7 +38,7 @@ class _myProfileState extends State<myProfilePage> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Color.fromRGBO(255, 252, 232, 1),
       appBar: AppBar(
-        backgroundColor: Colors.green[600],
+        backgroundColor: Colors.green[400],
         elevation: (1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,11 +86,11 @@ class _myProfileState extends State<myProfilePage> {
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 60, 0, 20),
-                color: Colors.green[600],
+                color: Colors.green[400],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Text("${user.firstName} ${user.lastName}", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, fontSize: 20)),),
+                    Text("${user.firstName} ${user.lastName}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 20)),),
                     SizedBox(width: 15),
                     CircularPercentIndicator(
                       animateFromLastPercent: true,
@@ -103,9 +99,9 @@ class _myProfileState extends State<myProfilePage> {
                       animationDuration: 1200,
                       lineWidth: 5.0,
                       percent: 0.2, //0.1
-                      center: new Text('$level',
+                      center: new Text('${user.level}',
                         style:
-                        GoogleFonts.kalam(textStyle: TextStyle(color: Colors.yellow, fontSize: 22)),
+                        GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.yellow, fontSize: 22)),
                       ),
                       circularStrokeCap: CircularStrokeCap.butt,
                       backgroundColor: Colors.white,
@@ -117,14 +113,14 @@ class _myProfileState extends State<myProfilePage> {
               Divider(height: 0, color: Colors.yellow, thickness: 2,),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                color: Colors.green[600],
+                color: Colors.green[400],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     //Icon(Icons.fitness_center),
-                    Text("Weight: ${user.weight} kg", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, )),),
-                    Text("Height: ${user.height} cm", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white, )),),
-                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.kalam(textStyle: TextStyle(color: Colors.white,)),),
+                    Text("Weight: ${user.weight} kg", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
+                    Text("Height: ${user.height} cm", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
+                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15)),),
                   ],
                 ),
               ),
@@ -134,7 +130,7 @@ class _myProfileState extends State<myProfilePage> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(top: 5),
-                    child: Text('Weight progression', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.green[600], fontSize: 20)), ),
+                    child: Text('Weight progression', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.green[400], fontSize: 20)), ),
                   ),
                 ],
               ),
@@ -143,9 +139,8 @@ class _myProfileState extends State<myProfilePage> {
                   child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5,1, 2.5, 2, 4],
                     sharpCorners: true,
                     lineWidth: 2,
-                    lineColor: Colors.green[600],
+                    lineColor: Colors.green[400],
                     fillMode: FillMode.below,
-                    fillColor: Color.fromRGBO(128, 255, 232,1 ),
                     fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.yellow[300], Colors.yellow[400],]
                     ),
                   ),

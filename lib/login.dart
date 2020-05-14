@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
 import 'package:flutter_fitness_app/register.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'connection_handler.dart';
 import 'utils/constants.dart';
 import 'loading.dart';
@@ -43,16 +44,6 @@ class _LoginState extends State<Login> {
           ),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person, color: Colors.greenAccent),
-            label: Text('Register', style: TextStyle( color: Colors.greenAccent),),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Register(connection: _server_connection,)));
-
-            },
-          )
-        ],
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -107,6 +98,18 @@ class _LoginState extends State<Login> {
               },
               child: Text("Login"),
             ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton(
+                    color: Colors.blueGrey[900],
+                    child: Text('New to the app? Sign up here',style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 13)),),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Register(connection: _server_connection,)));
+                    },
+                  ),
+                  ],
+              ),
             SizedBox(height: 10,),
           ],
         ),

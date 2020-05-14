@@ -25,7 +25,7 @@ class Person {
 
   //dart magi den sætter variablerne bare ved at gøre det her
   Person(this.firstName,this.lastName,this.password,this.email,this.age,this.country,
-      [this.address = "",this.region = "",this.weight = -1, this.height = -1,this.gender = "", this.id = 0,this.city = ""]);
+      [this.address = "",this.region = "",this.weight = -1, this.height = -1,this.gender = "", this.id = 0,this.city = "", this.level = -1]);
 
   Person.fromJson(Map<String, dynamic> json)
       : firstName = json['firstName'],
@@ -66,6 +66,7 @@ class Person {
         'city': city,
         'address': address,
         'exp':exp,
+        'level':level,
       };
   @override
   String toString() {

@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_second.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import 'connection_handler.dart';
@@ -67,7 +68,7 @@ class _RegisterState extends State<Register> {
         elevation: (1),
         title: Text('Sign up', style: TextStyle(color: Colors.greenAccent),),
         actions: <Widget>[
-          FlatButton.icon(
+          /*FlatButton.icon(
             icon: Icon(
               Icons.person, color: Colors.greenAccent,),
             label: Text(
@@ -76,7 +77,7 @@ class _RegisterState extends State<Register> {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) => Login()));
             },
-          ),
+          ),*/
         ],
       ),
 
@@ -136,8 +137,21 @@ class _RegisterState extends State<Register> {
                     return null;},
                   onChanged: (val){_confirmPass = val;},
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FlatButton(
+                      color: Colors.blueGrey[900],
+                      child: Text('Already on Fit2Gether? Sign in here',style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 13)),),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) => Login()));
+                      },
+                    ),
+                  ],
+                ),
                 ////////////////////////////////////////////////////////////////BUTTON///////////////////////////////////////////////////////////////////////////////////////////
-                SizedBox(height: 175),
+                SizedBox(height: 150),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
