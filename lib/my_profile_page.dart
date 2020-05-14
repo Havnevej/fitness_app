@@ -85,7 +85,7 @@ class _myProfileState extends State<myProfilePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(0, 60, 0, 20),
+                padding: EdgeInsets.fromLTRB(0, 30, 0, 20),
                 color: Colors.green[400],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
