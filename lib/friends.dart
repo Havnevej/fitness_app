@@ -71,79 +71,117 @@ class _FriendsState extends State<Friends> {
                 shrinkWrap: true,
                 itemCount: user.friendRequestsIncoming.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Column(
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                            Expanded(
-                              child: Container(
-                               child: Card(
-                                  //color: Colors.blue[200],
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          child: ListTile(
-                                            leading: const Icon(Icons.person_add),
-                                            title: Text(user.friendRequestsIncoming[index],style: TextStyle(fontWeight: FontWeight.bold),),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),),
-                              ),
-
-                            ),
-
-                          Container(
-                                padding: EdgeInsets.all(20),
-                                color: Colors.blueGrey[900],
-                                child:
-                                Center(
-                                  child: CircularPercentIndicator(
-                                    animateFromLastPercent: true,
-                                    radius: 35.0,
-                                    animation: true,
-                                    animationDuration: 1200,
-                                    lineWidth: 4.0,
-                                    percent: (0.2), //0.1
-                                    center: new Text('1',
-                                      style:
-                                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
-                                    ),
-                                    circularStrokeCap: CircularStrokeCap.square,
-                                    backgroundColor: Colors.deepOrange,
-                                    progressColor: Colors.orange,
-                                  ),
-                                ),
-                          ),
-                          ],
-                      ),
-                      Divider(height: 0,),
-                      Row(
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
                         children: <Widget>[
-                          Container(padding: EdgeInsets.only(left: 5),),
-                          Expanded(
-                            child: Container(
-                              color:Colors.green,
-                              child: FlatButton(
-                                child: Text("Accept"),
-                                onPressed: (){},
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green[300],
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(50.0),
+                                topLeft: Radius.circular(50.0),
+                                bottomRight: Radius.circular(50.0),
+                                topRight: Radius.circular(50.0),
                               ),
+
+
+                            ),
+                            height: 30,
+                            //width: 20,
+                            //color:Colors.green,
+                            child: FlatButton(
+                              child: Text("Accept"),
+                              onPressed: (){},
                             ),
                           ),
-                          Expanded(
-                            child: Container(
-                              color:Colors.red,
-                              child: FlatButton(
-                                child: Text("Deny"),
-                                onPressed: (){},
+                          SizedBox(height: 5,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red[800],
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(50.0),
+                                topLeft: Radius.circular(50.0),
+                                bottomRight: Radius.circular(50.0),
+                                topRight: Radius.circular(50.0),
                               ),
+
+
+                            ),
+                            height: 30,
+                            //width: 20,
+                            //color:Colors.red,
+                            child: FlatButton(
+                              child: Text("Deny"),
+                              onPressed: (){},
                             ),
                           ),
-                          Container(padding: EdgeInsets.only(right: 80),),
                         ],
+                      ),),
+                      Expanded(
+                        child: Container(
+                          decoration:
+                          BoxDecoration(
+                            color: Colors.teal[300],
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30.0),
+                                topLeft: Radius.circular(0.0),
+                                bottomRight: Radius.circular(0.0),
+                                topRight: Radius.circular(30),
+
+
+                            ),
+
+                          ),
+
+                          //color: Colors.grey[100],
+                          height:65,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                child: Icon(Icons.person_add, ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 17),
+                                  child: Text(user.friendRequestsIncoming[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        color: Colors.blueGrey[900],
+                        child:
+                        Center(
+                          child: CircularPercentIndicator(
+                            animateFromLastPercent: true,
+                            radius: 35.0,
+                            animation: true,
+                            animationDuration: 1200,
+                            lineWidth: 4.0,
+                            percent: (0.2), //0.1
+                            center: new Text('1',
+                              style:
+                              new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.square,
+                            backgroundColor: Colors.deepOrange,
+                            progressColor: Colors.orange,
+                          ),
+                        ),
+                      ),
+
+                      Divider(height: 0,),
                     ],
                   );
                 },
@@ -165,7 +203,7 @@ class _FriendsState extends State<Friends> {
                   return Row(
                     children: [
                       Expanded(
-                        child: Card(
+                        child: Container(
                           color: Colors.blue[200],
                           child: ListTile(
                             leading: const Icon(Icons.person_outline),
