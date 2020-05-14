@@ -130,7 +130,7 @@ class _myProfileState extends State<myProfilePage> {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.only(top: 5),
-                    child: Text('Weight progression', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.green[400], fontSize: 20)), ),
+                    child: Text('Weight progression', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.green[400], fontSize: 20, fontWeight: FontWeight.bold)), ),
                   ),
                 ],
               ),
@@ -138,10 +138,10 @@ class _myProfileState extends State<myProfilePage> {
                 child: Container(
                   child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5,1, 2.5, 2, 4],
                     sharpCorners: true,
-                    lineWidth: 2,
+                    lineWidth: 3,
                     lineColor: Colors.green[400],
-                    fillMode: FillMode.below,
-                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.yellow[300], Colors.yellow[400],]
+                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.green[400], Colors.green[400],
+                    ]
                     ),
                   ),
                 ),
