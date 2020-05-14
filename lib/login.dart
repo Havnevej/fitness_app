@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
 import 'package:flutter_fitness_app/register.dart';
 import 'connection_handler.dart';
-import 'constants.dart';
+import 'utils/constants.dart';
 import 'loading.dart';
 
 Socket socket;

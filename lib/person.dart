@@ -24,7 +24,7 @@ class Person {
 
   //dart magi den sætter variablerne bare ved at gøre det her
   Person(this.firstName,this.lastName,this.password,this.email,this.age,this.country,
-      [this.address = "",this.region = "",this.weight = -1, this.height = -1,this.gender = "", this.username = "", this.id = 0,this.city = ""]);
+      [this.address = "",this.region = "",this.weight = -1, this.height = -1,this.gender = "", this.id = 0,this.city = ""]);
 
   Person.fromJson(Map<String, dynamic> json)
       : firstName = json['firstName'],
@@ -67,7 +67,7 @@ class Person {
       };
   @override
   String toString() {
-    String d = sprintf("Person: [%s %s] from: %s %s is %s years old",[firstName, lastName, city, country, age, ]);
+    String d = sprintf("%s t %s i %s s s %s e %s m %s a %s n %s d %s h %s e %s h %s e %s",[firstName, lastName, password,  email, weight, height, age, gender, country, region, city, address, id]);
     return d;
   }
 }

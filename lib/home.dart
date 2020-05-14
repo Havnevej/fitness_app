@@ -13,6 +13,7 @@ import 'leaderboard.dart';
 import 'login.dart';
 import 'my_profile.dart';
 import 'loading.dart';
+import 'my_profile_page.dart';
 
 
 class Home extends StatefulWidget {
@@ -143,7 +144,7 @@ class _HomeState extends State<Home> {
                           await connection.getMyUserData();
                           setState(() {
                             setState(() => loading = false);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile(user: user)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
                           });
                           },
                       ),

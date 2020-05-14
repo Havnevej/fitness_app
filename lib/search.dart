@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fitness_app/constants.dart';
+import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
 
 import 'connection_handler.dart';
