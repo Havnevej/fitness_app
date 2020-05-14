@@ -93,7 +93,9 @@ class _LoginState extends State<Login> {
                 if(_formkey.currentState.validate()){
                   setState(()=> loading = true);
                   if(await _server_connection.loginUser(username, password)){
-                     Map<String, dynamic> results = await _server_connection.searchByEmail("hkmiari@ruc.dk");
+                    Person hussein = await _server_connection.getFriendData("hkmiari@ruc.dk");
+                    print(hussein.level);
+                     Map<String, dynamic> results = await _server_connection.searchByEmail("ant");
                     setState(() {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
                     });
