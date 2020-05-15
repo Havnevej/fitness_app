@@ -200,6 +200,29 @@ class Connection {
     socket.destroy();
     return returns;
   }
+  Future<bool> declineFriendRequest(String from) async {
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("decline_friend_request");
+    socketWriteLine(from);
+    bool returns = false;
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      if(dataFromSocket == "1"){
+        print("Declined friendrequest");
+        returns = true;
+      } else if (dataFromSocket.contains("-1")){
+        print ("could not decline friend request");
+        returns = false;
+      } else if (dataFromSocket.contains("-2")){
+        print("User: " + from + " is not found in the databse");
+        returns = false;
+      }
+      socket.destroy();
+      return returns;
+    }
+    socket.destroy();
+    return returns;
+  }
   Future<Person> getFriendData(String email) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("get_friend");
