@@ -14,7 +14,7 @@ description: Flutter fitness app project
 version: 1.0.0+1
 
 environment:
-  sdk: ">2.8.1"
+  sdk: "2.8.1"
 
 dependencies:
   flutter:
