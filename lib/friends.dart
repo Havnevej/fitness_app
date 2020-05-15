@@ -5,6 +5,7 @@ import 'package:flutter_fitness_app/search.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'connection_handler.dart';
+import 'loading.dart';
 import 'my_profile.dart';
 
 class Friends extends StatefulWidget {
@@ -19,7 +20,7 @@ class Friends extends StatefulWidget {
 class _FriendsState extends State<Friends> {
   Person user;
   Connection connection;
-
+  bool loading = false;
   @override
   void initState() {
     user = widget.user;
@@ -32,7 +33,7 @@ class _FriendsState extends State<Friends> {
     List<String> friendsList = <String>[];
    friendsList.add("${user.friendslist}");
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
