@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sprintf/sprintf.dart'; //sprintf: https://pub.dev/packages/sprintf
 
 class Person {
@@ -21,6 +23,7 @@ class Person {
   List<String> friendRequestsIncoming;
   List<String> friendRequestsOutgoing;
   String registerDate;
+  int challengesCompleted;
 
 
   //dart magi den sætter variablerne bare ved at gøre det her
@@ -47,7 +50,8 @@ class Person {
         registerDate = json['registerDate'],
         friendslist = (json['friendslist'] as List<dynamic>).cast<String>(),
         friendRequestsIncoming = (json['friendRequestsIncoming'] as List<dynamic>).cast<String>(),
-        friendRequestsOutgoing = (json['friendRequestsOutgoing'] as List<dynamic>).cast<String>();
+        friendRequestsOutgoing = (json['friendRequestsOutgoing'] as List<dynamic>).cast<String>(),
+        challengesCompleted = json['challengesCompleted'];
 
   Map<String, dynamic> toJson() =>
       {
@@ -67,6 +71,7 @@ class Person {
         'address': address,
         'exp':exp,
         'level':level,
+
       };
   @override
   String toString() {

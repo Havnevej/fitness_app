@@ -14,7 +14,7 @@ import 'login.dart';
 import 'my_profile.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
-
+import 'challenges.dart';
 
 class Home extends StatefulWidget {
   final Person user;
@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
                         label: Text('Challenges'),
                         textColor: Colors.blueGrey[800],
                         onPressed: (){
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges()),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges(user: user)),);
                         },
                       ),
                     ),
@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
                 animationDuration: 1200,
                 lineWidth: 15.0,
                 percent: ((xpProgress.toDouble())/100), //0.1
-                center: new Text('LVL $level',
+                center: new Text('LVL ${user.level}',
                   style:
                   new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.greenAccent),
                 ),

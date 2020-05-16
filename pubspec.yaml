@@ -14,7 +14,7 @@ description: Flutter fitness app project
 version: 1.0.0+1
 
 environment:
-  sdk: ">2.8.1"
+  sdk: "2.8.1"
 
 dependencies:
   flutter:
@@ -58,6 +58,9 @@ flutter:
     - assets/images/Alibackground.jpg
     - assets/images/quote.jpg
     - assets/images/motivation.png
+    - assets/images/weight.png
+    - assets/images/height.png
+    - assets/images/BMI.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
