@@ -1,4 +1,5 @@
 import 'dart:convert' show utf8;
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -255,4 +256,21 @@ class Connection {
       return userMap;
     }
   }
+  Future<Map<dynamic,dynamic>> getTop25ByRank() async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_top_25");
+    socketWriteLine("");
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      Map userMap = jsonDecode(dataFromSocket);
+      var sortedKeys = userMap.keys.toList(growable:false)
+        ..sort((k2, k1) => userMap[k1].compareTo(userMap[k2]));
+      LinkedHashMap sortedMap = new LinkedHashMap
+          .fromIterable(sortedKeys, key: (k) => k, value: (k) => userMap[k]);
+      print(sortedMap);
+      socket.destroy();
+      return sortedMap;
+    }
+  }
+
 }

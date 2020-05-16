@@ -84,6 +84,7 @@ class _LoginState extends State<Login> {
                 if(_formkey.currentState.validate()){
                   setState(()=> loading = true);
                   if(await _server_connection.loginUser(username, password)){
+                    _server_connection.getTop25ByRank();
                     //Uncomment these to test features on login
                     /*
                     Accept and decline friends request, if the friend is not in the friend requests it will throw an error
@@ -93,6 +94,7 @@ class _LoginState extends State<Login> {
                     print(did_decline);
                     Map<String, dynamic> results = await _server_connection.searchByEmail("ant");
                      */
+
                     setState(() {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
                     });
