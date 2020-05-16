@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
-import 'package:flutter_fitness_app/utils/functions.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'loading.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'connection_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,6 +23,11 @@ class _challengesState extends State<Challenges> {
   Connection connection;
   @override
   bool loading = false;
+  bool _visible = true;
+  bool boxCheck1 = false;
+  bool boxCheck2 = false;
+  bool boxCheck3 = false;
+  bool boxCheck4 = false;
 
   void initState() {
     user = widget.user;
@@ -105,29 +108,50 @@ class _challengesState extends State<Challenges> {
               ),
             ),
             SizedBox(height: 35,),
-            Container(
-              height: 80,
-              width: 350,
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.blueGrey[600],
-                      blurRadius: 10,
-                      offset: Offset(0,10),
-                    )
-                  ]
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Challenge 1', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
-                  Text('Description: Do 10 push ups'),
-                  Text('Reward: 200 points'),
-                ],
-              ),
+           Container(
+                height: 80,
+                width: 350,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.blueGrey[600],
+                        blurRadius: 10,
+                        offset: Offset(0,10),
+                      )
+                    ]
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text('Challenge 1', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
+                        Text('Description: Do 10 push ups'),
+                        Text('Reward: 200 points'),
+                      ],
+                    ),
+                    Checkbox(
+                      value: boxCheck1,
+                      checkColor: Colors.green,
+                      activeColor: Colors.white,
+                      onChanged: (bool newValue){
+                        setState(() {
+                          boxCheck1 = newValue;
+                          if(boxCheck1 == true){
+                            user.challengesCompleted++;
+                          }
+                          else{
+                            user.challengesCompleted--;
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
             ),
             SizedBox(height: 35,),
             Container(
@@ -145,12 +169,33 @@ class _challengesState extends State<Challenges> {
                     )
                   ]
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Challenge 2', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
-                  Text('Description: Run 4 kilometers'),
-                  Text('Reward: 500 points'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text('Challenge 2', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
+                      Text('Description: Run 4 km'),
+                      Text('Reward: 500 points'),
+                    ],
+                  ),
+                  Checkbox(
+                    value: boxCheck2,
+                    checkColor: Colors.green,
+                    activeColor: Colors.white,
+                    onChanged: (bool newValue){
+                      setState(() {
+                        boxCheck2 = newValue;
+                        if(boxCheck2 == true){
+                          user.challengesCompleted++;
+                        }
+                        else{
+                          user.challengesCompleted--;
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -170,12 +215,33 @@ class _challengesState extends State<Challenges> {
                     )
                   ]
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Challenge 3', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
-                  Text('Description: Do 50 push ups and run 4 kilometers'),
-                  Text('Reward: 800 points'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text('Challenge 3', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
+                      Text('Description: Do 50 push ups and run 4 km'),
+                      Text('Reward: 800 points'),
+                    ],
+                  ),
+                  Checkbox(
+                    value: boxCheck3,
+                    checkColor: Colors.green,
+                    activeColor: Colors.white,
+                    onChanged: (bool newValue){
+                      setState(() {
+                        boxCheck3 = newValue;
+                        if(boxCheck3 == true){
+                          user.challengesCompleted++;
+                        }
+                        else{
+                          user.challengesCompleted--;
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
@@ -195,12 +261,33 @@ class _challengesState extends State<Challenges> {
                     )
                   ]
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Challenge 4', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
-                  Text('Description: Do 200 pull ups and 200 push ups'),
-                  Text('Reward: 1150 points'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text('Challenge 4', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
+                      Text('Description: Do 200 push ups'),
+                      Text('Reward: 1150 points'),
+                    ],
+                  ),
+                  Checkbox(
+                    value: boxCheck4,
+                    checkColor: Colors.green,
+                    activeColor: Colors.white,
+                    onChanged: (bool newValue){
+                      setState(() {
+                        boxCheck4 = newValue;
+                        if(boxCheck4 == true){
+                          user.challengesCompleted++;
+                        }
+                        else{
+                          user.challengesCompleted--;
+                        }
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
