@@ -67,15 +67,6 @@ class _HomeState extends State<Home> {
             color: Colors.greenAccent,
           ),
         ),
-          FlatButton.icon(
-            padding: EdgeInsets.only(left: 55),
-            icon: Icon(Icons.person, color: Colors.greenAccent),
-            label: Text('Logout', style: TextStyle( color: Colors.greenAccent),),
-            onPressed: () async{
-              await connection.logout();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
-            },
-          ),
         ],
         ),
       ),
@@ -137,15 +128,10 @@ class _HomeState extends State<Home> {
                       ),
                       child: FlatButton.icon(
                         icon: Icon(Icons.person_outline, color: Colors.blueGrey[800]),
-                        label: Text('My profile'),
+                        label: Text(user.firstName),
                         textColor: Colors.blueGrey[800],
-                        onPressed: () async{
-                          setState(()=> loading = true);
-                          await connection.getMyUserData();
-                          setState(() {
-                            setState(() => loading = false);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
-                          });
+                        onPressed: () {
+                          _showbuttons();
                           },
                       ),
                     ),
@@ -271,18 +257,13 @@ class _HomeState extends State<Home> {
   }
 
   void _showbuttons() => showDialog(context: context, builder: (context) => Theme(
-
-
-    // flutter defined function
       data: Theme.of(context).copyWith(primaryColor: Colors.greenAccent),
-      // return object of type Dialog
       child: AlertDialog(
-        contentPadding: EdgeInsets.fromLTRB(0, 0, 200, 420),
+        contentPadding: EdgeInsets.symmetric(),//EdgeInsets.fromLTRB(200, 80, 0, 340),
         elevation: 0,
-        //AlertDialog
         backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         content: Container(
-          padding: EdgeInsets.fromLTRB(0, 0,0, 0),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           color: Colors.greenAccent,
           width: 200,
           height: 400,
@@ -299,6 +280,29 @@ class _HomeState extends State<Home> {
                 label: Text("Amazing"),
                 icon: Icon(Icons.settings,color: Colors.blueGrey[900],),
                 onPressed:() {},
+              ),
+              Divider(height:0 ,color: Colors.blueGrey[900],),
+              FlatButton.icon(
+                icon: Icon(Icons.person_outline, color: Colors.blueGrey[800]),
+                label: Text('My profile'),
+                textColor: Colors.blueGrey[800],
+                onPressed: () async{
+                  setState(()=> loading = true);
+                  await connection.getMyUserData();
+                  setState(() {
+                    setState(() => loading = false);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
+                  });
+                },
+              ),
+              Divider(height:0 ,color: Colors.blueGrey[900],),
+              FlatButton.icon(
+                icon: Icon(Icons.exit_to_app, color: Colors.blueGrey[900]),
+                label: Text('Logout', style: TextStyle( color: Colors.blueGrey[900]),),
+                onPressed: () async{
+                  await connection.logout();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
+                },
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
             ],

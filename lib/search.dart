@@ -8,20 +8,11 @@ import 'package:flutter_fitness_app/person.dart';
 
 import 'connection_handler.dart';
 
-
-class Post {
-  final String title;
-  final String body;
-
-  Post(this.title, this.body);
-}
 class Search extends StatefulWidget {
   final Person user;
   final Connection connection;
 
-  final String title;
-  final String body;
-  const Search({Key key, this.title, this.body, this.connection, this.user}) : super(key: key);
+  const Search({Key key,this.connection, this.user}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -29,131 +20,99 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
 
-  final SearchBarController<Post> _searchBarController = SearchBarController();
-  bool isReplay = false;
-
-  List<String>friends;
-  
-
-  Future<List<Post>> search(String text) async {
-    await Future.delayed(Duration(seconds: 1));
-
-    //if (isReplay) return [Post("Replaying !", "Replaying body")];
-    //if (text.length == 5) throw Error();
-    //if (text.length == 6) return [];
-
-    List<Post> posts = [];
-
-
-    /*var random = new Random();
-    for (int i = 0; i < 10; i++){
-    }
-    for (int i = 0; i < 10; i++) {
-      posts.add(Post("$text $i", "body random number : ${random.nextInt(100)}"));
-    }*/
-    return posts;
-  }
   Person user;
   Connection connection;
+  List list2=[];
+  Map<String, dynamic> _map;
 
   @override
   void initState() {
-    user = widget.connection.loggedInPerson;
+    user = widget.user;
     connection = widget.connection;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
+    //Map<String, dynamic> _map = {'':'',};
+    //setState(() =>list =_map.values.toList());
+   // setState(() =>list2.add(_map.keys.toList()));
+    //list2 = _map.keys.toList();
+    //list2.add(_map.keys.toList());
+    List people=[];
+    for(int i=0; i<10; i++){
+    people.add(i.toString());
+    }
+    String search ="";
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         title: Text("Find friends",style: TextStyle(color: Colors.greenAccent),),
         backgroundColor: Colors.blueGrey[900],
         elevation: 1,
       ),
-     /* appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.blueGrey[900],
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person_add,color: Colors.greenAccent,),
-            label: Text("Incoming Friendsrequests",style: TextStyle(fontSize: 12,color: Colors.greenAccent),),
-            onPressed: (){ },
-          ),
-          VerticalDivider(width: 10,color: Colors.blueGrey[800],),
-          FlatButton.icon(
-            icon: Icon(Icons.forward,color: Colors.greenAccent,),
-            label: Text("Outgoing Friendsrequests",style: TextStyle(fontSize: 12,color: Colors.greenAccent),),
-            onPressed: (){},
-          ),
-        ],
-      ),*/
-      backgroundColor: Colors.blueGrey[900],
-      body: SafeArea(
-        child: SearchBar<Post>(
-          hintText: "Search",
-          textStyle: TextStyle(color: Colors.greenAccent),
-          iconActiveColor: Colors.greenAccent,
-          searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
-          headerPadding: EdgeInsets.symmetric(horizontal: 10),
-          listPadding: EdgeInsets.symmetric(horizontal: 10),
-          onSearch: search,
-          searchBarController: _searchBarController,
-          placeHolder: Text("placeholder",),
-          cancellationWidget: Text("Cancel",style: TextStyle(color: Colors.greenAccent),),
-          emptyWidget: Text("empty"),
-          indexedScaledTileBuilder: (int index) => ScaledTile.count(2,0.4), // How results look
-          header: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+      body: ListView(
+        children: <Widget>[
+          Column(
             children: <Widget>[
-              RaisedButton(
-                color: Colors.blueGrey[900],
-                child: Text("sort",style: TextStyle(color: Colors.greenAccent),),
-                onPressed: () {
-                  //friends.where((friend)=> friend.startsWith('A'));
-                  _searchBarController.sortList((Post a, Post b) {
-                    return a.body.compareTo(b.body);
-                  });
-                },
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      child: TextFormField(
+                        decoration: textInputDecoration.copyWith(hintText: 'Search',),
+                        onChanged: (val) async {
+                          _map = await connection.searchByEmail(val);
+
+                          setState(() {
+                            list2 = _map.keys.toList();
+                          });
+                        }
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              RaisedButton(
-                color: Colors.blueGrey[900],
-                child: Text("Desort",style: TextStyle(color: Colors.greenAccent),),
-                onPressed: () {
-                  _searchBarController.removeSort();
-                },
-              ),
-              RaisedButton(
-                color: Colors.blueGrey[900],
-                child: Text("Replay",style: TextStyle(color: Colors.greenAccent),),
-                onPressed: () {
-                  isReplay = !isReplay;
-                  _searchBarController.replayLastSearch();
-                },
+              SizedBox(height: 10,),
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: list2.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    print('Test $list2');
+                    return Column(
+                      children: [
+                        SizedBox(height: 4,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Container (
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                height: 60,
+                                color: Colors.greenAccent,
+                                child: Center(
+                                  child: Text(list2[index],style: TextStyle(color: Colors.red),)), //${_map.toString()[index]}
+                              ),
+                            ),
+                            Container (
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              height: 60,
+                              color: Colors.greenAccent,
+                              child: Center(
+                                  child: Text(_map[list2[index]],style: TextStyle(color: Colors.red),)), //${_map.toString()[index]}
+                            ),
+                          ],
+                        ),
+                      ],
+                    );}
               ),
             ],
           ),
-
-          onCancelled: () {
-            print("Cancelled triggered");
-          },
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          crossAxisCount: 2,
-          onItemFound: (Post post, int index) {
-            return Container(
-              color: Colors.greenAccent,
-              child: ListTile(
-                title: Text(post.title),
-                isThreeLine: true,
-                subtitle: Text(post.body),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
-                },
-              ),
-            );
-          },
-        ),
+        ],
       ),
     );
   }
