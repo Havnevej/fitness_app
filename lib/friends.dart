@@ -154,6 +154,7 @@ class _FriendsState extends State<Friends> {
                                   child: FlatButton(
                                     child: Text("Deny"),
                                     onPressed: (){
+                                      connection.declineFriendRequest(user.friendRequestsIncoming[index]);
                                     },
                                   ),
                                 ),
