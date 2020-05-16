@@ -23,8 +23,9 @@ class myProfilePage extends StatefulWidget {
 class _myProfileState extends State<myProfilePage> {
   Person user;
   Connection connection;
-  @override
   bool loading = false;
+
+  @override
   void initState() {
     user = widget.user;
     connection = widget.connection;
@@ -33,7 +34,6 @@ class _myProfileState extends State<myProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return loading ? Loading() : Scaffold(
       backgroundColor: Color.fromRGBO(255, 253, 209, 1),
       appBar: AppBar(

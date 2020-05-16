@@ -191,18 +191,21 @@ class _FriendsState extends State<Friends> {
                 ],
               ),
               ExpansionTile(
-                initiallyExpanded: true,
+                initiallyExpanded: false,
                 backgroundColor: Colors.blueGrey[900],
                 title: Text("Friendslist", style: TextStyle(fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent),),
                 children: <Widget>[
+
                   ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: user.friendslist.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
@@ -230,7 +233,7 @@ class _FriendsState extends State<Friends> {
                                   Expanded(
                                     child: Container(
                                       padding: EdgeInsets.only(left: 17),
-                                      child: Text(user.friendslist[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                      child: Text(user.friendslist[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
                                     ),
                                   ),
                                 ],
@@ -278,63 +281,48 @@ class _FriendsState extends State<Friends> {
                     shrinkWrap: true,
                     itemCount: user.friendRequestsOutgoing.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      return Column(
                         children: [
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 10),
-                              decoration:
-                              BoxDecoration(
-                                color: Colors.teal[300],
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  topLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              //color: Colors.grey[100],
-                              height:35,
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 20),
-                                    child: Icon(Icons.arrow_forward, ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.only(left: 17),
-                                      child: Text(user.friendRequestsOutgoing[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: friends[index]),),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(15, 0, 20, 0),
+                                    decoration:
+                                    BoxDecoration(
+                                      color: Colors.teal[300],
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(0),
+                                        topLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                        topRight: Radius.circular(0),
+                                      ),
+                                    ),
+                                    //color: Colors.grey[100],
+                                    height:50,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 20),
+                                          child: Icon(Icons.arrow_forward, ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            padding: EdgeInsets.only(left: 17),
+                                            child: Text(user.friendRequestsOutgoing[index],style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            color: Colors.blueGrey[900],
-                            child:
-                            Center(
-                              child: CircularPercentIndicator(
-                                animateFromLastPercent: true,
-                                radius: 35.0,
-                                animation: false,
-                                animationDuration: 1200,
-                                lineWidth: 4.0,
-                                percent: (0.2), //0.1
-                                center: new Text('1',
-                                  style:
-                                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
                                 ),
-                                circularStrokeCap: CircularStrokeCap.square,
-                                backgroundColor: Colors.deepOrange,
-                                progressColor: Colors.orange,
                               ),
-                            ),
+                            ],
                           ),
+                          SizedBox(height: 10,),
                         ],
                       );
                     },
