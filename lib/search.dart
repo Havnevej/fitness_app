@@ -5,6 +5,7 @@ import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'connection_handler.dart';
 
@@ -79,31 +80,70 @@ class _SearchState extends State<Search> {
               SizedBox(height: 10,),
               ListView.builder(
                   scrollDirection: Axis.vertical,
+                  physics: ClampingScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: list2.length,
                   itemBuilder: (BuildContext context, int index) {
                     print('Test $list2');
                     return Column(
                       children: [
-                        SizedBox(height: 4,),
+                        SizedBox(height: 7,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                              child: Container (
-                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                height: 60,
-                                color: Colors.greenAccent,
-                                child: Center(
-                                  child: Text(list2[index],style: TextStyle(color: Colors.red),)), //${_map.toString()[index]}
+                              child: FlatButton(
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.teal[300],
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 20),
+                                        child: Icon(Icons.person),
+                                      ),
+                                      Expanded(
+                                        child: Container (
+                                          height: 60,
+                                          child: Center(child: Text(list2[index],style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold),)), //${_map.toString()[index]}
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(20),
+                                        child:
+                                        Center(
+                                          child: CircularPercentIndicator(
+                                            animateFromLastPercent: true,
+                                            radius: 35.0,
+                                            animation: false,
+                                            animationDuration: 1200,
+                                            lineWidth: 4.0,
+                                            percent: (0.2), //0.1
+                                            center: Text(_map[list2[index]], style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.purple[900]),
+                                            ),
+                                            circularStrokeCap: CircularStrokeCap.square,
+                                            backgroundColor: Colors.deepOrange,
+                                            progressColor: Colors.orange,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () async{
+                                  await connection.getFriendData(list2[index]);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()),);
+                                },
                               ),
-                            ),
-                            Container (
-                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              height: 60,
-                              color: Colors.greenAccent,
-                              child: Center(
-                                  child: Text(_map[list2[index]],style: TextStyle(color: Colors.red),)), //${_map.toString()[index]}
                             ),
                           ],
                         ),

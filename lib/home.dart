@@ -287,12 +287,8 @@ class _HomeState extends State<Home> {
                 label: Text('My profile'),
                 textColor: Colors.blueGrey[800],
                 onPressed: () async{
-                  setState(()=> loading = true);
                   await connection.getMyUserData();
-                  setState(() {
-                    setState(() => loading = false);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
-                  });
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
                 },
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
@@ -301,6 +297,7 @@ class _HomeState extends State<Home> {
                 label: Text('Logout', style: TextStyle( color: Colors.blueGrey[900]),),
                 onPressed: () async{
                   await connection.logout();
+                  Navigator.pop(context);
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
                 },
               ),

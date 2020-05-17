@@ -4,10 +4,14 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'connection_handler.dart';
+
 
 class LeaderBoard extends StatefulWidget {
+
+  final Connection connection;
   final Person user;
-  const LeaderBoard({Key key, this.user}) : super(key: key);
+  const LeaderBoard({Key key, this.user, this.connection}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -18,9 +22,13 @@ class LeaderBoard extends StatefulWidget {
 
 class _LeaderBoardState extends State<LeaderBoard> {
   Person user;
+  Connection connection;
+  List listLead=[];
+  Map<dynamic, dynamic> _map;
 
   @override
   void initState() {
+    connection = widget.connection;
     user = widget.user;
     super.initState();
   }
@@ -34,51 +42,47 @@ class _LeaderBoardState extends State<LeaderBoard> {
         elevation: (1),
         title: Text('Leaderboard'),
       ),
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            SizedBox(height: 20),
-            Center(
-              child: Text('TOP 25', style: TextStyle(fontSize: 20,
-                  color: Color.fromRGBO(255, 253, 209, 1),
-                  fontWeight: FontWeight.bold
+      body:ListView(
+        children: [
+          Column(
+            children: <Widget>[
+              Center(
+                child: Text('TOP 25', style: TextStyle(fontSize: 20,
+                    color: Color.fromRGBO(255, 253, 209, 1),
+                    fontWeight: FontWeight.bold
+                ),
+                ),
               ),
+              FutureBuilder<Map<dynamic,dynamic>>(
+                future: connection.getTop25ByRank(),
+                builder: (BuildContext context, AsyncSnapshot snapshot){
+                  if( snapshot.connectionState == ConnectionState.waiting){
+                    return  Center(child: Text('Please wait its loading...'));
+                  } else {
+                    print("asdasd ${snapshot.data}");
+                    _map = snapshot.data;
+                    listLead = _map.keys.toList();
+                  return ListView.builder (
+                      scrollDirection: Axis.vertical,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: listLead.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: <Widget>[
+                            _leaderboard(email: listLead[index], lvl: _map[listLead[index]]),
+                          ],
+                        );
+                      });}
+                },
               ),
-            ),
-            SizedBox(height: 20),
-            _leaderboard(rank: 1, email: 'Hussein denstore', lvl: 420),
-            _leaderboard(rank: 2, email: 'Hamed Kaffe', lvl: 34),
-            _leaderboard(rank: 3, email: 'Anton Due', lvl: 30),
-            _leaderboard(rank: 4, email: 'Anton Livsen', lvl: 19),
-            _leaderboard(rank: 5, email: 'Anton Due', lvl: 76),
-            _leaderboard(rank: 6, email: 'Anton Due', lvl: 69),
-            _leaderboard(rank: 7, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 8, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 9, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 10, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 11, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 12, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 13, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 14, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 15, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 16, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 17, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 18, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 19, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 20, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 21, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 22, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 23, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 24, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 25, email: 'Anton Due', lvl: 900),
-            _leaderboard(rank: 150, email: 'You', lvl: 900),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ],
+      ),);
   }
 
-  Widget _leaderboard({int rank, String email, double lvl}) {
+  Widget _leaderboard({String email, int lvl}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -90,8 +94,6 @@ class _LeaderBoardState extends State<LeaderBoard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                    child: Text("$rank", style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),)),
                 Container(
                     margin: EdgeInsets.only(left: 40),
                     child: Text(email, style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Color.fromRGBO(255, 253, 209, 1), fontSize: 15),))),
