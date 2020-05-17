@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -84,9 +85,15 @@ class _LoginState extends State<Login> {
                 if(_formkey.currentState.validate()){
                   setState(()=> loading = true);
                   if(await _server_connection.loginUser(username, password)){
-                    _server_connection.getTop25ByRank();
+
+                    List challenges = await _server_connection.getChallenges();
                     //Uncomment these to test features on login
                     /*
+                    //Gets the 1st challenge and gets the point reward from it.
+                    print(challenges[0]["point_reward"]);
+                    _server_connection.completeChallenge(jsonEncode(challenges[0]));
+                    Get top 25 sorted by level
+                    _server_connection.getTop25ByRank();
                     Accept and decline friends request, if the friend is not in the friend requests it will throw an error
                     bool did_accept = await _server_connection.declineFriendRequest("hkmiari@ruc.dk");
                     bool did_decline = await _server_connection.declineFriendRequest("hkmiari@ruc.dk");
