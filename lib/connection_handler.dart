@@ -17,7 +17,7 @@ class Connection {
   bool loggedIn = false;
   String UID = "NOT_LOGGED_IN";
   String getUID(){return "<UID>"+UID+"</UID>";}
-  String _username = 'ch@ruc.dk';
+  String _username;
   Person loggedInPerson;
 
   String getUsername(){return _username;}
@@ -270,6 +270,29 @@ class Connection {
       print(sortedMap);
       socket.destroy();
       return sortedMap;
+    }
+  }
+  Future<List<dynamic>> getChallenges() async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_challenges");
+    socketWriteLine("");
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      print(dataFromSocket);
+      List userMap = jsonDecode(dataFromSocket);
+      socket.destroy();
+      return userMap;
+    }
+  }
+  Future<bool> completeChallenge(String challengeJson) async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("complete_challenge");
+    socketWriteLine(challengeJson);
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      print(dataFromSocket);
+      socket.destroy();
+      return true;
     }
   }
 
