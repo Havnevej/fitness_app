@@ -269,7 +269,7 @@ class Connection {
           .fromIterable(sortedKeys, key: (k) => k, value: (k) => userMap[k]);
       print(sortedMap);
       socket.destroy();
-      return sortedMap;
+      return Future.value(sortedMap);
     }
   }
 
