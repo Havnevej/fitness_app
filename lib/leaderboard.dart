@@ -4,6 +4,8 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'connection_handler.dart';
+
 
 class LeaderBoard extends StatefulWidget {
   final Person user;

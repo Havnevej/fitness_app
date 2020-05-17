@@ -1,17 +1,11 @@
-import 'dart:io';
-
 import'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-
-import 'dart:math';
-
 import 'connection_handler.dart';
 import 'friends.dart';
 import 'leaderboard.dart';
 import 'login.dart';
-import 'my_profile.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
 import 'challenges.dart';
@@ -27,6 +21,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _animatedListGK = GlobalKey<AnimatedListState>();
   Person user;
   Connection connection;
   bool loading = false;
@@ -138,8 +133,8 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(height: 150),
-              IconButton(
+              SizedBox(height: 50,),
+              /*IconButton(
                 tooltip: 'Add lvl',
                 icon: Icon(Icons.add),
                 onPressed: () {
@@ -164,10 +159,10 @@ class _HomeState extends State<Home> {
                   print(xpRequired);
                   print(xpProgress);
                 },
-              ),
+              ),*/
               CircularPercentIndicator(
                 animateFromLastPercent: true,
-                radius: 130.0,
+                radius: 200.0,
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
@@ -180,73 +175,88 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.blueGrey,
                 progressColor: Colors.greenAccent,
               ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.all(25),
-                child: new LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 50,
-                  animation: true,
-                  lineHeight: 20.0,
-                  animationDuration: 2500,
-                  percent: 0.9,
-                  backgroundColor: Colors.blueGrey,
-                  center: Text("LEVEL 1"
-                  ),
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Colors.greenAccent,
+              SizedBox(height: 50),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //////////////////////////////////////////////////////////////////FIRST BOX////////////////////////////////////////////////////////////////////////////////////////
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 7,
+                ),
+                height: 120,
+                width: 205.5,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.rectangle,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Text('Challenges completed: ${user.challengesCompleted}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                  ],
                 ),
               ),
-              SizedBox(height: 10),
+              //////////////////////////////////////////////////////////////////SECOND BOX////////////////////////////////////////////////////////////////////////////////////////
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 7,
+                ),
+                height: 120,
+                width: 205.5,
+                decoration: BoxDecoration(
+                    color: Colors.yellow[600],
+                    shape: BoxShape.rectangle,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Text('Challenges completed: ${user.challengesCompleted}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                  ],
+                ),
+              ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),],
+              //////////////////////////////////////////////////////////////////THIRD BOX////////////////////////////////////////////////////////////////////////////////////////
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 7,
+                ),
+                height: 120,
+                width: 205.5,
+                decoration: BoxDecoration(
+                    color: Colors.orange,
+                    shape: BoxShape.rectangle,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Text('Challenges completed: ${user.challengesCompleted}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                  ],
+                ),
               ),
-              SizedBox(width: 50),
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-
-          ),
-          Divider(height: 1, color: Colors.greenAccent),
-
-          SizedBox(height: 20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),],
-              ),
-              SizedBox(width: 50),
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),
-                ],
+              //////////////////////////////////////////////////////////////////FOURTH BOX////////////////////////////////////////////////////////////////////////////////////////
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 7,
+                ),
+                height: 120,
+                width: 205.5,
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.rectangle,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Center(child: Text('Challenges completed: ${user.challengesCompleted}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                  ],
+                ),
               ),
             ],
           ),
@@ -308,6 +318,11 @@ class _HomeState extends State<Home> {
       ),
     ),
   );
-}
+
+  }
+  Widget _dissmissAnimation(BuildContext context, int index){
+
+  }
+
 
 
