@@ -59,7 +59,6 @@ class _LoginState extends State<Login> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 validator: (val) => val.isEmpty ? 'Enter an email' : null,
@@ -87,10 +86,10 @@ class _LoginState extends State<Login> {
                   if(await _server_connection.loginUser(username, password)){
 
                     List challenges = await _server_connection.getChallenges();
+                    print(challenges[0]["title"]);
                     //Uncomment these to test features on login
                     /*
-                    //Gets the 1st challenge and gets the point reward from it.
-                    print(challenges[0]["point_reward"]);
+                    //Gets the 1st challenge and gets the point reward from it
                     _server_connection.completeChallenge(jsonEncode(challenges[0]));
                     Get top 25 sorted by level
                     _server_connection.getTop25ByRank();
