@@ -1,7 +1,4 @@
-import 'dart:math';
 
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
@@ -36,17 +33,6 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
 
-
-    //Map<String, dynamic> _map = {'':'',};
-    //setState(() =>list =_map.values.toList());
-   // setState(() =>list2.add(_map.keys.toList()));
-    //list2 = _map.keys.toList();
-    //list2.add(_map.keys.toList());
-    List people=[];
-    for(int i=0; i<10; i++){
-    people.add(i.toString());
-    }
-    String search ="";
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -84,7 +70,6 @@ class _SearchState extends State<Search> {
                   shrinkWrap: true,
                   itemCount: list2.length,
                   itemBuilder: (BuildContext context, int index) {
-                    print('Test $list2');
                     return Column(
                       children: [
                         SizedBox(height: 7,),
@@ -107,16 +92,7 @@ class _SearchState extends State<Search> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.person),
-                                      ),
-                                      Expanded(
-                                        child: Container (
-                                          height: 60,
-                                          child: Center(child: Text(list2[index],style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold),)), //${_map.toString()[index]}
-                                        ),
-                                      ),
+
                                       Container(
                                         padding: EdgeInsets.all(20),
                                         child:
@@ -136,12 +112,29 @@ class _SearchState extends State<Search> {
                                           ),
                                         ),
                                       ),
+                                      Expanded(
+                                        child: Container (
+                                          height: 20,
+                                          child: Text(list2[index],style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),), //${_map.toString()[index]}
+                                        ),
+                                      ),
+                                      Container(
+                                        width:60,
+                                        margin: const EdgeInsets.only(right: 0),
+                                        child: FlatButton.icon(
+                                          padding: EdgeInsets.only(left:20),
+                                          label: Text(""),
+                                          icon: Icon(Icons.person_add),
+                                        onPressed: (){
+                                            _showbuttons(list2[index]);
+                                        },),
+                                      ),
                                     ],
                                   ),
                                 ),
                                 onPressed: () async{
                                   await connection.getFriendData(list2[index]);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()),);
+                                  _showbuttons(list2[index]);
                                 },
                               ),
                             ),
@@ -156,25 +149,60 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-}
+  void _showbuttons(String email) => showDialog(context: context, builder: (context) =>
 
-class Detail extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[900],
-      body: SafeArea(
-        child: Column(
+  Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.teal[300],
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            topLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),),
+        height: 70,
+        //color: Colors.greenAccent,
+        margin: EdgeInsets.fromLTRB(50, 0, 50, 480),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+               // color: Colors.green,
+               child:FlatButton.icon(
+                 padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                 label: Text("Send friend request", style: TextStyle(fontSize: 15),),
+                 icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
+                  onPressed:() {
+                    connection.sendFriendRequest(email);
+                  },
+            ),),
             ),
-            Text("Detail"),
-          ],
+            VerticalDivider(width:12, color: Colors.black,),
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+               child:FlatButton.icon(
+                 padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                 icon: Icon(Icons.not_interested, color: Colors.blueGrey[900]),
+                 label: Text('Cancel', style: TextStyle(fontSize: 15, color: Colors.blueGrey[900]),),
+                   onPressed: () {
+                   Navigator.pop(context);},
+            ),
+            ),
+            ],
         ),
       ),
-    );
-  }
+    ],
+  ),
+  );
 }
+
+
+
+
+
