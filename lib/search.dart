@@ -125,7 +125,7 @@ class _SearchState extends State<Search> {
                                           label: Text(""),
                                           icon: Icon(Icons.person_add),
                                         onPressed: (){
-                                            _showbuttons(list2[index]);
+                                            _showbuttons(list2[index], index);
                                         },),
                                       ),
                                     ],
@@ -133,7 +133,7 @@ class _SearchState extends State<Search> {
                                 ),
                                 onPressed: () async{
                                   await connection.getFriendData(list2[index]);
-                                  _showbuttons(list2[index]);
+                                  _showbuttons(list2[index], index);
                                 },
                               ),
                             ),
@@ -148,7 +148,7 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-  void _showbuttons(String email) => showDialog(context: context, builder: (context) =>
+  void _showbuttons(String email, int index) => showDialog(context: context, builder: (context) =>
 
    Material(
      type: MaterialType.transparency,
@@ -206,6 +206,7 @@ class _SearchState extends State<Search> {
                         connection.sendFriendRequest(email);
                         Navigator.pop(context);
                         setState(() {
+                          list2.removeAt(index);
                           //list2.remove(email);
                         });
                         //Friend request sent
