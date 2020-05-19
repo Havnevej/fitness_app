@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                         label: Text('Leaderboard'),
                         textColor: Colors.blueGrey[800],
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(user: user)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(user: user, connection: connection)));
                           },
                       ),
                     ),

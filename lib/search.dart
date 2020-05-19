@@ -1,7 +1,4 @@
-import 'dart:math';
 
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
@@ -36,17 +33,6 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
 
-
-    //Map<String, dynamic> _map = {'':'',};
-    //setState(() =>list =_map.values.toList());
-   // setState(() =>list2.add(_map.keys.toList()));
-    //list2 = _map.keys.toList();
-    //list2.add(_map.keys.toList());
-    List people=[];
-    for(int i=0; i<10; i++){
-    people.add(i.toString());
-    }
-    String search ="";
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -67,7 +53,6 @@ class _SearchState extends State<Search> {
                         decoration: textInputDecoration.copyWith(hintText: 'Search',),
                         onChanged: (val) async {
                           _map = await connection.searchByEmail(val);
-
                           setState(() {
                             list2 = _map.keys.toList();
                           });
@@ -84,7 +69,6 @@ class _SearchState extends State<Search> {
                   shrinkWrap: true,
                   itemCount: list2.length,
                   itemBuilder: (BuildContext context, int index) {
-                    print('Test $list2');
                     return Column(
                       children: [
                         SizedBox(height: 7,),
@@ -107,16 +91,7 @@ class _SearchState extends State<Search> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.person),
-                                      ),
-                                      Expanded(
-                                        child: Container (
-                                          height: 60,
-                                          child: Center(child: Text(list2[index],style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold),)), //${_map.toString()[index]}
-                                        ),
-                                      ),
+
                                       Container(
                                         padding: EdgeInsets.all(20),
                                         child:
@@ -136,12 +111,29 @@ class _SearchState extends State<Search> {
                                           ),
                                         ),
                                       ),
+                                      Expanded(
+                                        child: Container (
+                                          height: 20,
+                                          child: Text(list2[index],style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),), //${_map.toString()[index]}
+                                        ),
+                                      ),
+                                      Container(
+                                        width:60,
+                                        margin: const EdgeInsets.only(right: 0),
+                                        child: FlatButton.icon(
+                                          padding: EdgeInsets.only(left:20),
+                                          label: Text(""),
+                                          icon: Icon(Icons.person_add),
+                                        onPressed: (){
+                                            _showbuttons(list2[index], index);
+                                        },),
+                                      ),
                                     ],
                                   ),
                                 ),
                                 onPressed: () async{
                                   await connection.getFriendData(list2[index]);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()),);
+                                  _showbuttons(list2[index], index);
                                 },
                               ),
                             ),
@@ -156,25 +148,92 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-}
+  void _showbuttons(String email, int index) => showDialog(context: context, builder: (context) =>
 
-class Detail extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[900],
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+   Material(
+     type: MaterialType.transparency,
+     child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
+            decoration: BoxDecoration(
+              color: Colors.teal[300],
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(0),
+                topLeft: Radius.circular(20),
+                bottomRight: Radius.circular(0),
+                topRight: Radius.circular(20),
+              ),),
+            height: 70,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Center(child: Text(email,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)),
+                  ),
+                ),
+              ],
             ),
-            Text("Detail"),
-          ],
-        ),
+          ),
+          Divider(height: 0, color: Colors.black, indent: 50, endIndent: 50,),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.teal[300],
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                topLeft: Radius.circular(0),
+                bottomRight: Radius.circular(20),
+                topRight: Radius.circular(0),
+              ),),
+            height: 70,
+            //color: Colors.greenAccent,
+            margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                   // color: Colors.green,
+                   child:FlatButton.icon(
+                     padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                     label: Text("Send friend request", style: TextStyle(fontSize: 15),),
+                     icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
+                      onPressed:() {
+                        connection.sendFriendRequest(email);
+                        Navigator.pop(context);
+                        setState(() {
+                          list2.removeAt(index);
+                          //list2.remove(email);
+                        });
+                        //Friend request sent
+                      },
+                ),),
+                ),
+                VerticalDivider(width:12, color: Colors.black,),
+                Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                   child:FlatButton.icon(
+                     padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                     icon: Icon(Icons.not_interested, color: Colors.blueGrey[900]),
+                     label: Text('Cancel', style: TextStyle(fontSize: 15, color: Colors.blueGrey[900]),),
+                       onPressed: () {
+                       Navigator.pop(context);},
+                ),
+                ),
+                ],
+            ),
+          ),
+        ],
       ),
-    );
-  }
+   ),
+  );
 }
+
+
+
+
+

@@ -73,6 +73,7 @@ class _FriendsState extends State<Friends> {
                   ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: user.friendRequestsIncoming.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
@@ -132,7 +133,10 @@ class _FriendsState extends State<Friends> {
                                     child: Text("Accept"),
                                     onPressed: (){
                                       connection.acceptFriendRequest(user.friendRequestsIncoming[index]);
-                                      //user.friendRequestsIncoming.remove(index);
+                                      setState(() {
+                                        user.friendslist.add(user.friendRequestsIncoming[index]);
+                                        user.friendRequestsIncoming.removeAt(index);
+                                      });
                                     },
                                   ),
                                 ),
@@ -155,6 +159,9 @@ class _FriendsState extends State<Friends> {
                                     child: Text("Deny"),
                                     onPressed: (){
                                       connection.declineFriendRequest(user.friendRequestsIncoming[index]);
+                                      setState(() {
+                                        user.friendRequestsIncoming.removeAt(index);
+                                      });
                                     },
                                   ),
                                 ),
@@ -270,13 +277,14 @@ class _FriendsState extends State<Friends> {
               ),
 
               ExpansionTile(
-                initiallyExpanded: true,
+                initiallyExpanded: false,
                 backgroundColor: Colors.blueGrey[900],
                 title: Text("Outgoing friends requests", style: TextStyle(fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent),),
                 children: <Widget>[
                   ListView.builder(
+                    physics: ClampingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: user.friendRequestsOutgoing.length,
