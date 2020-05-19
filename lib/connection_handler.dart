@@ -278,10 +278,10 @@ class Connection {
     socketWriteLine("");
     await for(var response in socket){
       String dataFromSocket = new String.fromCharCodes(response).trim();
-      print(dataFromSocket);
+      //print(dataFromSocket);
       List userMap = jsonDecode(dataFromSocket);
       socket.destroy();
-      return userMap;
+      return Future.value(userMap);
     }
   }
   Future<bool> completeChallenge(String challengeJson) async{

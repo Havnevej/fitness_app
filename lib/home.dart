@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +23,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List firstList =  [];
+  List secondList = [];
   Person user;
   Connection connection;
   List challenges = [0];
@@ -42,11 +46,17 @@ class _HomeState extends State<Home> {
     List temp = await connection.getChallenges();
     setState(() {
       challenges = temp;
+      firstList.add(challenges[0]);
+      firstList.add(challenges[1]);
+      secondList.add(challenges[2]);
+      secondList.add(challenges[3]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(firstList);
+    //print(secondList);
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -188,7 +198,118 @@ class _HomeState extends State<Home> {
               SizedBox(height: 50),
             ],
           ),
-          Row(
+          FutureBuilder<List<dynamic>>(
+              future: connection.getChallenges(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 7,
+                      ),
+                      height: 120,
+                      width: 205.5,
+                      decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.rectangle),
+                  );
+                } else {
+                  return Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: firstList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return FlatButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        firstList.removeAt(index);
+                                        xpProgress = firstList[index]['points'];
+                                        connection.completeChallenge(jsonEncode(challenges[index]));
+                                      });
+                                    },
+                                    child: Container(
+                                      child: Container(padding: EdgeInsets.symmetric(
+                                        horizontal: 7,
+                                      ),
+                                        height: 120,
+                                        width: 205.5,
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            shape: BoxShape.rectangle),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Center(child: Text('Challenge: ${challenges[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                            Center(child: Text('${challenges[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                            Center(child: Text('Difficulty: ${challenges[index]["difficult"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                            Center(child: Text('Reward: ${challenges[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                          ],
+                                        ),
+
+                                      ),
+                                    ),
+                                  );
+                                }
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: secondList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return FlatButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        secondList.removeAt(index);
+                                        xpProgress = secondList[index]['points'];
+                                        connection.completeChallenge(jsonEncode(challenges[index]));
+                                      });
+                                    },
+                                    child: Container(
+                                      child: Container(padding: EdgeInsets.symmetric(
+                                        horizontal: 7,
+                                      ),
+                                        height: 120,
+                                        width: 205.5,
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            shape: BoxShape.rectangle),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Center(child: Text('Challenge: ${challenges[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                              Center(child: Text('${challenges[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                              Center(child: Text('Difficulty: ${challenges[index]["difficult"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                              Center(child: Text('Reward: ${challenges[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                            ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                  );
+                }
+              },
+          ),
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               //////////////////////////////////////////////////////////////////FIRST BOX////////////////////////////////////////////////////////////////////////////////////////
@@ -285,8 +406,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ],
-          ),
-          Divider(height: 1, color: Colors.greenAccent),
+          ),*/
         ],
       ),
     );
@@ -345,6 +465,13 @@ class _HomeState extends State<Home> {
     ),
   );
 }
+
+/*
+connection.completeChallenge(jsonEncode(challenges[0]));
+xpCurrent*challenges[0]['points'];
+
+ */
+
 
   /*Widget _dissmissAnimation(BuildContext context, int index){
 
