@@ -86,10 +86,12 @@ class _LoginState extends State<Login> {
                   if(await _server_connection.loginUser(username, password)){
 
                     List challenges = await _server_connection.getChallenges();
-                    print(challenges[0]["title"]);
+                    _server_connection.getLeaderBoardPosition();
+                    _server_connection.getCompletedChallenges();
                     //Uncomment these to test features on login
                     /*
-                    //Gets the 1st challenge and gets the point reward from it
+                    //Gets the 1st challenge and gets the point reward from it.
+                    print(challenges[0]["point_reward"]);
                     _server_connection.completeChallenge(jsonEncode(challenges[0]));
                     Get top 25 sorted by level
                     _server_connection.getTop25ByRank();
