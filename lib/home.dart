@@ -1,5 +1,6 @@
 import 'dart:convert';
 import'package:flutter/material.dart';
+import 'package:flutter_fitness_app/challenges_history.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
       challenges = temp;
     });
   }
-
+  
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,6 @@ class _HomeState extends State<Home> {
             onPressed: () { _showbuttons();
             },
           ),
-
           Text('Fit2Gether',
           style: TextStyle(
             fontSize: 20,
@@ -260,25 +260,23 @@ class _HomeState extends State<Home> {
                                       });
                                     },
                                     child: Container(
-                                      child: Container(padding: EdgeInsets.symmetric(
-                                        horizontal: 7,
-                                      ),
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
                                             color: Colors.green,
                                             shape: BoxShape.rectangle),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                            Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                            Center(child: Text('Difficulty: ${firstList[index]["difficult"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                            Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                          ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                              Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                              Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                            ],
+                                          ),
                                         ),
-                                      ),
                                     ),
                                   );
                                 },
@@ -302,25 +300,23 @@ class _HomeState extends State<Home> {
                                       });
                                     },
                                     child: Container(
-                                      child: Container(padding: EdgeInsets.symmetric(
-                                        horizontal: 7,
-                                      ),
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
                                             color: Colors.green,
                                             shape: BoxShape.rectangle),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                              Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                              Center(child: Text('Difficulty: ${secondList[index]["difficult"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                              Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                            ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                                Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                                Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                              ],
+                                          ),
                                         ),
-                                      ),
                                     ),
                                   );
                                 }
@@ -329,7 +325,6 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-
                   );
                 }
               },
@@ -355,7 +350,7 @@ class _HomeState extends State<Home> {
               FlatButton.icon(
                 label: Text("Challenges history"),
                 icon: Icon(Icons.fitness_center,color: Colors.blueGrey[900],),
-                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges(user:user, connection: connection,)));},
+                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
               FlatButton.icon(
@@ -392,6 +387,11 @@ class _HomeState extends State<Home> {
   );
 }
 
+/*void colorPicker(){
+  if(challengs){
+
+  }
+}*/
 /*
 connection.completeChallenge(jsonEncode(challenges[0]));
 xpCurrent*challenges[0]['points'];
