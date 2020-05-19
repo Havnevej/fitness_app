@@ -282,6 +282,30 @@ class Connection {
       return userMap;
     }
   }
+  Future<Map<dynamic,dynamic>> getLeaderBoardPosition() async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_leaderboard_position");
+    socketWriteLine("");
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      Map userMap = jsonDecode(dataFromSocket);
+      print(userMap);
+      socket.destroy();
+      return userMap;
+    }
+  }
+  Future<Map<dynamic,dynamic>> getCompletedChallenges() async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_completed_stats");
+    socketWriteLine("");
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      Map userMap = jsonDecode(dataFromSocket);
+      print(userMap);
+      socket.destroy();
+      return userMap;
+    }
+  }
   Future<bool> completeChallenge(String challengeJson) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("complete_challenge");

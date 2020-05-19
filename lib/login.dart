@@ -87,6 +87,8 @@ class _LoginState extends State<Login> {
                   if(await _server_connection.loginUser(username, password)){
 
                     List challenges = await _server_connection.getChallenges();
+                    _server_connection.getLeaderBoardPosition();
+                    _server_connection.getCompletedChallenges();
                     //Uncomment these to test features on login
                     /*
                     //Gets the 1st challenge and gets the point reward from it.
