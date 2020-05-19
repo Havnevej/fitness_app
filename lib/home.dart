@@ -46,10 +46,10 @@ class _HomeState extends State<Home> {
     List temp = await connection.getChallenges();
     setState(() {
       challenges = temp;
-      firstList.add(challenges[0]);
+      /*firstList.add(challenges[0]);
       firstList.add(challenges[1]);
       secondList.add(challenges[2]);
-      secondList.add(challenges[3]);
+      secondList.add(challenges[3]);*/
     });
   }
 
