@@ -1,7 +1,6 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_third.dart';
 

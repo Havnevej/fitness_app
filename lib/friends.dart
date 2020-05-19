@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/search.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
 import 'connection_handler.dart';
-import 'my_profile.dart';
 
 class Friends extends StatefulWidget {
   final Person user;
