@@ -69,7 +69,6 @@ class Connection {
       print("Done parsing cert");
     return this.context;
   }
-
   Future<bool> loginUser(String user, String pass) async {
     try{
       socket = await SecureSocket.connect(_address, _port, context: context, timeout: new Duration(seconds: 15));
@@ -96,7 +95,6 @@ class Connection {
       return false;
     }
   }
-
   Future<void> logout () async {
     print('hello');
     try{
@@ -295,5 +293,4 @@ class Connection {
       return true;
     }
   }
-
 }
