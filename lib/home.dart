@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
       challenges = temp;
     });
   }
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -342,15 +342,15 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         content: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          color: Colors.greenAccent,
+          color: Colors.green,
           width: 200,
-          height: 400,
+          height: 192.5,
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
                 label: Text("Challenges history"),
                 icon: Icon(Icons.fitness_center,color: Colors.blueGrey[900],),
-                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
+                onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
               FlatButton.icon(

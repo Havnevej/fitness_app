@@ -18,26 +18,23 @@ class Challenges_history extends StatefulWidget {
 }
 
 class _Challenges_history_state extends State<Challenges_history> {
-  List firstList = [];
   Person user;
   Connection connection;
-  List challenges = [0];
+  Map<dynamic, dynamic> _map;
   bool loading = false;
+  int totalChallenges = 0;
+  int cardioChallenges = 0;
+  int flexibilityChallenges = 0;
+  int upperBodyChallenges = 0;
+  int lowerBodyChallenges = 0;
 
   @override
   void initState() {
     user = widget.connection.loggedInPerson;
     connection = widget.connection;
     super.initState();
-    load_challenges_completed();
   }
 
-  void load_challenges_completed() async{
-    List temp = await connection.getChallenges();
-    setState(() {
-      challenges = temp;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,214 +54,183 @@ class _Challenges_history_state extends State<Challenges_history> {
       ),
       body: ListView(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
-            height: 80,
-            width: 350,
-            decoration: BoxDecoration(
-                color: Colors.blueGrey[700],
-                shape: BoxShape.rectangle,
-                boxShadow: <BoxShadow>[
-                ]
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Overall challenges completed: ${user.challengesCompleted}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.yellow, fontSize: 20, fontWeight: FontWeight.bold))),
-                CircularPercentIndicator(
-                  animateFromLastPercent: true,
-                  radius: 40.0,
-                  animation: true,
-                  animationDuration: 1200,
-                  lineWidth: 3.0,
-                  percent: 0.2, //0.1
-                  center: new Text('${user.level}',
-                    style:
-                    GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.yellow, fontSize: 15,)),
-                  ),
-                  circularStrokeCap: CircularStrokeCap.butt,
-                  backgroundColor: Colors.white,
-                  progressColor: Colors.yellow,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                //////////////////////////////////////////////////////////////////FIRST CHALLENGE/////////////////////////////////////////////////////////////////////////////////////////
-                ExpansionTile(
-                  title: Text("Lower body challenges completed:", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))),
-                  children: <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  color: Colors.green[400],
-                                  shape: BoxShape.rectangle,
-                                ),
-                                height:50,
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.only(left: 17),
-                                        child: Center(child: Text('${challenges[0]["title"]}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,))),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+          FutureBuilder<Map<dynamic, dynamic>>(
+              future: connection.getCompletedChallenges(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: Text('Please wait its loading...'));
+                } else {
+                  print("${snapshot.data}");
+                  _map = snapshot.data;
+                  List<dynamic> challenges = _map.values.toList();
+                  totalChallenges = challenges[0];
+                  cardioChallenges = challenges[1];
+                  flexibilityChallenges = challenges[2];
+                  upperBodyChallenges = challenges[3];
+                  lowerBodyChallenges = challenges[4];
+                  return Column(
+                    children: [
+                      SizedBox(height: 20,),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        height: 80,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 10,
+                                offset: Offset(0,10),
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Overall challenges completed: $totalChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold))),
+                            CircularPercentIndicator(
+                              animateFromLastPercent: true,
+                              radius: 40.0,
+                              animation: true,
+                              animationDuration: 1200,
+                              lineWidth: 3.0,
+                              percent: 0.2, //0.1
+                              center: new Text('${user.level}',
+                                style:
+                                GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15,)),
                               ),
+                              circularStrokeCap: CircularStrokeCap.butt,
+                              backgroundColor: Colors.white,
+                              progressColor: Colors.green,
                             ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                //////////////////////////////////////////////////////////////////SECOND CHALLENGE/////////////////////////////////////////////////////////////////////////////////////////
-                ExpansionTile(
-                  title: Text("Upper body challenges completed:", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))),
-                  children: <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                      ),
+                      SizedBox(height: 35,),
+                      ///////////////////////////////////////////////////////////CARDIO BOX/////////////////////////////////////////////////////////////////
+                      Container(
+                        height: 80,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.green[600],
+                                blurRadius: 10,
+                                offset: Offset(0,7),
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  color: Colors.red[400],
-                                  shape: BoxShape.rectangle,
-                                ),
-                                height:50,
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.only(left: 17),
-                                        child: Center(child: Text('${challenges[1]["title"]}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,))),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text('Total cardio challenges done: $cardioChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                              ],
                             ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                //////////////////////////////////////////////////////////////////THIRD CHALLENGE/////////////////////////////////////////////////////////////////////////////////////////
-                ExpansionTile(
-                  title: Text("Flexibility challenges completed:", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))),
-                  children: <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                      ),
+                      SizedBox(height: 35,),
+                      ///////////////////////////////////////////////////////////FLEXIBILITY BOX/////////////////////////////////////////////////////////////////
+                      Container(
+                        height: 80,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.purple[200],
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.purple[300],
+                                blurRadius: 10,
+                                offset: Offset(0,7),
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  color: Colors.orangeAccent[400],
-                                  shape: BoxShape.rectangle,
-                                ),
-                                height:50,
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.only(left: 17),
-                                        child: Center(child: Text('${challenges[1]["title"]}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,))),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text('Total flexibility challenges done: $flexibilityChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                              ],
                             ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                //////////////////////////////////////////////////////////////////FOURTH CHALLENGE/////////////////////////////////////////////////////////////////////////////////////////
-                ExpansionTile(
-                  title: Text("Cardio challenges completed:", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))),
-                  children: <Widget>[
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                      ),
+                      SizedBox(height: 35,),
+                      ///////////////////////////////////////////////////////////UPPER BODY BOX/////////////////////////////////////////////////////////////////
+                      Container(
+                        height: 80,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.orange,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.orange[600],
+                                blurRadius: 10,
+                                offset: Offset(0,7),
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: Container(
-                                decoration:
-                                BoxDecoration(
-                                  color: Colors.lightBlue[400],
-                                  shape: BoxShape.rectangle,
-                                ),
-                                height:50,
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.only(left: 17),
-                                        child: Center(child: Text('${challenges[0]["title"]}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,))),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text('Total upper body challenges done: $upperBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                              ],
                             ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+                        ),
+                      ),
+                      SizedBox (height: 35,),
+                      ///////////////////////////////////////////////////////////LOWER BODY BOX/////////////////////////////////////////////////////////////////
+                      Container(
+                        height: 80,
+                        width: 350,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[400],
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.blue[600],
+                                blurRadius: 10,
+                                offset: Offset(0,7),
+                              )
+                            ]
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text('Total lower body challenges done: $lowerBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }),
         ],
       ),
     );

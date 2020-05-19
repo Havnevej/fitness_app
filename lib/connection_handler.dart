@@ -303,7 +303,7 @@ class Connection {
       Map userMap = jsonDecode(dataFromSocket);
       print(userMap);
       socket.destroy();
-      return userMap;
+      return Future.value(userMap);
     }
   }
   Future<bool> completeChallenge(String challengeJson) async{
