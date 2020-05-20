@@ -34,6 +34,9 @@ class _HomeState extends State<Home> {
   int xpRequired = 1; //level*
   int xpCurrent = 0;
   int xpProgress = 0;
+  int counter = 0;
+  List notifications = [];
+
   @override
   void initState() {
     user = widget.connection.loggedInPerson;
@@ -42,33 +45,48 @@ class _HomeState extends State<Home> {
   }
   @override
   Widget build(BuildContext context) {
+    for(int i = 0; i<15; i++){
+      setState(() {
+        notifications.add(i.toString());
+      });
+
+    }
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         elevation: 0.0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-
-          FlatButton.icon(
-            padding: EdgeInsets.only(right: 100),
-            icon: Icon(Icons.more_vert, color: Colors.greenAccent),
-            label: Text('', style: TextStyle( color: Colors.greenAccent),),
-            onPressed: () { _showbuttons();
-            },
+        actions: <Widget>[
+          Stack(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.notifications, color: Colors.greenAccent,), onPressed: () {
+                  setState(() {
+                  counter = 0;
+                  _showN();
+                });
+              },),
+              counter != 0 ? Positioned(
+              right: 11,
+              top: 11,
+              child: Container(
+                padding:  EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                constraints:  BoxConstraints(
+                  minWidth: 14,
+                  minHeight: 14,
+                ),
+                child: Text("$counter",style: TextStyle(color: Colors.white, fontSize: 8,),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ) : Container(),
+            ],
           ),
-
-          Text('Fit2Gether',
-          style: TextStyle(
-            fontSize: 20,
-            letterSpacing: 2.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.greenAccent,
-          ),
-        ),
         ],
-        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -144,6 +162,7 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.add),
                 onPressed: () {
                   setState(() {
+                    counter++;
                     xpRequired = level*1000;
                   });
 
@@ -266,7 +285,7 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           color: Colors.greenAccent,
           width: 200,
-          height: 400,
+          height: 190,
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
@@ -305,6 +324,101 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
+      ),
+    ),
+  );
+  void _showN () => showDialog(context: context, builder: (context) =>
+    Material(
+      type: MaterialType.transparency,
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 40,),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
+                  //color: Colors.greenAccent,
+                  height: 350,
+                  decoration: BoxDecoration(
+                    color: Colors.teal[300],
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(0),
+                      topLeft: Radius.circular(3),
+                      bottomRight: Radius.circular(0),
+                      topRight: Radius.circular(3),
+                    ),),
+                  child:
+                  ListView(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              itemCount: notifications.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  children: [
+                                    SizedBox(height: 20,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                            margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(5),
+                                                topLeft: Radius.circular(5),
+                                                bottomRight: Radius.circular(5),
+                                                topRight: Radius.circular(5),
+                                              ),),
+                                            child:Text(notifications[index],),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              }
+                          ),],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
+                  color: Colors.blueGrey[900],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: Icon(Icons.close, color: Colors.white,),
+                      ),
+                      Expanded(
+                        child: Container(
+                          child: FlatButton(
+                            child: Text("Close",style: TextStyle(color: Colors.white),),
+                            onPressed: (){},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+          ),],
       ),
     ),
   );

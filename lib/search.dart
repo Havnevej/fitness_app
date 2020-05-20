@@ -207,6 +207,7 @@ class _SearchState extends State<Search> {
                         Navigator.pop(context);
                         setState(() {
                           list2.removeAt(index);
+                          user.friendRequestsOutgoing.add(email);
                           //list2.remove(email);
                         });
                         //Friend request sent
