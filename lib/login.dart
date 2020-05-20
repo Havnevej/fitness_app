@@ -86,10 +86,11 @@ class _LoginState extends State<Login> {
                   if(await _server_connection.loginUser(username, password)){
 
                     List challenges = await _server_connection.getChallenges();
-                    _server_connection.getLeaderBoardPosition();
-                    _server_connection.getCompletedChallenges();
+                    _server_connection.setWeight("120");
                     //Uncomment these to test features on login
                     /*
+                     _server_connection.getLeaderBoardPosition();
+                    _server_connection.getCompletedChallenges();
                     //Gets the 1st challenge and gets the point reward from it.
                     print(challenges[0]["point_reward"]);
                     _server_connection.completeChallenge(jsonEncode(challenges[0]));

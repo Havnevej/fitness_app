@@ -317,4 +317,42 @@ class Connection {
       return true;
     }
   }
+  Future<bool> setHeight(String height) async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("set_height");
+    socketWriteLine(height);
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      socket.destroy();
+      if(dataFromSocket == "1"){
+        print("set new height $height");
+        return true;
+      } else if (dataFromSocket == "-1"){
+        print("Server said: invalid value for height: $height");
+        return false;
+      } else {
+        print("server returns no");
+        return false;
+      }
+    }
+  }
+  Future<bool> setWeight(String weight) async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("set_weight");
+    socketWriteLine(weight);
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      socket.destroy();
+      if(dataFromSocket == "1"){
+        print("set new weight $weight");
+        return true;
+      } else if (dataFromSocket == "-1"){
+        print("Server said: invalid value for weight: $weight");
+        return false;
+      } else {
+        print("server returns no");
+        return false;
+      }
+    }
+  }
 }
