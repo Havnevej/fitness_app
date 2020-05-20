@@ -10,7 +10,7 @@ import 'leaderboard.dart';
 import 'login.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
-import 'challenges.dart';
+
 
 class Home extends StatefulWidget {
   final Person user;
@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   List secondList = [];
   Person user;
   Connection connection;
+  bool _visible = true;
   List challenges = [0];
   bool loading = false;
   int level = 1;
@@ -47,6 +48,24 @@ class _HomeState extends State<Home> {
     setState(() {
       challenges = temp;
     });
+  }
+
+  Color challengeColor(int index){
+    //lower body
+    if(challenges[index]['type'] == 2){
+      return Colors.blue[400];
+    }
+    //upper body
+    else if(challenges[index]['type'] == 0){
+      return Colors.green;
+    }
+    //cardio
+    else if(challenges[index]['type'] == 3)
+      return Colors.orange;
+    //flexibility
+    else{
+      return Colors.purple[300];
+    }
   }
 
 
@@ -263,7 +282,7 @@ class _HomeState extends State<Home> {
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
-                                            color: Colors.green,
+                                            color: challengeColor(index),
                                             shape: BoxShape.rectangle),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
@@ -303,7 +322,7 @@ class _HomeState extends State<Home> {
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
-                                            color: Colors.green,
+                                            color: challengeColor(index),
                                             shape: BoxShape.rectangle),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
@@ -386,22 +405,5 @@ class _HomeState extends State<Home> {
     ),
   );
 }
-
-/*void colorPicker(){
-  if(challengs){
-
-  }
-}*/
-/*
-connection.completeChallenge(jsonEncode(challenges[0]));
-xpCurrent*challenges[0]['points'];
-
- */
-
-
-  /*Widget _dissmissAnimation(BuildContext context, int index){
-
-  }*/
-
 
 

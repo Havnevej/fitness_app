@@ -169,7 +169,7 @@ class _myProfileState extends State<myProfilePage> {
               ),
               Expanded(
                 child: Container(
-                  child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5,1, 2.5, 2, 4],
+                  child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5, 1, 2.5, 2, 4],
                     sharpCorners: true,
                     lineWidth: 3,
                     lineColor: Colors.blueGrey,

@@ -134,7 +134,7 @@ class _Challenges_history_state extends State<Challenges_history> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text('Total cardio challenges done: $cardioChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                                Text('Total cardio: $cardioChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
                               ],
                             ),
                           ],
@@ -163,7 +163,7 @@ class _Challenges_history_state extends State<Challenges_history> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text('Total flexibility challenges done: $flexibilityChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                                Text('Total flexibility: $flexibilityChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
                               ],
                             ),
                           ],
@@ -192,7 +192,7 @@ class _Challenges_history_state extends State<Challenges_history> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text('Total upper body challenges done: $upperBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                                Text('Total upper body: $upperBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
                               ],
                             ),
                           ],
@@ -221,7 +221,7 @@ class _Challenges_history_state extends State<Challenges_history> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Text('Total lower body challenges done: $lowerBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
+                                Text('Total lower body: $lowerBodyChallenges', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)))
                               ],
                             ),
                           ],
