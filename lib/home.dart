@@ -27,50 +27,37 @@ class _HomeState extends State<Home> {
   List secondList = [];
   Person user;
   Connection connection;
-  bool _visible = true;
   List challenges = [0];
   bool loading = false;
   int level = 1;
   int xpRequired = 1; //level*
   int xpCurrent = 0;
-  int xpProgress = 0;
+  double xpProgress = 0;
   int counter = 0;
   List notifications = [];
+  List<Color> colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
 
   @override
   void initState() {
     user = widget.connection.loggedInPerson;
     connection = widget.connection;
+    connection.getMyUserData();
     super.initState();
   }
 
-  Color challengeColor(int index){
-    //lower body
-    if(challenges[index]['type'] == 2){
-      return Colors.blue[400];
-    }
-    //upper body
-    else if(challenges[index]['type'] == 0){
-      return Colors.green;
-    }
-    //cardio
-    else if(challenges[index]['type'] == 3)
-      return Colors.orange;
-    //flexibility
-    else{
-      return Colors.purple[300];
-    }
+  Color challengeColor(){
+    Color returncolor = colors[0];
+    colors.removeAt(0);
+    return returncolor;
   }
-
 
   @override
   Widget build(BuildContext context) {
-    for(int i = 0; i<15; i++){
-      setState(() {
-        notifications.add(i.toString());
-      });
+    colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
+    if(xpCurrent>=user.level*1000){xpCurrent = 0;}
+    xpCurrent = user.exp;
+    xpProgress = (xpCurrent / (user.level*1000) * 100);
 
-    }
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -177,40 +164,13 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: 50,),
-              /*IconButton(
-                tooltip: 'Add lvl',
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  setState(() {
-                    counter++;
-                    xpRequired = level*1000;
-                  });
-
-                  if(xpCurrent == xpRequired){
-                    setState(() {
-                      xpCurrent=0;
-                      level++;
-                    });
-                  }
-                  if(xpCurrent != xpRequired){
-                    setState(() {
-                      xpCurrent+=200;
-                    });
-                  }
-                  setState(() => xpProgress = (((xpCurrent*100)~/xpRequired)));
-                  print(level);
-                  print(xpCurrent);
-                  print(xpRequired);
-                  print(xpProgress);
-                },
-              ),*/
               CircularPercentIndicator(
                 animateFromLastPercent: true,
                 radius: 200.0,
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
-                percent: ((xpProgress.toDouble())/100), //0.1
+                percent: (xpProgress.toDouble()/100) <= 1 ? (xpProgress.toDouble()/100) : 0 , //0.1
                 center: new Text('LVL ${user.level}',
                   style:
                   new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.yellow),
@@ -224,8 +184,8 @@ class _HomeState extends State<Home> {
           ),
           FutureBuilder<List<dynamic>>(
               future: connection.getChallenges(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
                   return  Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 7,
@@ -237,9 +197,11 @@ class _HomeState extends State<Home> {
                       shape: BoxShape.rectangle),
                   );
                 } else {
+                  List<dynamic> snap = snapshot.data;
+                  print(snap.toString() + " 123");
                   List firstList =  [];
                   List secondList = [];
-                  switch (snapshot.data.length){
+                  switch (snap.length){
                     case 0: {
                       return Text('No more challenges for today, come back tomorrow', style: TextStyle(color: Colors.red));
                     }
@@ -282,16 +244,16 @@ class _HomeState extends State<Home> {
                                   return FlatButton(
                                     onPressed: (){
                                       setState(() {
-                                        firstList.removeAt(index);
-                                        xpProgress = firstList[index]['points'];
+                                        xpCurrent += firstList[index]['point_reward'];
                                         connection.completeChallenge(jsonEncode(firstList[index]));
+                                        firstList.removeAt(index);
                                       });
                                     },
                                     child: Container(
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
-                                            color: challengeColor(index),
+                                            color: challengeColor(),
                                             shape: BoxShape.rectangle),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
@@ -322,16 +284,16 @@ class _HomeState extends State<Home> {
                                   return FlatButton(
                                     onPressed: (){
                                       setState(() {
-                                        secondList.removeAt(index);
-                                        xpProgress = secondList[index]['points'];
+                                        xpCurrent += secondList[index]['point_reward'];
                                         connection.completeChallenge(jsonEncode(secondList[index]));
+                                        secondList.removeAt(index);
                                       });
                                     },
                                     child: Container(
                                         height: 120,
                                         width: 205.5,
                                         decoration: BoxDecoration(
-                                            color: challengeColor(index),
+                                            color: challengeColor(),
                                             shape: BoxShape.rectangle),
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
