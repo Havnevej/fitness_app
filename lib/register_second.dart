@@ -1,7 +1,6 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_third.dart';
 
@@ -49,7 +48,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
   Widget build(BuildContext context) {
 
     String _countryText = _country == null ? "Please select your country" : _country;
-    //String _countryError = _selectedCountry == null ? "Please select your country": '1';
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
@@ -58,14 +56,6 @@ class _RegisterSecondState extends State<RegisterSecond> {
         elevation: (1),
         title: Text('Previous page', style: TextStyle(color: Colors.greenAccent),),
         actions: <Widget>[
-          /*FlatButton.icon(
-            icon: Icon(
-              Icons.person, color: Colors.greenAccent,),
-            label: Text('Sign in', style: TextStyle(color: Colors.greenAccent),),
-            onPressed: (){
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
-            },
-          ),*/
         ],
       ),
 
@@ -135,7 +125,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     decoration: textInputDecoration.copyWith(hintText: 'Region'),
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
-                    validator: (val) => val.isEmpty ? 'Enter your region' : null,
+                   //validator: (val) => val.isEmpty ? 'Enter your region' : null,
                     onChanged: (val) {
                       setState(() => p.region = val);
                     }
@@ -157,7 +147,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
                     decoration: textInputDecoration.copyWith(hintText: 'Address'),
                     cursorColor: Colors.green,
                     style: TextStyle(fontWeight: FontWeight.bold),
-                    validator: (val) => val.isEmpty ? 'Enter your address' : null,
+                    //validator: (val) => val.isEmpty ? 'Enter your address' : null,
                     onChanged: (val) {
                       setState(() => p.address = val);
                     }

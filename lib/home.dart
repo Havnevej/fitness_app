@@ -1,20 +1,16 @@
-import 'dart:io';
-
+import 'dart:convert';
 import'package:flutter/material.dart';
+import 'package:flutter_fitness_app/challenges_history.dart';
 import 'package:flutter_fitness_app/person.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-
-import 'dart:math';
-
 import 'connection_handler.dart';
 import 'friends.dart';
 import 'leaderboard.dart';
 import 'login.dart';
-import 'my_profile.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
-import 'challenges.dart';
+
 
 class Home extends StatefulWidget {
   final Person user;
@@ -27,8 +23,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List firstList =  [];
+  List secondList = [];
   Person user;
   Connection connection;
+  bool _visible = true;
+  List challenges = [0];
   bool loading = false;
   int level = 1;
   int xpRequired = 1; //level*
@@ -43,6 +43,26 @@ class _HomeState extends State<Home> {
     connection = widget.connection;
     super.initState();
   }
+
+  Color challengeColor(int index){
+    //lower body
+    if(challenges[index]['type'] == 2){
+      return Colors.blue[400];
+    }
+    //upper body
+    else if(challenges[index]['type'] == 0){
+      return Colors.green;
+    }
+    //cardio
+    else if(challenges[index]['type'] == 3)
+      return Colors.orange;
+    //flexibility
+    else{
+      return Colors.purple[300];
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     for(int i = 0; i<15; i++){
@@ -54,7 +74,7 @@ class _HomeState extends State<Home> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.green[400],
         elevation: 0.0,
         actions: <Widget>[
           Stack(
@@ -99,15 +119,15 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.greenAccent, Colors.greenAccent],
+                          colors: [Colors.blueGrey, Colors.blueGrey],
                           begin: FractionalOffset.centerLeft,
                           end: FractionalOffset.centerRight,
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.list, size:20 ,color: Colors.blueGrey[800], ), //size parameter added to fix overflowing pixels.
+                        icon: Icon(Icons.list, size:20 ,color: Colors.yellow, ), //size parameter added to fix overflowing pixels.
                         label: Text('Leaderboard'),
-                        textColor: Colors.blueGrey[800],
+                        textColor: Colors.yellow,
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(user: user, connection: connection)));
                           },
@@ -119,17 +139,17 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.greenAccent, Colors.greenAccent],
+                          colors: [Colors.blueGrey, Colors.blueGrey],
                           begin: FractionalOffset.centerRight,
                           end: FractionalOffset.centerLeft,
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.fitness_center, color: Colors.blueGrey[900]),
-                        label: Text('Challenges'),
-                        textColor: Colors.blueGrey[800],
+                        icon: Icon(Icons.people, color: Colors.yellow),
+                        label: Text('Friends'),
+                        textColor: Colors.yellow,
                         onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges(user: user)),);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Friends(user:user, connection: connection,)));
                         },
                       ),
                     ),
@@ -139,15 +159,15 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.greenAccent, Colors.greenAccent],
+                          colors: [Colors.blueGrey, Colors.blueGrey],
                           begin: FractionalOffset.centerRight,
                           end: FractionalOffset.centerLeft,
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.person_outline, color: Colors.blueGrey[800]),
+                        icon: Icon(Icons.person_outline, color: Colors.yellow),
                         label: Text(user.firstName),
-                        textColor: Colors.blueGrey[800],
+                        textColor: Colors.yellow,
                         onPressed: () {
                           _showbuttons();
                           },
@@ -156,8 +176,8 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(height: 150),
-              IconButton(
+              SizedBox(height: 50,),
+              /*IconButton(
                 tooltip: 'Add lvl',
                 icon: Icon(Icons.add),
                 onPressed: () {
@@ -183,91 +203,159 @@ class _HomeState extends State<Home> {
                   print(xpRequired);
                   print(xpProgress);
                 },
-              ),
+              ),*/
               CircularPercentIndicator(
                 animateFromLastPercent: true,
-                radius: 130.0,
+                radius: 200.0,
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
                 percent: ((xpProgress.toDouble())/100), //0.1
                 center: new Text('LVL ${user.level}',
                   style:
-                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.greenAccent),
+                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.yellow),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.blueGrey,
-                progressColor: Colors.greenAccent,
+                progressColor: Colors.yellow,
               ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.all(25),
-                child: new LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 50,
-                  animation: true,
-                  lineHeight: 20.0,
-                  animationDuration: 2500,
-                  percent: 0.9,
-                  backgroundColor: Colors.blueGrey,
-                  center: Text("LEVEL 1"
-                  ),
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: Colors.greenAccent,
-                ),
-              ),
-              SizedBox(height: 10),
+              SizedBox(height: 50),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
+          FutureBuilder<List<dynamic>>(
+              future: connection.getChallenges(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return  Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 7,
+                      ),
+                      height: 120,
+                      width: 205.5,
+                      decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.rectangle),
+                  );
+                } else {
+                  List firstList =  [];
+                  List secondList = [];
+                  switch (snapshot.data.length){
+                    case 0: {
+                      return Text('No more challenges for today, come back tomorrow', style: TextStyle(color: Colors.red));
+                    }
+                      break;
+                    case 1: {
+                      firstList.add(snapshot.data[0]);
+                    }
+                    break;
+                    case 2: {
+                      firstList.add(snapshot.data[0]);
+                      secondList.add(snapshot.data[1]);
+                    }
+                    break;
+                    case 3: {
+                      firstList.add(snapshot.data[0]);
+                      firstList.add(snapshot.data[1]);
+                      secondList.add(snapshot.data[2]);
+                    }
+                    break;
+                    case 4: {
+                      firstList.add(snapshot.data[0]);
+                      firstList.add(snapshot.data[1]);
+                      secondList.add(snapshot.data[2]);
+                      secondList.add(snapshot.data[3]);
+                    }
+                    break;
+                  }
+                  return Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: firstList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return FlatButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        firstList.removeAt(index);
+                                        xpProgress = firstList[index]['points'];
+                                        connection.completeChallenge(jsonEncode(firstList[index]));
+                                      });
+                                    },
+                                    child: Container(
+                                        height: 120,
+                                        width: 205.5,
+                                        decoration: BoxDecoration(
+                                            color: challengeColor(index),
+                                            shape: BoxShape.rectangle),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                              Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                              Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                            ],
+                                          ),
+                                        ),
+                                    ),
+                                  );
+                                },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: ClampingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: secondList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return FlatButton(
+                                    onPressed: (){
+                                      setState(() {
+                                        secondList.removeAt(index);
+                                        xpProgress = secondList[index]['points'];
+                                        connection.completeChallenge(jsonEncode(secondList[index]));
+                                      });
+                                    },
+                                    child: Container(
+                                        height: 120,
+                                        width: 205.5,
+                                        decoration: BoxDecoration(
+                                            color: challengeColor(index),
+                                            shape: BoxShape.rectangle),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                                Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                                Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                              ],
+                                          ),
+                                        ),
+                                    ),
+                                  );
+                                }
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),],
-              ),
-              SizedBox(width: 50),
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-
-          ),
-          Divider(height: 1, color: Colors.greenAccent),
-
-          SizedBox(height: 20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),],
-              ),
-              SizedBox(width: 50),
-              Column(
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      child: Text('LIFETIME POINTS', style: TextStyle(color: Colors.greenAccent),),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  );
+                }
+              },
           ),
           Divider(height: 1, color: Colors.greenAccent),
         ],
@@ -283,16 +371,15 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         content: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          color: Colors.greenAccent,
+          color: Colors.green,
           width: 200,
-          height: 190,
+          height: 192.5,
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
-                label: Text("Friends"),
-                icon: Icon(Icons.person,color: Colors.blueGrey[900],),
-                onPressed:() {Navigator.push(context, MaterialPageRoute(builder: (context) => Friends(user:user, connection: connection,)));},
-
+                label: Text("Challenges history"),
+                icon: Icon(Icons.fitness_center,color: Colors.blueGrey[900],),
+                onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
               FlatButton.icon(
