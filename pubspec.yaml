@@ -67,6 +67,8 @@ flutter:
     - assets/images/weight.png
     - assets/images/height.png
     - assets/images/BMI.png
+    - assets/images/profilepic.jpg
+    - assets/images/coverpic.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -32,6 +32,23 @@ class _myProfileState extends State<myProfilePage> {
     super.initState();
   }
 
+  Color bmiColor(){
+    if(calculateBMI(user.weight, user.height) <= 18.5 ){
+      return Colors.orange;
+    }
+    else if(calculateBMI(user.weight, user.height) >= 18.5 && calculateBMI(user.weight, user.height) <= 24.9){
+      return Colors.green;
+    }
+    else if(calculateBMI(user.weight, user.height) >= 25 && calculateBMI(user.weight, user.height) <= 29.9){
+      return Colors.orange;
+    }
+    else if(calculateBMI(user.weight, user.height) > 29.9){
+      return Colors.red;
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
@@ -56,12 +73,11 @@ class _myProfileState extends State<myProfilePage> {
             ),
             FlatButton.icon(
               icon: Icon(
-                Icons.exit_to_app, color: Colors.white,),
+                Icons.title, color: Colors.white,),
               label: Text(
-                'Log out', style: TextStyle(color: Colors.white),),
+                'Test', style: TextStyle(color: Colors.white),),
               onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => Login()));
+               _showBmiRange();
               },
             ),
           ],
@@ -77,7 +93,7 @@ class _myProfileState extends State<myProfilePage> {
                 height: 200.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Alibackground.jpg'),
+                    image: AssetImage('assets/images/coverpic.jpg'),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -117,12 +133,12 @@ class _myProfileState extends State<myProfilePage> {
                       //Icon(Icons.fitness_center),
                       Expanded(
                         child: Container(
-                          color: Colors.green[400],
+                          color: Colors.blueGrey,
                           padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                            Image.asset('assets/images/weight.png', height: 35, width: 35, color: Colors.blueGrey,),
+                            Image.asset('assets/images/weight.png', height: 35, width: 35, color: Colors.yellow,),
                               Text(" ${user.weight} kg", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 25))),
                           ],),
                         ),
@@ -130,12 +146,12 @@ class _myProfileState extends State<myProfilePage> {
                       VerticalDivider(width: 2, color: Color.fromRGBO(255, 253, 209, 1), thickness: 2),
                       Expanded(
                         child: Container(
-                          color: Colors.green[400],
+                          color: Colors.blueGrey,
                           padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset('assets/images/height.png', height: 35, width: 35, color: Colors.blueGrey,),
+                              Image.asset('assets/images/height.png', height: 35, width: 35, color: Colors.yellow,),
                               Text(" ${user.height} cm", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 25))),
                             ],),
                         ),
@@ -143,13 +159,13 @@ class _myProfileState extends State<myProfilePage> {
                       VerticalDivider(width: 2, color: Color.fromRGBO(255, 253, 209, 1), thickness: 2),
                       Expanded(
                         child: Container(
-                          color: Colors.green[400],
+                          color: Colors.blueGrey,
                           padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.asset('assets/images/BMI.png', height: 35, width: 35, color: Colors.blueGrey,),
-                              Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 25))),
+                              Image.asset('assets/images/BMI.png', height: 35, width: 35, color: bmiColor(),),
+                              Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: bmiColor(), fontSize: 25))),
                             ],),
                         ),
                       ),
@@ -190,7 +206,7 @@ class _myProfileState extends State<myProfilePage> {
               width: 100.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/Donald.jpg'),
+                  image: AssetImage('assets/images/profilepic.jpg'),
                   fit: BoxFit.fill,
                 ),
                 shape: BoxShape.circle,
@@ -201,5 +217,31 @@ class _myProfileState extends State<myProfilePage> {
       ),
     );
   }
-
+  void _showBmiRange() => showDialog(
+      context: context,
+      builder: (context) => Theme(
+        data: Theme.of(context).copyWith(primaryColor: Colors.white),
+        child: AlertDialog(
+          backgroundColor: Colors.blueGrey[100],
+          content: Container(
+            width: 250,
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('BMI range', style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),),
+                SizedBox(height: 15,),
+                Text('Underweight: below 18.5', style: TextStyle(color: Colors.red),),
+                SizedBox(height: 10,),
+                Text('Normal: 18.5 - 24.9', style: TextStyle(color: Colors.green),),
+                SizedBox(height: 10,),
+                Text('Overweight: 25 - 29.9', style: TextStyle(color: Colors.orange),),
+                SizedBox(height: 10,),
+                Text('Obese: 30 and above', style: TextStyle(color: Colors.red),),
+            ]),
+          ),
+        ),
+      )
+  );
 }
