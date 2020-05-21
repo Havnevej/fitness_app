@@ -356,7 +356,7 @@ class _HomeState extends State<Home> {
                 textColor: Colors.blueGrey[800],
                 onPressed: () async{
                   await connection.getMyUserData();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(user: user)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
                 },
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
