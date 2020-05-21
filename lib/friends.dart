@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness_app/localsave.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/search.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -29,6 +30,8 @@ class _FriendsState extends State<Friends> {
   Widget build(BuildContext context) {
     //Logic for fontsize of long usernames
     List friends = [];
+    List<String> notifications = user.friendRequestsIncoming;
+    LocalSave.save("incomingR", notifications);
     for (int i = 0; i<user.friendRequestsIncoming.length;i++){
 
       if(user.friendRequestsIncoming[i].length > 10){

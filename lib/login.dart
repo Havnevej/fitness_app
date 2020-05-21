@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
                   if(await _server_connection.loginUser(username, password)){
 
                     List challenges = await _server_connection.getChallenges();
-                    _server_connection.setWeight("120");
+                    _server_connection.getWeightHistory();
                     //Uncomment these to test features on login
                     /*
                      _server_connection.getLeaderBoardPosition();
