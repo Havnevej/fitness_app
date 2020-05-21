@@ -25,9 +25,13 @@ class _LeaderBoardState extends State<LeaderBoard> {
   Connection connection;
   List listLead=[];
   List leadPos=[];
-  Map<dynamic, dynamic> _map;
-  Map<dynamic, dynamic> _map2;
+  Map<dynamic, dynamic> top25;
+  Map<dynamic, dynamic> leadRank; //
+
   List<int> leaderboardIncrement = [] ;
+
+
+
 
   @override
   void initState() {
@@ -52,26 +56,30 @@ class _LeaderBoardState extends State<LeaderBoard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Divider(height: 0,color: Colors.blueGrey[900], thickness: 10,),
-              FutureBuilder<Map<dynamic,dynamic>>(
-                future: connection.getLeaderBoardPosition(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
+              FutureBuilder(
+                future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
+                builder: (context, AsyncSnapshot snapshot){
                   if( snapshot.connectionState != ConnectionState.done){
                     return  Center(child: Text('Please wait its loading...'));
                   } else {
-                    print("asdasd ${snapshot.data}");
-                    _map2 = snapshot.data;
-                    leadPos = _map2.keys.toList();
+                    top25 = snapshot.data[0];//top25
+                    leadRank = snapshot.data[1];//leadRank
+                    listLead = top25.keys.toList();
+                    leadPos = leadRank.keys.toList();
+                    print("asdasdas $listLead");
+                    print("asdasdas $leadPos");
+
                     return ListView.builder (
                         scrollDirection: Axis.vertical,
                         physics: ClampingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: leadPos.length,
+                        itemCount: listLead.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Column(
                             children: <Widget>[
                               Container(
                                 color:Colors.blueGrey[900],
-                                child: _leaderboardPos(email: leadPos[index], lvl: _map2[leadPos[index]]),
+                                child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
                               ),
                             ],
                           );
@@ -95,32 +103,6 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   ),
                 ],
               ),
-              FutureBuilder<Map<dynamic,dynamic>>(
-                future: connection.getTop25ByRank(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if( snapshot.connectionState != ConnectionState.done){
-                    return  Center(child: Text('Please wait its loading...'));
-                  } else {
-                    print("asdasd ${snapshot.data}");
-                    _map = snapshot.data;
-                    listLead = _map.keys.toList();
-                    for(int i = 1; i<listLead.length+1; i++){
-                      leaderboardIncrement.add(i);
-                    }
-                  return ListView.builder (
-                      scrollDirection: Axis.vertical,
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: listLead.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: <Widget>[
-                            _leaderboard(email: listLead[index], lvl: _map[listLead[index]], index:index),
-                          ],
-                        );
-                      });}
-                },
-              ),
             ],
           ),
         ],
@@ -139,9 +121,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  child: Text(leaderboardIncrement[index].toString()),
-                ),
+                //Container(child: Text(leaderboardIncrement[index].toString()),),
                 Center(
                   child: Container(
                       margin: EdgeInsets.only(left: 40),

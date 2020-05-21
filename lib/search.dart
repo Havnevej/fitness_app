@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness_app/localsave.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -203,7 +204,7 @@ class _SearchState extends State<Search> {
                      label: Text("Send friend request", style: TextStyle(fontSize: 15),),
                      icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
                       onPressed:() {
-                        connection.save('notifications', email); //PREFF
+                        LocalSave.save('notifications', email); //PREFF
                         connection.sendFriendRequest(email);
                         Navigator.pop(context);
                         setState(() {
