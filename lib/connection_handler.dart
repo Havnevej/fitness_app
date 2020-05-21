@@ -306,6 +306,18 @@ class Connection {
       return Future.value(userMap);
     }
   }
+  Future<Map<dynamic,dynamic>> getWeightHistory() async{
+    socket = await SecureSocket.connect(_address, _port, context: context);
+    socketWriteLine("get_weight_history");
+    socketWriteLine("");
+    await for(var response in socket){
+      String dataFromSocket = new String.fromCharCodes(response).trim();
+      Map userMap = jsonDecode(dataFromSocket);
+      print(userMap);
+      socket.destroy();
+      return Future.value(userMap);
+    }
+  }
   Future<bool> completeChallenge(String challengeJson) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("complete_challenge");
