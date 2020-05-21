@@ -4,6 +4,7 @@ import 'package:flutter_fitness_app/challenges_history.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'connection_handler.dart';
 import 'friends.dart';
 import 'leaderboard.dart';
@@ -28,22 +29,31 @@ class _HomeState extends State<Home> {
   Person user;
   Connection connection;
   bool _visible = true;
-  List challenges = [0];
+  List challenges = [];
   bool loading = false;
   int level = 1;
   int xpRequired = 1; //level*
   int xpCurrent = 0;
   int xpProgress = 0;
-  int counter = 0;
-  List notifications = [];
+  int counter = 2;
+  List notifications = []; //length is count and strings show the notification
+
 
   @override
   void initState() {
     user = widget.connection.loggedInPerson;
     connection = widget.connection;
     super.initState();
+    restore();
   }
-
+  restore() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      //notifications = [(prefs.getString("notifications") ?? "NOO!!")];
+      notifications =  prefs.getStringList("incomingR");
+      counter = notifications.length;
+    });
+  }
   Color challengeColor(int index){
     //lower body
     if(challenges[index]['type'] == 2){
@@ -62,15 +72,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    for(int i = 0; i<15; i++){
-      setState(() {
-        notifications.add(i.toString());
-      });
 
-    }
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -80,10 +84,11 @@ class _HomeState extends State<Home> {
           Stack(
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.notifications, color: Colors.greenAccent,), onPressed: () {
+                icon: Icon(Icons.notifications, color: Colors.blueGrey,), onPressed: () {
                   setState(() {
-                  counter = 0;
-                  _showN();
+                    //restore();
+                    counter = 0;
+                    _showN();
                 });
               },),
               counter != 0 ? Positioned(
@@ -488,14 +493,14 @@ class _HomeState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        child: Icon(Icons.close, color: Colors.white,),
-                      ),
+                      //Container(child: Icon(Icons.close, color: Colors.white,),),
                       Expanded(
                         child: Container(
                           child: FlatButton(
                             child: Text("Close",style: TextStyle(color: Colors.white),),
-                            onPressed: (){},
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
                       ),

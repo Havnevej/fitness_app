@@ -203,6 +203,7 @@ class _SearchState extends State<Search> {
                      label: Text("Send friend request", style: TextStyle(fontSize: 15),),
                      icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
                       onPressed:() {
+                        connection.save('notifications', email); //PREFF
                         connection.sendFriendRequest(email);
                         Navigator.pop(context);
                         setState(() {

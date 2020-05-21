@@ -29,6 +29,8 @@ class _FriendsState extends State<Friends> {
   Widget build(BuildContext context) {
     //Logic for fontsize of long usernames
     List friends = [];
+    List<String> notifications = user.friendRequestsIncoming;
+    connection.save("incomingR", notifications);
     for (int i = 0; i<user.friendRequestsIncoming.length;i++){
 
       if(user.friendRequestsIncoming[i].length > 10){
