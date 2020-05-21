@@ -62,23 +62,15 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ),
                 ),
               ),
-              FutureBuilder<Map<dynamic,dynamic>>(
-                future: connection.getTop25ByRank(),
-                builder: (BuildContext context, AsyncSnapshot<Map<dynamic,dynamic>>snapshot){
-                  if( snapshot.connectionState != ConnectionState.done){
-              Divider(height: 0,color: Colors.blueGrey[900], thickness: 10,),
-              FutureBuilder(
-                future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
-                builder: (context, AsyncSnapshot snapshot){
-                  if( snapshot.connectionState != ConnectionState.done){
-                    return  Center(child: Text('Please wait its loading...'));
-                  } else {
-                    top25 = snapshot.data[0];//top25
-                    leadRank = snapshot.data[1];//leadRank
-                    listLead = top25.keys.toList();
-                    leadPos = leadRank.keys.toList();
-                    print("asdasdas $listLead");
-                    print("asdasdas $leadPos");
+              FutureBuilder<dynamic>(
+                  future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
+                  builder: (context, AsyncSnapshot<dynamic> snapshot){
+                  top25 = snapshot.data[0];//top25
+                  leadRank = snapshot.data[1];//leadRank
+                  listLead = top25.keys.toList();
+                  leadPos = leadRank.keys.toList();
+                  print("asdasdas $listLead");
+                  print("asdasdas $leadPos");
 
                     return ListView.builder (
                         scrollDirection: Axis.vertical,
@@ -94,7 +86,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                               ),
                             ],
                           );
-                    });}
+                    });
                 },
               ),
               Row(
@@ -117,7 +109,8 @@ class _LeaderBoardState extends State<LeaderBoard> {
             ],
           ),
         ],
-      ),);
+      ),
+      );
   }
 
   Widget _leaderboard({String email, int lvl, int index}) {
