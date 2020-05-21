@@ -54,22 +54,6 @@ class _HomeState extends State<Home> {
       counter = notifications.length;
     });
   }
-  Color challengeColor(int index){
-    //lower body
-    if(challenges[index]['type'] == 2){
-      return Colors.blue[400];
-    }
-    //upper body
-    else if(challenges[index]['type'] == 0){
-      return Colors.green;
-    }
-    //cardio
-    else if(challenges[index]['type'] == 3)
-      return Colors.orange;
-    //flexibility
-    else{
-      return Colors.purple[300];
-    }
 
   Color challengeColor(){
     Color returncolor = colors[0];
