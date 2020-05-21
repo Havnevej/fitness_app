@@ -28,7 +28,6 @@ class _HomeState extends State<Home> {
   List secondList = [];
   Person user;
   Connection connection;
-  List challenges = [0];
   bool loading = false;
   int level = 1;
   int xpRequired = 1; //level*
@@ -36,6 +35,7 @@ class _HomeState extends State<Home> {
   double xpProgress = 0;
   int counter = 0;
   List notifications = [];
+  List<dynamic> challenges = [];
   List<Color> colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
 
   @override
@@ -54,22 +54,6 @@ class _HomeState extends State<Home> {
       counter = notifications.length;
     });
   }
-  Color challengeColor(int index){
-    //lower body
-    if(challenges[index]['type'] == 2){
-      return Colors.blue[400];
-    }
-    //upper body
-    else if(challenges[index]['type'] == 0){
-      return Colors.green;
-    }
-    //cardio
-    else if(challenges[index]['type'] == 3)
-      return Colors.orange;
-    //flexibility
-    else{
-      return Colors.purple[300];
-    }
 
   Color challengeColor(){
     Color returncolor = colors[0];
@@ -212,7 +196,7 @@ class _HomeState extends State<Home> {
           ),
           FutureBuilder<List<dynamic>>(
               future: connection.getChallenges(),
-              builder: (BuildContext context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>>snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return  Container(
                       padding: EdgeInsets.symmetric(

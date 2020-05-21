@@ -55,6 +55,17 @@ class _LeaderBoardState extends State<LeaderBoard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Center(
+                child: Text('TOP 25', style: TextStyle(fontSize: 20,
+                    color: Color.fromRGBO(255, 253, 209, 1),
+                    fontWeight: FontWeight.bold
+                ),
+                ),
+              ),
+              FutureBuilder<Map<dynamic,dynamic>>(
+                future: connection.getTop25ByRank(),
+                builder: (BuildContext context, AsyncSnapshot<Map<dynamic,dynamic>>snapshot){
+                  if( snapshot.connectionState != ConnectionState.done){
               Divider(height: 0,color: Colors.blueGrey[900], thickness: 10,),
               FutureBuilder(
                 future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
