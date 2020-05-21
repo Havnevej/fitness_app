@@ -55,8 +55,8 @@ class _LeaderBoardState extends State<LeaderBoard> {
               ),
               FutureBuilder<Map<dynamic,dynamic>>(
                 future: connection.getTop25ByRank(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if( snapshot.connectionState == ConnectionState.waiting){
+                builder: (BuildContext context, AsyncSnapshot<Map<dynamic,dynamic>>snapshot){
+                  if( snapshot.connectionState != ConnectionState.done){
                     return  Center(child: Text('Please wait its loading...'));
                   } else {
                     print("asdasd ${snapshot.data}");
