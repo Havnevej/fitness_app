@@ -30,7 +30,13 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   List<int> leaderboardIncrement = [] ;
 
+  Stream streamTop25()async*{
+    top25 = await connection.getTop25ByRank();
+    listLead = top25.keys.toList();
 
+    leadRank = await connection.getLeaderBoardPosition();
+    leadPos = leadRank.keys.toList();
+  }
 
 
   @override
@@ -62,30 +68,23 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ),
                 ),
               ),
-              FutureBuilder<dynamic>(
-                  future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
-                  builder: (context, AsyncSnapshot<dynamic> snapshot){
-                  top25 = snapshot.data[0];//top25
-                  leadRank = snapshot.data[1];//leadRank
-                  listLead = top25.keys.toList();
-                  leadPos = leadRank.keys.toList();
-                  print("asdasdas $listLead");
-                  print("asdasdas $leadPos");
-
+              StreamBuilder(
+                  stream: streamTop25(),
+                  builder: (context, AsyncSnapshot snapshot){
                     return ListView.builder (
-                        scrollDirection: Axis.vertical,
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: listLead.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: <Widget>[
-                              Container(
-                                color:Colors.blueGrey[900],
-                                child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
-                              ),
-                            ],
-                          );
+                          scrollDirection: Axis.vertical,
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: listLead.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: <Widget>[
+                                Container(
+                                  color:Colors.blueGrey[900],
+                                  child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
+                                ),
+                              ],
+                            );
                     });
                 },
               ),
