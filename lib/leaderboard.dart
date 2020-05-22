@@ -30,8 +30,17 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   List<int> leaderboardIncrement = [] ;
 
+  Stream streamTop25()async*{
+    top25 = await connection.getTop25ByRank();
+    listLead = top25.keys.toList();
 
+    leadRank = await connection.getLeaderBoardPosition();
+    leadPos = leadRank.keys.toList();
 
+    for(int i = 1; i<listLead.length+1; i++){
+      leaderboardIncrement.add(i);
+    }
+  }
 
   @override
   void initState() {
@@ -44,7 +53,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.green[400],
         elevation: (1),
@@ -55,40 +64,6 @@ class _LeaderBoardState extends State<LeaderBoard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Center(
-                child: Text('TOP 25', style: TextStyle(fontSize: 20,
-                    color: Color.fromRGBO(255, 253, 209, 1),
-                    fontWeight: FontWeight.bold
-                ),
-                ),
-              ),
-              FutureBuilder<dynamic>(
-                  future: Future.wait([connection.getTop25ByRank(),connection.getLeaderBoardPosition()]),
-                  builder: (context, AsyncSnapshot<dynamic> snapshot){
-                  top25 = snapshot.data[0];//top25
-                  leadRank = snapshot.data[1];//leadRank
-                  listLead = top25.keys.toList();
-                  leadPos = leadRank.keys.toList();
-                  print("asdasdas $listLead");
-                  print("asdasdas $leadPos");
-
-                    return ListView.builder (
-                        scrollDirection: Axis.vertical,
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: listLead.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: <Widget>[
-                              Container(
-                                color:Colors.blueGrey[900],
-                                child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
-                              ),
-                            ],
-                          );
-                    });
-                },
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -96,8 +71,8 @@ class _LeaderBoardState extends State<LeaderBoard> {
                     child: Container(
                       color: Colors.blueGrey[800],
                       child: Center(
-                        child: Text('Global TOP 10', style: TextStyle(fontSize: 20,
-                            color: Colors.yellow,
+                        child: Text("Your Leaderboard placing in Denmark", style: TextStyle(fontSize: 20,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold
                         ),
                         ),
@@ -106,11 +81,61 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   ),
                 ],
               ),
+              StreamBuilder(
+                  stream: streamTop25(),
+                  builder: (context, AsyncSnapshot snapshot){
+                    return Column(
+
+                      children: [
+                        ListView.builder (
+                          scrollDirection: Axis.vertical,
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: leadPos.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _leaderboardPos(email: leadPos[index], lvl: leadRank[leadPos[index]]);
+                          }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                color: Colors.blueGrey[800],
+                                child: Center(
+                                  child: Text('Global TOP 10', style: TextStyle(fontSize: 20,
+                                      color: Colors.yellow,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        ListView.builder (
+                              scrollDirection: Axis.vertical,
+                              physics: ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: listLead.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  children: <Widget>[
+                                    Container(
+                                      color:Colors.blueGrey[900],
+                                      child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
+                                    ),
+                                  ],
+                                );
+                        }),
+                      ],
+                    );
+                },
+              ),
             ],
           ),
         ],
       ),
-      );
+    );
   }
 
   Widget _leaderboard({String email, int lvl, int index}) {
@@ -125,7 +150,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                //Container(child: Text(leaderboardIncrement[index].toString()),),
+                Container(child: Text(leaderboardIncrement[index].toString()),),
                 Center(
                   child: Container(
                       margin: EdgeInsets.only(left: 40),
@@ -147,38 +172,47 @@ class _LeaderBoardState extends State<LeaderBoard> {
       ),
     );
   }
+
   Widget _leaderboardPos({String email, int lvl,}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-
           Padding(
             padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+            child: Column(
+              children: [
                 Container(
-                  child: Text("You Leaderboard position: ",style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Color.fromRGBO(255, 253, 209, 1), fontSize: 15),)),
-                ),
-                Center(
-                  child: Container(
-                      margin: EdgeInsets.only(left: 40),
-                      child: Text(email, style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Color.fromRGBO(255, 253, 209, 1), fontSize: 15),))),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  child: Text("$lvl", style: TextStyle(fontWeight: FontWeight.bold),),
                   decoration: BoxDecoration(
-                    color: Colors.yellow,
-                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.blueGrey[800],
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                            margin: EdgeInsets.fromLTRB(3, 3, 0, 0),
+                            child: Text("${email.toUpperCase()}", style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Colors.black54, fontSize: 35, fontWeight: FontWeight.bold),))
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 4),
+                        width: 30,
+                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                        child: Center(child: Text("#$lvl", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          Container(height: 2, color: Color.fromRGBO(255, 253, 209, 1),),
         ],
       ),
     );
