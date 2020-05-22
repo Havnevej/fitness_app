@@ -27,6 +27,8 @@ class _myProfileState extends State<myProfilePage> {
   Connection connection;
   String weight;
   String height;
+  List weightHistoryList=[];
+  Map<dynamic, dynamic> weightHistory;
   bool loading = false;
 
   @override
@@ -187,18 +189,36 @@ class _myProfileState extends State<myProfilePage> {
               ),
               Divider(height: 2, color: Colors.greenAccent[400], thickness: 2,),
               SizedBox(height: 30,),
-              Expanded(
-                child: Container(
-                  child: Sparkline(data: <double>[0, 1, 1.5, 2, 2.5, 2, 3.5, 1.5, 1, 2.5, 2, 4],
-                    sharpCorners: true,
-                    lineWidth: 3,
-                    lineColor: Colors.blueGrey,
-                    fillMode: FillMode.below,
-                    fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.greenAccent[400], Colors.blue[300],
-                      ]
+              FutureBuilder <Map<dynamic,dynamic>>(
+                future: connection.getWeightHistory(),
+                builder: (BuildContext context, AsyncSnapshot <dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    weightHistory = snapshot.data;
+                    weightHistoryList = weightHistory.keys.toList();
+                    print('hello ${weightHistory[weightHistoryList[0]]}');
+                    print(weightHistory.toString());
+
+                  return Expanded(
+                    child: Container(
+                      child: Sparkline(data: [user.weight.toDouble(), weightHistory[weightHistoryList[0]].toDouble(), weightHistory[weightHistoryList[1]].toDouble(),
+                        weightHistory[weightHistoryList[2]].toDouble(), weightHistory[weightHistoryList[3]].toDouble(), weightHistory[weightHistoryList[4]].toDouble()],
+                        pointsMode: PointsMode.all,
+                        pointSize: 15,
+                        pointColor: Colors.blue,
+                        sharpCorners: true,
+                        lineWidth: 3,
+                        lineColor: Colors.blueGrey,
+                        fillMode: FillMode.below,
+                        fillGradient: new LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.greenAccent[400], Colors.blue[300],
+                          ]
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                  }
+                else{
+                  return Center(child: Text('Loading weight history', style: TextStyle(color: Colors.greenAccent[400]),));
+                  }}
               ),
             ],
           ),
