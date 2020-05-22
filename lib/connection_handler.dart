@@ -233,7 +233,7 @@ class Connection {
         print(dataFromSocket);
         Map userMap = jsonDecode(dataFromSocket);
         socket.destroy();
-        return new Person.fromJson(userMap);
+        return new Future.value(Person.fromJson(userMap));
       }
       if(dataFromSocket != "1"){
         socket.destroy();

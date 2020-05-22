@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'connection_handler.dart';
 import 'friends.dart';
 import 'leaderboard.dart';
+import 'localsave.dart';
 import 'login.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
@@ -34,9 +35,10 @@ class _HomeState extends State<Home> {
   int xpCurrent = 0;
   double xpProgress = 0;
   int counter = 0;
-  List notifications = [];
+  List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
   List<Color> colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
+
 
   @override
   void initState() {
@@ -46,13 +48,26 @@ class _HomeState extends State<Home> {
     super.initState();
     restore();
   }
+
   restore() async{
+    //REMEMBER TO CLEAR THE PREF WHEN LOGGING OUT
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      //notifications = [(prefs.getString("notifications") ?? "NOO!!")];
-      notifications =  prefs.getStringList("incomingR");
-      counter = notifications.length;
-    });
+
+    List<String> outgoingFriendsList = user.friendRequestsOutgoing;
+    LocalSave.save("savedOutGoing", outgoingFriendsList);
+    List<String> savedOut = [];
+    savedOut = prefs.getStringList("savedOutGoing");
+    for(int i = 0; i<savedOut.length; i++){
+      if(user.friendslist.contains(savedOut[i])){
+        notificationsAcceptedReq.add(savedOut[i]);
+        user.friendRequestsOutgoing.removeAt(i);
+        prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
+      }
+    }
+    print("asd $notificationsAcceptedReq");
+    print(savedOut);
+      //counter = notifications.length;
+      //notifications.addAll(prefs.getStringList("newFriend"));//(at the moment adding the whole outgoing list) -- accpeted Friend request add to notifications.
   }
 
   Color challengeColor(){
@@ -60,7 +75,6 @@ class _HomeState extends State<Home> {
     colors.removeAt(0);
     return returncolor;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +94,9 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: Icon(Icons.notifications, color: Colors.blueGrey,), onPressed: () {
                   setState(() {
-                    //restore();
+                    restore();
                     counter = 0;
-                    _showN();
+                    _showN(user.friendRequestsIncoming);
                 });
               },),
               counter != 0 ? Positioned(
@@ -376,6 +390,8 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.exit_to_app, color: Colors.blueGrey[900]),
                 label: Text('Logout', style: TextStyle( color: Colors.blueGrey[900]),),
                 onPressed: () async{
+                  final SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.clear();
                   await connection.logout();
                   Navigator.pop(context);
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
@@ -388,7 +404,8 @@ class _HomeState extends State<Home> {
       ),
     ),
   );
-  void _showN () => showDialog(context: context, builder: (context) =>
+  void _showN (List<dynamic> friendsInc) => showDialog(context: context, builder: (context) =>
+
     Material(
       type: MaterialType.transparency,
       child: Column(
@@ -402,7 +419,7 @@ class _HomeState extends State<Home> {
                   //color: Colors.greenAccent,
                   height: 350,
                   decoration: BoxDecoration(
-                    color: Colors.teal[300],
+                    color: Colors.blueGrey[800],
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0),
@@ -411,50 +428,89 @@ class _HomeState extends State<Home> {
                       topRight: Radius.circular(3),
                     ),),
                   child:
-                  ListView(
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemCount: notifications.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  children: [
-                                    SizedBox(height: 20,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: Container(
-                                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                            margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                            height: 60,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              shape: BoxShape.rectangle,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                                bottomRight: Radius.circular(5),
-                                                topRight: Radius.circular(5),
-                                              ),),
-                                            child:Text(notifications[index],),
+                    ListView(
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount: friendsInc.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Row(
+                                    children: [
+                                      //SizedBox(height: 20,),
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                              bottomRight: Radius.circular(5),
+                                              topRight: Radius.circular(5),
+                                            ),),
+                                          child:RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(fontSize: 14, color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(text:"${friendsInc[index]} ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                TextSpan(text: ("sent you a friend request.")),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }
-                          ),],
-                      ),
-                    ],
-                  ),
+                                      ),
+                                    ],
+                                  );
+                            }),
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount: 5, //HARDCODED
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Row(
+                                    children: [
+                                      //SizedBox(height: 20,),
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                              bottomRight: Radius.circular(5),
+                                              topRight: Radius.circular(5),
+                                            ),),
+                                          child:RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(fontSize: 14, color: Colors.black),
+                                              children: <TextSpan>[
+                                                TextSpan(text:" TEST ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                TextSpan(text: ("accepted your friend request.")),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                        ],),
+                      ],
+                    ),
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
@@ -478,7 +534,6 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-
           ),],
       ),
     ),
