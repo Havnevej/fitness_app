@@ -53,10 +53,10 @@ class _SearchState extends State<Search> {
                       child: TextFormField(
                         decoration: textInputDecoration.copyWith(hintText: 'Search',),
                         onChanged: (val) async {
-                          _map = await connection.searchByEmail(val);
-                          setState(() {
-                            list2 = _map.keys.toList();
-                          });
+                            _map = await connection.searchByEmail(val);
+                            setState(() {
+                              list2 = _map.keys.toList();
+                            });
                         }
                       ),
                     ),

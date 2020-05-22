@@ -82,53 +82,53 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ],
               ),
               StreamBuilder(
-                  stream: streamTop25(),
-                  builder: (context, AsyncSnapshot snapshot){
-                    return Column(
+                stream: streamTop25(),
+                builder: (context, AsyncSnapshot snapshot){
+                  return Column(
 
-                      children: [
-                        ListView.builder (
-                          scrollDirection: Axis.vertical,
-                          physics: ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: leadPos.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return _leaderboardPos(email: leadPos[index], lvl: leadRank[leadPos[index]]);
-                          }),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                color: Colors.blueGrey[800],
-                                child: Center(
-                                  child: Text('Global TOP 10', style: TextStyle(fontSize: 20,
-                                      color: Colors.yellow,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                  ),
+                    children: [
+                      ListView.builder (
+                        scrollDirection: Axis.vertical,
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: leadPos.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _leaderboardPos(email: leadPos[index], lvl: leadRank[leadPos[index]]);
+                        }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              color: Colors.blueGrey[800],
+                              child: Center(
+                                child: Text('Global TOP 10', style: TextStyle(fontSize: 20,
+                                    color: Colors.yellow,
+                                    fontWeight: FontWeight.bold
+                                ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        ListView.builder (
-                              scrollDirection: Axis.vertical,
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: listLead.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  children: <Widget>[
-                                    Container(
-                                      color:Colors.blueGrey[900],
-                                      child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
-                                    ),
-                                  ],
-                                );
-                        }),
-                      ],
-                    );
+                          ),
+                        ],
+                      ),
+                      ListView.builder (
+                            scrollDirection: Axis.vertical,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: listLead.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: <Widget>[
+                                  Container(
+                                    color:Colors.blueGrey[900],
+                                    child: _leaderboard(email: listLead[index], lvl: top25[listLead[index]], index: index),
+                                  ),
+                                ],
+                              );
+                      }),
+                    ],
+                  );
                 },
               ),
             ],

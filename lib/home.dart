@@ -54,11 +54,12 @@ class _HomeState extends State<Home> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
+    List<String> friendslist = user.friendslist;
     LocalSave.save("savedOutGoing", outgoingFriendsList);
     List<String> savedOut = [];
     savedOut = prefs.getStringList("savedOutGoing");
     for(int i = 0; i<savedOut.length; i++){
-      if(user.friendslist.contains(savedOut[i])){
+      if(friendslist.contains(savedOut[i])){
         notificationsAcceptedReq.add(savedOut[i]);
         user.friendRequestsOutgoing.removeAt(i);
         prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
@@ -78,6 +79,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    connection.getMyUserData();
     colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
     if(xpCurrent>=user.level*1000){xpCurrent = 0;}
     xpCurrent = user.exp;
@@ -481,7 +483,7 @@ class _HomeState extends State<Home> {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 physics: ClampingScrollPhysics(),
-                                itemCount: 5, //HARDCODED
+                                itemCount: notificationsAcceptedReq.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Row(
                                     children: [
@@ -504,7 +506,7 @@ class _HomeState extends State<Home> {
                                             text: TextSpan(
                                               style: TextStyle(fontSize: 14, color: Colors.black),
                                               children: <TextSpan>[
-                                                TextSpan(text:" TEST ", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                TextSpan(text:"${notificationsAcceptedReq[index]} ", style: TextStyle(fontWeight: FontWeight.bold)),
                                                 TextSpan(text: ("accepted your friend request.")),
                                               ],
                                             ),
