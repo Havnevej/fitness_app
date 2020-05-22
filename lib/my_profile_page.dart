@@ -129,7 +129,7 @@ class _myProfileState extends State<myProfilePage> {
                     //Icon(Icons.fitness_center),
                     SizedBox(width: 1.1,),
                     Container(
-                      color: Colors.white,
+                      color: Color.fromRGBO(222, 229, 229, 1),
                       padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -148,7 +148,7 @@ class _myProfileState extends State<myProfilePage> {
                     ),
                     VerticalDivider(width:2, color: Colors.black,),
                     Container(
-                      color: Colors.white,
+                      color: Color.fromRGBO(222, 229, 229, 1),
                       padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +167,7 @@ class _myProfileState extends State<myProfilePage> {
                     VerticalDivider(width: 2, color: Color.fromRGBO(255, 0, 0, 1), thickness: 2),
                     Expanded(
                       child: Container(
-                        color:  Colors.white,
+                        color: Color.fromRGBO(222, 229, 229, 1),
                         padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
