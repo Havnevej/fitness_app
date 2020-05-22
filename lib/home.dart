@@ -253,32 +253,35 @@ class _HomeState extends State<Home> {
                                 shrinkWrap: true,
                                 itemCount: firstList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return FlatButton(
-                                    onPressed: (){
-                                      setState(() {
-                                        xpCurrent += firstList[index]['point_reward'];
-                                        connection.completeChallenge(jsonEncode(firstList[index]));
-                                        firstList.removeAt(index);
-                                      });
-                                    },
-                                    child: Container(
-                                        height: 120,
-                                        width: 205.5,
-                                        decoration: BoxDecoration(
-                                            color: challengeColor(),
-                                            shape: BoxShape.rectangle),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                              Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
-                                              Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
-                                            ],
+                                  return Container(
+                                    width: double.infinity,
+                                    child: RaisedButton(
+                                      color: challengeColor(),
+                                      onPressed: (){
+                                        setState(() {
+                                          xpCurrent += firstList[index]['point_reward'];
+                                          connection.completeChallenge(jsonEncode(firstList[index]));
+                                          firstList.removeAt(index);
+                                        });
+                                      },
+                                      child: Container(
+                                          height: 120,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                                Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                                Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                      ),
                                     ),
                                   );
                                 },
@@ -293,32 +296,35 @@ class _HomeState extends State<Home> {
                                 shrinkWrap: true,
                                 itemCount: secondList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return FlatButton(
-                                    onPressed: (){
-                                      setState(() {
-                                        xpCurrent += secondList[index]['point_reward'];
-                                        connection.completeChallenge(jsonEncode(secondList[index]));
-                                        secondList.removeAt(index);
-                                      });
-                                    },
-                                    child: Container(
-                                        height: 120,
-                                        width: 205.5,
-                                        decoration: BoxDecoration(
-                                            color: challengeColor(),
-                                            shape: BoxShape.rectangle),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                                Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
-                                                Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
-                                              ],
+                                  return Container(
+                                    width: double.infinity,
+                                    child: RaisedButton(
+                                      color: challengeColor(),
+                                      onPressed: (){
+                                        setState(() {
+                                          xpCurrent += secondList[index]['point_reward'];
+                                          connection.completeChallenge(jsonEncode(secondList[index]));
+                                          secondList.removeAt(index);
+                                        });
+                                      },
+                                      child: Container(
+                                          height: 120,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
+                                                  Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
+                                                  Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
+                                                ],
+                                            ),
                                           ),
-                                        ),
+                                      ),
                                     ),
                                   );
                                 }
