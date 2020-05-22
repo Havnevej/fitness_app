@@ -90,6 +90,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.green[400],
         elevation: 0.0,
+        title: Text('Fit2Gether',
+          style: GoogleFonts.charm(
+            fontSize: 32,
+            letterSpacing: 5.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.yellow[600],
+          ),
+        ),
+        centerTitle: true,
         actions: <Widget>[
           Stack(
             children: <Widget>[
