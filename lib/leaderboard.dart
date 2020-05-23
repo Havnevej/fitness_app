@@ -85,7 +85,6 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 stream: streamTop25(),
                 builder: (context, AsyncSnapshot snapshot){
                   return Column(
-
                     children: [
                       ListView.builder (
                         scrollDirection: Axis.vertical,
@@ -199,12 +198,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 4),
-                        width: 30,
+                        width: 45,
                         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                         child: Center(child: Text("#$lvl", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
                         decoration: BoxDecoration(
                           color: Colors.blueGrey[900],
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(11),
                         ),
                       ),
                     ],

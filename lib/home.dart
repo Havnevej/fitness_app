@@ -25,8 +25,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List firstList =  [];
-  List secondList = [];
   Person user;
   Connection connection;
   bool loading = false;
@@ -38,7 +36,14 @@ class _HomeState extends State<Home> {
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
   List<Color> colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
+  List challenge0 = [];
+  List challenge1 = [];
+  List challenge2 = [];
+  List challenge3 = [];
 
+  StreamChallenge()async*{
+    challenges = await connection.getChallenges();
+  }
 
   @override
   void initState() {
@@ -50,7 +55,6 @@ class _HomeState extends State<Home> {
   }
 
   restore() async{
-    //REMEMBER TO CLEAR THE PREF WHEN LOGGING OUT
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
@@ -65,8 +69,6 @@ class _HomeState extends State<Home> {
         prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
       }
     }
-    print("asd $notificationsAcceptedReq");
-    print(savedOut);
       //counter = notifications.length;
       //notifications.addAll(prefs.getStringList("newFriend"));//(at the moment adding the whole outgoing list) -- accpeted Friend request add to notifications.
   }
@@ -79,8 +81,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    connection.getMyUserData();
-    colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
+
+    colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     if(xpCurrent>=user.level*1000){xpCurrent = 0;}
     xpCurrent = user.exp;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
@@ -107,7 +109,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     restore();
                     counter = 0;
-                    _showN(user.friendRequestsIncoming);
+                    _showNotification(user.friendRequestsIncoming);
                 });
               },),
               counter != 0 ? Positioned(
@@ -200,7 +202,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(height: 50,),
+              SizedBox(height: 47,),
               CircularPercentIndicator(
                 animateFromLastPercent: true,
                 radius: 200.0,
@@ -216,153 +218,107 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.blueGrey,
                 progressColor: Colors.yellow,
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 40,),
+              Container(
+                color: Colors.blueGrey[600],
+                height:20,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 70,
+                      child: Center(child: Text("Title"),),
+                    ),
+                    VerticalDivider(width:0,color: Colors.black,),
+                    Expanded(
+                      child: Container(
+                        width: 200,
+                        child: Center(child: Text("Description")),
+                      ),
+                    ),
+                    VerticalDivider(width:0,color: Colors.black,),
+                    Container(
+                      width: 50,
+                      child: Center(child: Text("Reward")),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-          FutureBuilder<List<dynamic>>(
-              future: connection.getChallenges(),
-              builder: (BuildContext context, AsyncSnapshot<List<dynamic>>snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return  Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 7,
-                      ),
-                      height: 120,
-                      width: 205.5,
-                      decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.rectangle),
-                  );
-                } else {
-                  List<dynamic> snap = snapshot.data;
-                  print(snap.toString() + " 123");
-                  List firstList =  [];
-                  List secondList = [];
-                  switch (snap.length){
-                    case 0: {
-                      return Text('No more challenges for today, come back tomorrow', style: TextStyle(color: Colors.red));
-                    }
-                      break;
-                    case 1: {
-                      firstList.add(snapshot.data[0]);
-                    }
-                    break;
-                    case 2: {
-                      firstList.add(snapshot.data[0]);
-                      secondList.add(snapshot.data[1]);
-                    }
-                    break;
-                    case 3: {
-                      firstList.add(snapshot.data[0]);
-                      firstList.add(snapshot.data[1]);
-                      secondList.add(snapshot.data[2]);
-                    }
-                    break;
-                    case 4: {
-                      firstList.add(snapshot.data[0]);
-                      firstList.add(snapshot.data[1]);
-                      secondList.add(snapshot.data[2]);
-                      secondList.add(snapshot.data[3]);
-                    }
-                    break;
-                  }
-                  return Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                physics: ClampingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: firstList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    width: double.infinity,
-                                    child: RaisedButton(
-                                      color: challengeColor(),
-                                      onPressed: (){
-                                        setState(() {
-                                          xpCurrent += firstList[index]['point_reward'];
-                                          connection.completeChallenge(jsonEncode(firstList[index]));
-                                          firstList.removeAt(index);
-                                        });
-                                      },
-                                      child: Container(
-                                          height: 120,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Center(child: Text('Challenge: ${firstList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                                Center(child: Text('${firstList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
-                                                Center(child: Text('Reward: ${firstList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
-                                              ],
-                                            ),
-                                          ),
+          StreamBuilder(
+              stream: StreamChallenge(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return Container(
+                  color: Colors.blueGrey[800],
+                  height: 232,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: challenges.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return challenges.isNotEmpty ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FlatButton(
+                            color: Colors.red,
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              height: 58,
+                              color: colors[index],
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(top: 5 ),
+                                    width: 70,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text('${challenges[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold))),
+                                      ],
+                                    ),
+                                  ),
+                                  VerticalDivider(width:0,color: Colors.black,),
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.only(top: 5),
+                                      width: 200,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text('${challenges[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 14)), textAlign: TextAlign.center,),
+                                          ]
                                       ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  VerticalDivider(width:0,color: Colors.black,),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(7, 5, 0, 0),
+                                    width: 50,
+                                    child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text('${challenges[index]["point_reward"]} Points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.black, fontSize: 14)))]),
+                                  ),
+                                ],
+                              ),
                             ),
+                            onPressed: (){
+                              setState(() {
+                                challengeComplete(challenges,index);
+                                //challenges.removeAt(index);
+                                //xpCurrent += challenges[index]['point_reward'];
+                                //connection.completeChallenge(jsonEncode(challenges[index]));
+                              });
+                            },
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                physics: ClampingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: secondList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    width: double.infinity,
-                                    child: RaisedButton(
-                                      color: challengeColor(),
-                                      onPressed: (){
-                                        setState(() {
-                                          xpCurrent += secondList[index]['point_reward'];
-                                          connection.completeChallenge(jsonEncode(secondList[index]));
-                                          secondList.removeAt(index);
-                                        });
-                                      },
-                                      child: Container(
-                                          height: 120,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  Center(child: Text('Challenge: ${secondList[index]["title"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)))),
-                                                  Center(child: Text('${secondList[index]["desc"]}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)), textAlign: TextAlign.center,)),
-                                                  Center(child: Text('Reward: ${secondList[index]["point_reward"]} points', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 14)))),
-                                                ],
-                                            ),
-                                          ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
+                          Divider(height: 0, color: Colors.black,),
+                        ],
+                      ):Container(
+                        child: Text("NOTHING TO SHOW"),
+                      );
+                  }),
+                );},
           ),
-          Divider(height: 1, color: Colors.greenAccent),
         ],
       ),
     );
@@ -421,8 +377,8 @@ class _HomeState extends State<Home> {
       ),
     ),
   );
-  void _showN (List<dynamic> friendsInc) => showDialog(context: context, builder: (context) =>
 
+  void _showNotification (List<dynamic> friendsInc) => showDialog(context: context, builder: (context) =>
     Material(
       type: MaterialType.transparency,
       child: Column(
@@ -552,6 +508,79 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),],
+      ),
+    ),
+  );
+
+  void challengeComplete (List<dynamic> challenges, int index) => showDialog(context: context, builder: (context) =>
+    Material(
+    type: MaterialType.transparency,
+      child: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(50, 450, 50, 0),
+            padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
+            color: Colors.yellow[600],
+            height: 125,
+            width: 250,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 30),
+                      height: 40,
+                      width: 220,
+                      child: Column(
+                          children: [
+                            Center(child: Text("DID YOU COMPLETE THE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                            ),
+                            Center(child: Text("CHALLENGE?", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                            ),
+                      ]),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Divider(height: 0,color: Colors.black,),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          color: Colors.black,
+                          child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
+                          onPressed: (){
+                            setState(() {
+                              challenges.removeAt(index);
+                              xpCurrent += challenges[index]['point_reward'];
+                              connection.completeChallenge(jsonEncode(challenges[index]));
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                    VerticalDivider(width:0,color: Colors.black,),
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          color: Colors.black,
+                          child: Text("Cancel",style: TextStyle(color: Colors.yellow[600]),),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     ),
   );
