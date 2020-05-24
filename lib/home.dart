@@ -36,17 +36,10 @@ class _HomeState extends State<Home> {
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
   List<Color> colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
-  List challenge0 = [];
-  List challenge1 = [];
-  List challenge2 = [];
-  List challenge3 = [];
-  bool challengeEmpty = false;
+
 
   StreamChallenge()async*{
     challenges = await connection.getChallenges();
-    if(challenges.isEmpty){
-      challengeEmpty = true;
-    }
   }
 
   @override
@@ -568,7 +561,7 @@ class _HomeState extends State<Home> {
                           color: Colors.black,
                           child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
                           onPressed: () async{
-                            colors.removeAt(index);
+                            colors.removeAt(index); // making this async?
                             await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {
                               //challenges.removeAt(index);
