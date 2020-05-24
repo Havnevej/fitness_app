@@ -40,9 +40,13 @@ class _HomeState extends State<Home> {
   List challenge1 = [];
   List challenge2 = [];
   List challenge3 = [];
+  bool challengeEmpty = false;
 
   StreamChallenge()async*{
     challenges = await connection.getChallenges();
+    if(challenges.isEmpty){
+      challengeEmpty = true;
+    }
   }
 
   @override
@@ -52,6 +56,7 @@ class _HomeState extends State<Home> {
     connection.getMyUserData();
     super.initState();
     restore();
+    StreamChallenge();
   }
 
   restore() async{
@@ -86,7 +91,7 @@ class _HomeState extends State<Home> {
     if(xpCurrent>=user.level*1000){xpCurrent = 0;}
     xpCurrent = user.exp;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
-
+    print(challenges);
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -247,17 +252,38 @@ class _HomeState extends State<Home> {
           ),
           StreamBuilder(
               stream: StreamChallenge(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
+              builder: (context, AsyncSnapshot snapshot) {
                 return Container(
                   color: Colors.blueGrey[800],
                   height: 232,
-                  child: ListView.builder(
+                  child: challenges?.isEmpty ?? true ?
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.refresh),
+                            tooltip: 'refresh',
+                            onPressed: (){
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 55,),
+                      Container(
+                        child: Text("NO CHALLENGES LEFT FOR THE DAY!", style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ) : ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
                     itemCount: challenges.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return challenges.isNotEmpty ? Column(
+                      return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FlatButton(
@@ -313,8 +339,6 @@ class _HomeState extends State<Home> {
                           ),
                           Divider(height: 0, color: Colors.black,),
                         ],
-                      ):Container(
-                        child: Text("NOTHING TO SHOW"),
                       );
                   }),
                 );},
@@ -334,34 +358,27 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           color: Colors.green,
           width: 200,
-          height: 192.5,
+          height: 145,
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
-                label: Text("Challenges history"),
+                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold),),
                 icon: Icon(Icons.fitness_center,color: Colors.blueGrey[900],),
-                onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
+                onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
               FlatButton.icon(
-                label: Text("Amazing"),
-                icon: Icon(Icons.settings,color: Colors.blueGrey[900],),
-                onPressed:() {},
-              ),
-              Divider(height:0 ,color: Colors.blueGrey[900],),
-              FlatButton.icon(
-                icon: Icon(Icons.person_outline, color: Colors.blueGrey[800]),
-                label: Text('My profile'),
-                textColor: Colors.blueGrey[800],
+                icon: Icon(Icons.person_outline, color: Colors.blueGrey[900]),
+                label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold),),
                 onPressed: () async{
                   await connection.getMyUserData();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
                 },
               ),
               Divider(height:0 ,color: Colors.blueGrey[900],),
               FlatButton.icon(
                 icon: Icon(Icons.exit_to_app, color: Colors.blueGrey[900]),
-                label: Text('Logout', style: TextStyle( color: Colors.blueGrey[900]),),
+                label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold),),
                 onPressed: () async{
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.clear();
@@ -370,7 +387,6 @@ class _HomeState extends State<Home> {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
                 },
               ),
-              Divider(height:0 ,color: Colors.blueGrey[900],),
             ],
           ),
         ),
@@ -514,7 +530,7 @@ class _HomeState extends State<Home> {
 
   void challengeComplete (List<dynamic> challenges, int index) => showDialog(context: context, builder: (context) =>
     Material(
-    type: MaterialType.transparency,
+      type: MaterialType.transparency,
       child: Column(
         children: <Widget>[
           Container(
@@ -552,11 +568,11 @@ class _HomeState extends State<Home> {
                         FlatButton(
                           color: Colors.black,
                           child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
-                          onPressed: (){
+                          onPressed: () async{
+                            await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {
-                              challenges.removeAt(index);
+                              //challenges.removeAt(index);
                               xpCurrent += challenges[index]['point_reward'];
-                              connection.completeChallenge(jsonEncode(challenges[index]));
                             });
                             Navigator.pop(context);
                           },
