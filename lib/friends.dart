@@ -201,13 +201,13 @@ class _FriendsState extends State<Friends> {
                   StreamBuilder(
                     stream: loadFriendsData().asBroadcastStream(),
                     builder: (context, snapshot) {
-                      return ListView.builder(
+                      return friends?.isEmpty ?? true ? Container():ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         itemCount: user.friendslist.length,
                         itemBuilder: (BuildContext context, int index) {
-                          Person friend = friends[index];
+                              Person friend = friends[index];
                           return Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,

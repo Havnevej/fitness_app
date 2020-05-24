@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   int counter = 0;
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
-  List<Color> colors = [Colors.blue[400],Colors.green,Colors.purple,Colors.orange];
+  List<Color> colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
   List challenge0 = [];
   List challenge1 = [];
   List challenge2 = [];
@@ -65,8 +65,8 @@ class _HomeState extends State<Home> {
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
     List<String> friendslist = user.friendslist;
     LocalSave.save("savedOutGoing", outgoingFriendsList);
-    List<String> savedOut = [];
-    savedOut = prefs.getStringList("savedOutGoing");
+    List<String> savedOut = prefs.getStringList("savedOutGoing");
+
     for(int i = 0; i<savedOut.length; i++){
       if(friendslist.contains(savedOut[i])){
         notificationsAcceptedReq.add(savedOut[i]);
@@ -74,8 +74,7 @@ class _HomeState extends State<Home> {
         prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
       }
     }
-      //counter = notifications.length;
-      //notifications.addAll(prefs.getStringList("newFriend"));//(at the moment adding the whole outgoing list) -- accpeted Friend request add to notifications.
+  counter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
   Color challengeColor(){
@@ -87,11 +86,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     if(xpCurrent>=user.level*1000){xpCurrent = 0;}
     xpCurrent = user.exp;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
-    print(challenges);
+
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
@@ -112,12 +110,12 @@ class _HomeState extends State<Home> {
               IconButton(
                 icon: Icon(Icons.notifications, color: Colors.blueGrey,), onPressed: () {
                   setState(() {
-                    restore();
+                    //restore();
                     counter = 0;
                     _showNotification(user.friendRequestsIncoming);
                 });
               },),
-              counter != 0 ? Positioned(
+              counter != 0 ? Positioned( // FALLBACK?!
               right: 11,
               top: 11,
               child: Container(
@@ -330,6 +328,7 @@ class _HomeState extends State<Home> {
                             ),
                             onPressed: (){
                               setState(() {
+                                //colors.removeAt(index); // moved TO yes no choice
                                 challengeComplete(challenges,index);
                                 //challenges.removeAt(index);
                                 //xpCurrent += challenges[index]['point_reward'];
@@ -569,6 +568,7 @@ class _HomeState extends State<Home> {
                           color: Colors.black,
                           child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
                           onPressed: () async{
+                            colors.removeAt(index);
                             await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {
                               //challenges.removeAt(index);
