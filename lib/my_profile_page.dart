@@ -46,9 +46,9 @@ class _myProfileState extends State<myProfilePage> {
 
   Stream weightHist() async*{
     weightHistory = await connection.getWeightHistory();
-    weightHistory.forEach((k,v) => weightProgressData.add([k,v]));
-    //weightHistoryList = weightHistory.toList();
-    weightProgressDataXAxis = weightHistory.keys.toList();
+    weightHistory.forEach((k,v) => weightProgressDataXAxis.add(DateTime.parse(k)));
+    weightHistoryList = weightHistory.values.toList();
+    //weightProgressDataXAxis = weightHistory.keys.toList();
     //weightProgressGraph();
   }
 
@@ -232,7 +232,7 @@ class _myProfileState extends State<myProfilePage> {
                             color: Colors.white,
                             width: 420,
                             height: 175,
-                            child: SimpleTimeSeriesChart.withSampleData(),
+                            child: SimpleTimeSeriesChart.withSampleData(weightProgressDataXAxis,weightHistoryList),
                           );
                         }
                       ),
