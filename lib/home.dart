@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   int counter = 0;
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
-  List<Color> colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
+  List<Color> colors = [];
 
 
   StreamChallenge()async*{
@@ -48,26 +48,27 @@ class _HomeState extends State<Home> {
     connection = widget.connection;
     connection.getMyUserData();
     super.initState();
-    restore();
+    restore();// POSITION +
     StreamChallenge();
+    colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
   }
 
   restore() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
-    List<String> friendslist = user.friendslist;
+    List<String> friendsList = user.friendslist;
     LocalSave.save("savedOutGoing", outgoingFriendsList);
     List<String> savedOut = prefs.getStringList("savedOutGoing");
 
     for(int i = 0; i<savedOut.length; i++){
-      if(friendslist.contains(savedOut[i])){
+      if(friendsList.contains(savedOut[i])){
         notificationsAcceptedReq.add(savedOut[i]);
         user.friendRequestsOutgoing.removeAt(i);
         prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
       }
     }
-  counter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    counter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
   Color challengeColor(){
@@ -79,8 +80,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    if(xpCurrent>=user.level*1000){xpCurrent = 0;}
-    xpCurrent = user.exp;
+    if(xpCurrent>=user.level*1000){
+      xpCurrent = 0; user.level++;
+    }
+
+    user.exp = xpCurrent;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
 
     return loading ? Loading() : Scaffold(
@@ -205,7 +209,7 @@ class _HomeState extends State<Home> {
                 animation: true,
                 animationDuration: 1200,
                 lineWidth: 15.0,
-                percent: (xpProgress.toDouble()/100) <= 1 ? (xpProgress.toDouble()/100) : 0 , //0.1
+                percent: (xpProgress.toDouble()/100) <= 1 ? (xpProgress.toDouble()/100) : 0 ,
                 center: new Text('LVL ${user.level}',
                   style:
                   new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.yellow),
@@ -561,7 +565,7 @@ class _HomeState extends State<Home> {
                           color: Colors.black,
                           child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
                           onPressed: () async{
-                            colors.removeAt(index); // making this async?
+                            colors.removeAt(index);
                             await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {
                               //challenges.removeAt(index);
