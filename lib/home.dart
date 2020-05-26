@@ -15,10 +15,9 @@ import 'my_profile_page.dart';
 
 
 class Home extends StatefulWidget {
-  final Person user;
   final Connection connection;
 
-  const Home({Key key, this.user, this.connection}) : super(key: key);
+  Home(this.connection);
 
   @override
   _HomeState createState() => _HomeState();
@@ -37,23 +36,17 @@ class _HomeState extends State<Home> {
   List<dynamic> challenges = [];
   List<Color> colors = [];
 
-
-  StreamChallenge()async*{
-    challenges = await connection.getChallenges();
-  }
-
   @override
   void initState() {
-    user = widget.connection.loggedInPerson;
     connection = widget.connection;
-    connection.getMyUserData();
-    super.initState();
-    restore();// POSITION +
-    StreamChallenge();
+    user = connection.loggedInPerson;
+    restoreSharedPrefs();// POSITION +
+    streamChallenges();
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
+    super.initState();
   }
 
-  restore() async{
+  restoreSharedPrefs() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
@@ -71,6 +64,10 @@ class _HomeState extends State<Home> {
     counter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
+  streamChallenges()async*{
+    challenges = await connection.getChallenges();
+  }
+
   Color challengeColor(){
     Color returncolor = colors[0];
     colors.removeAt(0);
@@ -80,9 +77,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    if(xpCurrent>=user.level*1000){
-      xpCurrent = 0; user.level++;
-    }
+    if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
     user.exp = xpCurrent;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
@@ -247,7 +242,7 @@ class _HomeState extends State<Home> {
             ],
           ),
           StreamBuilder(
-              stream: StreamChallenge(),
+              stream: streamChallenges(),
               builder: (context, AsyncSnapshot snapshot) {
                 return Container(
                   color: Colors.blueGrey[800],
