@@ -17,7 +17,7 @@ import 'my_profile_page.dart';
 class Home extends StatefulWidget {
   final Connection connection;
 
-  Home(this.connection);
+  const Home(this.connection);
 
   @override
   _HomeState createState() => _HomeState();

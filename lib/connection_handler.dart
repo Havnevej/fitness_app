@@ -2,21 +2,20 @@ import 'dart:convert' show utf8;
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter_fitness_app/person.dart';
 
 class Connection {
   SecureSocket socket;
-  int _port = 9001;
-  String _address = "192.168.8.102"; // 192.168.8.102
+  final int _port = 9001;
+  final String _address = "192.168.8.102"; // 192.168.8.102
   bool server_online = false;
   bool cert_loaded = false;
-  bool _verbose = false;
+  final bool _verbose = false;
   SecurityContext context;
   bool loggedIn = false;
-  String UID = "NOT_LOGGED_IN";
-  String getUID(){return "<UID>"+UID+"</UID>";}
+  String UID = 'NOT_LOGGED_IN';
+  String getUID(){return '<UID>'+UID+'</UID>';}
   String _username;
   Person loggedInPerson;
 
@@ -26,23 +25,23 @@ class Connection {
     if(socket == null){
       setupConnection();
     } else {
-      print("Already setup, skipping");
+      print('Already setup, skipping');
     }
   }
 
   Future<void> getMyUserData () async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_person");
+    socketWriteLine('get_person');
     socketWriteLine(_username);
     socket.encoding = utf8;
     await for(var data in socket) {
-      String dataRaw = utf8.decode(data);
-      if(dataRaw == "0"){print("server returns NO");return;}
+      var dataRaw = utf8.decode(data);
+      if(dataRaw == '0'){print('server returns NO');return;}
       Map userMap = jsonDecode(dataRaw);
       print(dataRaw);
       loggedInPerson = Person.fromJson(userMap);
       loggedIn = true;
-      print("got user data");
+      print('got user data');
       return;
     }
   }
@@ -50,7 +49,7 @@ class Connection {
 
   void socketWriteLine(String message){
     if(_verbose){
-      print("sending:\n"+getUID()+message);
+      print('sending:\n'+getUID()+message);
     }
     socket.writeln(getUID()+message);
   }
@@ -60,30 +59,30 @@ class Connection {
     //could add a call to checkconnection() with a small timeout and indicate if the server is online on the login screen
   }
   Future<SecurityContext> loadCert() async{
-      ByteData data = await rootBundle.load('assets/etc/new.jks');
+      var data = await rootBundle.load('assets/etc/new.jks');
       print(data.buffer.asUint8List());
-      this.context = SecurityContext.defaultContext;
-      this.context.setTrustedCertificatesBytes(
-          data.buffer.asUint8List(), password: "fitnessapp");
-      this.cert_loaded = true;
-      print("Done parsing cert");
-    return this.context;
+      context = SecurityContext.defaultContext;
+      context.setTrustedCertificatesBytes(
+          data.buffer.asUint8List(), password: 'fitnessapp');
+      cert_loaded = true;
+      print('Done parsing cert');
+    return context;
   }
   Future<bool> loginUser(String user, String pass) async {
     try{
-      socket = await SecureSocket.connect(_address, _port, context: context, timeout: new Duration(seconds: 15));
-      socketWriteLine("login");
+      socket = await SecureSocket.connect(_address, _port, context: context, timeout: Duration(seconds: 15));
+      socketWriteLine('login');
       socketWriteLine(user+"#NEXT#"+pass);
       print(user + " " + pass);
       await for(var data in socket){
         String dataFromSocket = new String.fromCharCodes(data).trim();
-        if(dataFromSocket == "0"){
-          print("Could not login with the supplied crendentials");
+        if(dataFromSocket == '0'){
+          print('Could not login with the supplied crendentials');
           return false;
         } else if (dataFromSocket.contains("UID:")) { //if this is in the message we have the right credentials
-          UID = dataFromSocket.split("UID:")[1];
+          UID = dataFromSocket.split('UID:')[1];
           _username = user;
-          print("Logged in, i have uid: " + UID);
+          print('Logged in, i have uid: ' + UID);
           await getMyUserData();
           socket.destroy();
           return true;
@@ -101,11 +100,11 @@ class Connection {
       if(loggedIn){
         print('Logging out');
         socket = await SecureSocket.connect(_address, _port, context: context);
-        socketWriteLine("logout");
+        socketWriteLine('logout');
         socketWriteLine(getUID());
       }
     } on Exception catch (e){
-      print("error logging out. Forcing");
+      print('error logging out. Forcing');
     } finally {
       loggedIn = false;
       socket.destroy();
@@ -113,22 +112,22 @@ class Connection {
   }
   void checkConnection() async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("ready");
+    socketWriteLine('ready');
     socket.listen(genericDataHandler);
     socket.destroy();
   }
   void genericDataHandler(data){
-    String dataFromSocket = new String.fromCharCodes(data).trim();
+    var dataFromSocket = String.fromCharCodes(data).trim();
     print(dataFromSocket);
   }
 
   void errorHandler (Object error, StackTrace st){
-    print("Socket exception");
+    print('Socket exception');
     print(error);
   }
 
   void doneHandler(){
-    print("Socket done");
+    print('Socket done');
     socket.destroy();
     server_online = false;
   }
@@ -137,14 +136,14 @@ class Connection {
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine("register_user");
     socketWriteLine(json.encode(user.toJson()));
-    bool returns = false;
+    var returns = false;
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
-      if(dataFromSocket == "1"){
-        print("register successfull");
+      var dataFromSocket = String.fromCharCodes(response).trim();
+      if(dataFromSocket == '1'){
+        print('register successfull');
         returns = true;
       } else if (dataFromSocket.contains("-1")){
-        print ("email already taken");
+        print ('email already taken');
         returns = false;
       }
       socket.destroy();
@@ -155,19 +154,19 @@ class Connection {
   }
   Future<bool> sendFriendRequest(String to) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("send_friend_request");
+    socketWriteLine('send_friend_request');
     socketWriteLine(to);
-    bool returns = false;
+    var returns = false;
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
-      if(dataFromSocket == "1"){
-        print("Sent friend request");
+      var dataFromSocket = String.fromCharCodes(response).trim();
+      if(dataFromSocket == '1'){
+        print('Sent friend request');
         returns = true;
       } else if (dataFromSocket.contains("-1")){
-        print ("could not send friend request");
+        print ('could not send friend request');
         returns = false;
       } else if (dataFromSocket.contains("-2")){
-        print("User: " + to + " is not found in the databse");
+        print('User: ' + to + ' is not found in the databse');
         returns = false;
       }
       socket.destroy();
@@ -178,19 +177,19 @@ class Connection {
   }
   Future<bool> acceptFriendRequest(String from) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("accept_friend_request");
+    socketWriteLine('accept_friend_request');
     socketWriteLine(from);
-    bool returns = false;
+    var returns = false;
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       if(dataFromSocket == "1"){
-        print("Accepted friendrequest");
+        print('Accepted friendrequest');
         returns = true;
       } else if (dataFromSocket.contains("-1")){
-        print ("could not send friend request");
+        print ('could not send friend request');
         returns = false;
       } else if (dataFromSocket.contains("-2")){
-        print("User: " + from + " is not found in the databse");
+        print('User: ' + from + ' is not found in the databse');
         returns = false;
       }
       socket.destroy();
@@ -201,19 +200,19 @@ class Connection {
   }
   Future<bool> declineFriendRequest(String from) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("decline_friend_request");
+    socketWriteLine('decline_friend_request');
     socketWriteLine(from);
-    bool returns = false;
+    var returns = false;
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
-      if(dataFromSocket == "1"){
-        print("Declined friendrequest");
+      var dataFromSocket = String.fromCharCodes(response).trim();
+      if(dataFromSocket == '1'){
+        print('Declined friendrequest');
         returns = true;
-      } else if (dataFromSocket.contains("-1")){
-        print ("could not decline friend request");
+      } else if (dataFromSocket.contains('-1')){
+        print ('could not decline friend request');
         returns = false;
-      } else if (dataFromSocket.contains("-2")){
-        print("User: " + from + " is not found in the databse");
+      } else if (dataFromSocket.contains('-2')){
+        print('User: ' + from + ' is not found in the databse');
         returns = false;
       }
       socket.destroy();
@@ -224,18 +223,18 @@ class Connection {
   }
   Future<Person> getFriendData(String email) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_friend");
+    socketWriteLine('get_friend');
     socketWriteLine(email);
-    String lastResponse = "99";
+    var lastResponse = '99';
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
-      if(lastResponse == "1"){
+      var dataFromSocket = String.fromCharCodes(response).trim();
+      if(lastResponse == '1'){
         print(dataFromSocket);
         Map userMap = jsonDecode(dataFromSocket);
         socket.destroy();
-        return new Future.value(Person.fromJson(userMap));
+        return Future.value(Person.fromJson(userMap));
       }
-      if(dataFromSocket != "1"){
+      if(dataFromSocket != '1'){
         socket.destroy();
         return null;
       }
@@ -244,10 +243,10 @@ class Connection {
   }
   Future<Map<dynamic,dynamic>> searchByEmail(String search) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("search_by_email");
+    socketWriteLine('search_by_email');
     socketWriteLine(search);
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);
       print(userMap);
       socket.destroy();
@@ -256,14 +255,14 @@ class Connection {
   }
   Future<Map<dynamic,dynamic>> getTop25ByRank() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_top_25");
-    socketWriteLine("");
+    socketWriteLine('get_top_25');
+    socketWriteLine('');
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);
       var sortedKeys = userMap.keys.toList(growable:false)
         ..sort((k2, k1) => userMap[k1].compareTo(userMap[k2]));
-      LinkedHashMap sortedMap = new LinkedHashMap
+      var sortedMap = LinkedHashMap
           .fromIterable(sortedKeys, key: (k) => k, value: (k) => userMap[k]);
       print(sortedMap);
       socket.destroy();
@@ -272,10 +271,10 @@ class Connection {
   }
   Future<List<dynamic>> getChallenges() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_challenges");
-    socketWriteLine("");
+    socketWriteLine('get_challenges');
+    socketWriteLine('');
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       //print(dataFromSocket);
       List userMap = jsonDecode(dataFromSocket);
       socket.destroy();
@@ -284,10 +283,10 @@ class Connection {
   }
   Future<Map<dynamic,dynamic>> getLeaderBoardPosition() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_leaderboard_position");
+    socketWriteLine('get_leaderboard_position');
     socketWriteLine("");
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);
       print(userMap);
       socket.destroy();
@@ -296,10 +295,10 @@ class Connection {
   }
   Future<Map<dynamic,dynamic>> getCompletedChallenges() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_completed_stats");
-    socketWriteLine("");
+    socketWriteLine('get_completed_stats');
+    socketWriteLine('');
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);
       print(userMap);
       socket.destroy();
@@ -308,10 +307,10 @@ class Connection {
   }
   Future<Map<dynamic,dynamic>> getWeightHistory() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("get_weight_history");
-    socketWriteLine("");
+    socketWriteLine('get_weight_history');
+    socketWriteLine('');
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);
       print(userMap);
       socket.destroy();
@@ -320,10 +319,10 @@ class Connection {
   }
   Future<bool> completeChallenge(String challengeJson) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("complete_challenge");
+    socketWriteLine('complete_challenge');
     socketWriteLine(challengeJson);
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       print(dataFromSocket);
       socket.destroy();
       return true;
@@ -331,38 +330,38 @@ class Connection {
   }
   Future<bool> setHeight(String height) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("set_height");
+    socketWriteLine('set_height');
     socketWriteLine(height);
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       socket.destroy();
-      if(dataFromSocket == "1"){
-        print("set new height $height");
+      if(dataFromSocket == '1'){
+        print('set new height $height');
         return true;
-      } else if (dataFromSocket == "-1"){
-        print("Server said: invalid value for height: $height");
+      } else if (dataFromSocket == '-1'){
+        print('Server said: invalid value for height: $height');
         return false;
       } else {
-        print("server returns no");
+        print('server returns no');
         return false;
       }
     }
   }
   Future<bool> setWeight(String weight) async{
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("set_weight");
+    socketWriteLine('set_weight');
     socketWriteLine(weight);
     await for(var response in socket){
-      String dataFromSocket = new String.fromCharCodes(response).trim();
+      String dataFromSocket = String.fromCharCodes(response).trim();
       socket.destroy();
       if(dataFromSocket == "1"){
-        print("set new weight $weight");
+        print('set new weight $weight');
         return true;
       } else if (dataFromSocket == "-1"){
-        print("Server said: invalid value for weight: $weight");
+        print('Server said: invalid value for weight: $weight');
         return false;
       } else {
-        print("server returns no");
+        print('server returns no');
         return false;
       }
     }

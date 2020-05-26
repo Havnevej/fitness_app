@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
 import 'package:flutter_fitness_app/register.dart';
@@ -8,10 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'connection_handler.dart';
 import 'utils/constants.dart';
 import 'loading.dart';
-import 'person.dart';
 
-Socket socket;
-Connection _server_connection = new Connection();
+Connection _server_connection = Connection();
 
 class Login extends StatefulWidget {
   @override
@@ -19,7 +15,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final _formkey = GlobalKey<FormState>();
   bool login = false;
   var txt = TextEditingController();
@@ -28,6 +23,7 @@ class _LoginState extends State<Login> {
   bool loading = false;
   String name;
   String error='';
+
   @override
   Widget build(BuildContext context) {
 
@@ -85,8 +81,8 @@ class _LoginState extends State<Login> {
                   setState(()=> loading = true);
                   if(await _server_connection.loginUser(username, password)){
 
-                    List challenges = await _server_connection.getChallenges();
-                    _server_connection.getWeightHistory();
+                    var challenges = await _server_connection.getChallenges();
+                    await _server_connection.getWeightHistory();
                     //Uncomment these to test features on login
                     /*
                      _server_connection.getLeaderBoardPosition();
@@ -105,7 +101,7 @@ class _LoginState extends State<Login> {
                      */
 
                     setState(() {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(connection: _server_connection)));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(_server_connection)));
                     });
                   }else{
                     setState(() => loading = false);
