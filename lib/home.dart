@@ -90,14 +90,14 @@ class _HomeState extends State<Home> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: Colors.yellow[600],
         elevation: 0.0,
         title: Text('Fit2Gether',
-          style: GoogleFonts.charm(
+          style: GoogleFonts.lato(
             fontSize: 32,
             letterSpacing: 5.0,
             fontWeight: FontWeight.bold,
-            color: Colors.yellow[600],
+            color: Colors.black,
           ),
         ),
         centerTitle: true,
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
           Stack(
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.notifications, color: Colors.blueGrey,), onPressed: () {
+                icon: Icon(Icons.notifications, color: Colors.black,), onPressed: () {
                   setState(() {
                     //restore();
                     counter = 0;
@@ -145,9 +145,9 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.blueGrey, Colors.blueGrey],
-                          begin: FractionalOffset.centerLeft,
-                          end: FractionalOffset.centerRight,
+                          colors: [Colors.blueGrey[800], Colors.blueGrey[900]],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
                         ),
                       ),
                       child: FlatButton.icon(
@@ -165,9 +165,9 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.blueGrey, Colors.blueGrey],
-                          begin: FractionalOffset.centerRight,
-                          end: FractionalOffset.centerLeft,
+                          colors: [Colors.blueGrey[800], Colors.blueGrey[900]],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
                         ),
                       ),
                       child: FlatButton.icon(
@@ -185,9 +185,9 @@ class _HomeState extends State<Home> {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.blueGrey, Colors.blueGrey],
-                          begin: FractionalOffset.centerRight,
-                          end: FractionalOffset.centerLeft,
+                          colors: [Colors.blueGrey[800], Colors.blueGrey[900]],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter,
                         ),
                       ),
                       child: FlatButton.icon(
@@ -202,6 +202,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
+              Divider(height: 0, color: Colors.yellow[600],),
               SizedBox(height: 47,),
               CircularPercentIndicator(
                 animateFromLastPercent: true,
@@ -352,29 +353,29 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromRGBO(0, 0, 0, 0),
         content: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          color: Colors.green,
+          color: Colors.blueGrey[900],
           width: 200,
           height: 145,
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
-                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold),),
-                icon: Icon(Icons.fitness_center,color: Colors.blueGrey[900],),
+                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
+                icon: Icon(Icons.fitness_center,color: Colors.yellow[600],),
                 onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
-              Divider(height:0 ,color: Colors.blueGrey[900],),
+              Divider(height:0 ,color: Colors.yellow[600],),
               FlatButton.icon(
-                icon: Icon(Icons.person_outline, color: Colors.blueGrey[900]),
-                label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold),),
+                icon: Icon(Icons.person_outline, color: Colors.yellow[600]),
+                label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
                 onPressed: () async{
                   await connection.getMyUserData();
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
                 },
               ),
-              Divider(height:0 ,color: Colors.blueGrey[900],),
+              Divider(height:0 ,color: Colors.yellow[600],),
               FlatButton.icon(
-                icon: Icon(Icons.exit_to_app, color: Colors.blueGrey[900]),
-                label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold),),
+                icon: Icon(Icons.exit_to_app, color: Colors.yellow[600]),
+                label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
                 onPressed: () async{
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.clear();

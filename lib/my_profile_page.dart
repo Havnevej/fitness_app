@@ -78,21 +78,20 @@ class _myProfileState extends State<myProfilePage> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[700],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[800],
+        backgroundColor: Colors.green[600],
         elevation: (1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('My Profile', style: TextStyle(color: Colors.white),),
+            Text('My Profile', style: TextStyle(color: Colors.black),),
             FlatButton.icon(
               padding: EdgeInsets.only(left: 50),
               icon: Icon(
-                Icons.people, color: Colors.greenAccent[400],),
+                Icons.people, color: Colors.black,),
               label: Text(
                 '', style: TextStyle(color: Colors.white),),
               onPressed: () {
-               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Friends(user: user, connection: connection,)));
+               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Friends(user: user, connection: connection,)));
               },
             ),
           ],
