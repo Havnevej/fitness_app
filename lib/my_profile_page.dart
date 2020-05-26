@@ -28,30 +28,27 @@ class myProfilePage extends StatefulWidget {
 class _myProfileState extends State<myProfilePage> {
   Person user;
   Connection connection;
-  String weight = "";
+  String weight = '';
   String height;
   Map<dynamic, dynamic> weightHistory;
   bool loading = false;
-  List weightHistoryList=[];
   List weightProgressData = [];
-  List weightProgressDataXAxis = [];
-  List<dynamic> weightData = List();
-
-  void weightProgressGraph(){
-    for(int i = 0; i<weightHistory.length; i++){
-      weightProgressData = [[weightProgressDataXAxis[i]],[weightHistoryList[i].toString()]];
-      print("ASDASD$weightProgressData");
-    }
-  }
+  List<int> weightHistoryDataYAxis = [];
+  List<DateTime> weightHistoryDataXAxis = [];
 
   Stream weightHist() async*{
     weightHistory = await connection.getWeightHistory();
-    weightHistory.forEach((k,v) => weightProgressDataXAxis.add(DateTime.parse(k)));
-    weightHistoryList = weightHistory.values.toList();
-    //weightProgressDataXAxis = weightHistory.keys.toList();
-    //weightProgressGraph();
+    testSetup(await connection.getWeightHistory());
+    print('Done with stream');
   }
-
+  void testSetup(Map<dynamic,dynamic> testData) async{
+    testData.forEach((key, value) {
+      var k = DateTime.parse(key);
+      var v = int.parse(value.toString());
+      weightHistoryDataXAxis.add(k);
+      weightHistoryDataYAxis.add(v);
+    });
+  }
   @override
   void initState() {
     user = widget.user;
@@ -72,13 +69,17 @@ class _myProfileState extends State<myProfilePage> {
     else if(calculateBMI(user.weight, user.height) > 29.9){
       return Colors.red;
     }
+
   }
 
 
 
   @override
   Widget build(BuildContext context) {
-
+    print(weightHistoryDataYAxis.length.toString() + ' Weight');
+    print(weightHistoryDataXAxis.length.toString() + ' Date');
+    weightHistoryDataYAxis = [];
+    weightHistoryDataXAxis = [];
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[700],
       appBar: AppBar(
@@ -221,18 +222,19 @@ class _myProfileState extends State<myProfilePage> {
                         width: 420,
                         height: 30,
                         color: Colors.blueGrey[900],
-                        child: Center(child: Text("Your Weight progress", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+                        child: Center(child: Text('Your Weight progress', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
                       ),
                       SizedBox(height: 0,),
                       StreamBuilder (
+                        key: UniqueKey(),
                         stream: weightHist(),
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          print('Inside builder');
                           return Container(
-                            //color: Colors.yellow[700],
                             color: Colors.white,
                             width: 420,
                             height: 175,
-                            child: SimpleTimeSeriesChart.withSampleData(weightProgressDataXAxis,weightHistoryList),
+                            child: SimpleTimeSeriesChart(SimpleTimeSeriesChart.createSampleData(weightHistoryDataXAxis, weightHistoryDataYAxis)),
                           );
                         }
                       ),
@@ -376,7 +378,6 @@ class _myProfileState extends State<myProfilePage> {
               child: Text('Save changes', style: TextStyle(color: Colors.greenAccent[400],),),
               onPressed: () async{
                 if(await connection.setWeight(weight)){
-                  weightProgressGraph();
                   setState(() {
                     user.weight = int.parse(weight);// IF STATEMENT IS FALE :(
                     Navigator.pop(context, true);

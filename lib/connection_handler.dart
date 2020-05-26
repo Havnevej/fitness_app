@@ -352,12 +352,12 @@ class Connection {
     socketWriteLine('set_weight');
     socketWriteLine(weight);
     await for(var response in socket){
-      String dataFromSocket = String.fromCharCodes(response).trim();
+      var dataFromSocket = String.fromCharCodes(response).trim();
       socket.destroy();
-      if(dataFromSocket == "1"){
+      if(dataFromSocket == '1'){
         print('set new weight $weight');
         return true;
-      } else if (dataFromSocket == "-1"){
+      } else if (dataFromSocket == '-1'){
         print('Server said: invalid value for weight: $weight');
         return false;
       } else {
