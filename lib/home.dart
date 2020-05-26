@@ -69,9 +69,9 @@ class _HomeState extends State<Home> {
   }
 
   Color challengeColor(){
-    Color returncolor = colors[0];
+    Color returnColor = colors[0];
     colors.removeAt(0);
-    return returncolor;
+    return returnColor;
   }
 
   @override
