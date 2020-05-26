@@ -100,6 +100,7 @@ class _HomeState extends State<Home> {
           Stack(
             children: <Widget>[
               IconButton(
+                padding: EdgeInsets.only(top: 10),
                 icon: Icon(Icons.notifications, color: Colors.black,), onPressed: () {
                   setState(() {
                     //restore();
