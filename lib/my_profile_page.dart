@@ -4,6 +4,7 @@ import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/utils/functions.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'chart.dart';
 import 'friends.dart';
 import 'loading.dart';
 import 'connection_handler.dart';
@@ -34,18 +35,21 @@ class _myProfileState extends State<myProfilePage> {
   List weightHistoryList=[];
   List weightProgressData = [];
   List weightProgressDataXAxis = [];
+  List<dynamic> weightData = List();
+
   void weightProgressGraph(){
     for(int i = 0; i<weightHistory.length; i++){
-      weightProgressData = [[weightProgressDataXAxis[i],weightHistoryList[i].toString()]];
+      weightProgressData = [[weightProgressDataXAxis[i]],[weightHistoryList[i].toString()]];
       print("ASDASD$weightProgressData");
     }
   }
 
   Stream weightHist() async*{
     weightHistory = await connection.getWeightHistory();
-    weightHistoryList = weightHistory.values.toList();
+    weightHistory.forEach((k,v) => weightProgressData.add([k,v]));
+    //weightHistoryList = weightHistory.toList();
     weightProgressDataXAxis = weightHistory.keys.toList();
-    weightProgressGraph();
+    //weightProgressGraph();
   }
 
   @override
@@ -225,19 +229,10 @@ class _myProfileState extends State<myProfilePage> {
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
                           return Container(
                             //color: Colors.yellow[700],
-                            color: Colors.blueGrey[700],
+                            color: Colors.white,
                             width: 420,
                             height: 175,
-                            child: LineChart(
-                              lines: [
-                                Line( //<List<String>, String, String>
-                                  data: weightProgressData,
-                                  xFn: (datum) => datum[0],
-                                  yFn: (datum) => datum[1],
-                                ),
-                              ],
-                              chartPadding: new EdgeInsets.fromLTRB(30.0, 10.0, 10.0, 30.0),
-                            ),
+                            child: SimpleTimeSeriesChart.withSampleData(),
                           );
                         }
                       ),
