@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
   int xpRequired = 1; //level*
   int xpCurrent = 0;
   double xpProgress = 0;
-  int counterFriendReq = 0;
+  int notificationCounter = 0;
   int counterAcceptReq = 0;
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
@@ -40,34 +40,41 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    restoreSharedPrefs();
+
     connection = widget.connection;
     user = connection.loggedInPerson;
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     super.initState();
     //restoreSharedPrefs();// POSITION +
     streamChallenges();
+    restoreSharedPrefs();
+    notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
   restoreSharedPrefs() async{ //RETURN
     prefs = await SharedPreferences.getInstance();
+
     notificationsAcceptedReq = [];
-    prefs.clear();
+    //prefs.clear();
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
     List<String> friendsList = user.friendslist;
+    print(friendsList);
     //LocalSave.save("savedOutGoing", outgoingFriendsList);
-    await prefs.setStringList('savedOutGoing', outgoingFriendsList);
-    List<String> savedOut = await prefs.getStringList("savedOutGoing");
+    //await prefs.setStringList('savedOutGoing', outgoingFriendsList);
 
-    for(int i = 0; i<savedOut.length; i++){
+    List<String> savedOut = [];
+    savedOut.add(await prefs.getString('${user.email}notifications'));
+
+    for(var i = 0; i<savedOut.length; i++){
       if(friendsList.contains(savedOut[i])){
         notificationsAcceptedReq.add(savedOut[i]);
-        user.friendRequestsOutgoing.removeAt(i);
-        prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
+        //prefs.setStringList('savedOutGoing', user.friendRequestsOutgoing);
       }
     }
-    counterFriendReq = user.friendRequestsIncoming.length;
-    counterAcceptReq = notificationsAcceptedReq.length;
+    notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+
+    print('SAVED $savedOut ');
+    print(notificationsAcceptedReq);
   }
 
   streamChallenges()async*{
@@ -82,7 +89,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    restoreSharedPrefs();
 
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
@@ -102,51 +108,21 @@ class _HomeState extends State<Home> {
             color: Colors.white,
           ),
         ),
-        //centerTitle: true,
+        centerTitle: true,
         actions: <Widget>[
           Stack(
             children: <Widget>[
               IconButton(
                 padding: EdgeInsets.only(top: 10),
-                icon: Icon(Icons.people, color: Colors.white,), onPressed: () {
-                setState(() {
-                  counterAcceptReq = 0;
-                  _showNotificationNewFriend(notificationsAcceptedReq);
-                });
-              },),
-              counterAcceptReq != 0 ? Positioned( // FALLBACK?!
-                right: 11,
-                top: 11,
-                child: Container(
-                  padding:  EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints:  BoxConstraints(
-                    minWidth: 14,
-                    minHeight: 14,
-                  ),
-                  child: Text('$counterAcceptReq',style: TextStyle(color: Colors.white, fontSize: 8,),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ) : Container(),
-            ],
-          ),
-
-          Stack(
-            children: <Widget>[
-              IconButton(
-                padding: EdgeInsets.only(top: 10),
-                icon: Icon(Icons.notifications, color: Colors.white,), onPressed: () {
+                icon: Icon(Icons.notifications, color: Colors.white,),
+                onPressed: () {
                   setState(() {
                     //restore();
-                    counterFriendReq = 0;
-                    _showNotification(user.friendRequestsIncoming);
+                    notificationCounter = 0;
+                    _showNotification(user.friendRequestsIncoming,notificationsAcceptedReq);
                 });
               },),
-              counterFriendReq != 0 ? Positioned( // FALLBACK?!
+              notificationCounter != 0 ? Positioned( // FALLBACK?!
               right: 11,
               top: 11,
               child: Container(
@@ -159,7 +135,7 @@ class _HomeState extends State<Home> {
                   minWidth: 14,
                   minHeight: 14,
                 ),
-                child: Text("$counterFriendReq",style: TextStyle(color: Colors.white, fontSize: 8,),
+                child: Text("$notificationCounter",style: TextStyle(color: Colors.white, fontSize: 8,),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -248,7 +224,7 @@ class _HomeState extends State<Home> {
                 center: Text('LVL ${user.level}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.blueGrey,
-                progressColor: Colors.lightGreenAccent,
+                progressColor: Colors.lightGreen,//lightGreenAccent
               ),
               SizedBox(height: 40,),
               Container(
@@ -317,8 +293,15 @@ class _HomeState extends State<Home> {
                             color: Colors.red,
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Colors.blueGrey[400], Colors.blueGrey[700]],
+                                  begin: FractionalOffset.topCenter,
+                                  end: FractionalOffset.bottomCenter,
+                                ),
+                              ),
                               height: 58,
-                              color: colors[index],
+                              //color: colors[index],
                               child: Row(
                                 children: <Widget>[
                                   Container(
@@ -408,8 +391,8 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.exit_to_app, color: Colors.lightGreenAccent),
                 label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 onPressed: () async{
-                  final SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.clear();
+                  //final SharedPreferences prefs = await SharedPreferences.getInstance();
+                  //prefs.clear();
                   await connection.logout();
                   Navigator.pop(context);
                   await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
@@ -422,228 +405,199 @@ class _HomeState extends State<Home> {
     ),
   );
 
-  void _showNotification (List<dynamic> friendsInc) => showDialog(context: context, builder: (context) =>
-    Material(
-      type: MaterialType.transparency,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 40,),
-          Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
-                  //color: Colors.greenAccent,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    color: Colors.blueGrey[800],
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0),
-                      topLeft: Radius.circular(3),
-                      bottomRight: Radius.circular(0),
-                      topRight: Radius.circular(3),
-                    ),),
-                  child:
-                    ListView(
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
+  void _showNotification (List<dynamic> friendsInc, List<dynamic> notificationsAcceptedReq) => showDialog(context: context, builder: (context) =>
+    StatefulBuilder(
+      builder: (context, setState) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 40,),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
+                      //color: Colors.greenAccent,
+                      height: 350,
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey[800],
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(0),
+                          topLeft: Radius.circular(3),
+                          bottomRight: Radius.circular(0),
+                          topRight: Radius.circular(3),
+                        ),),
+                      child:
+                        ListView(
                           children: [
-                            ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount: friendsInc.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(5),
-                                              topLeft: Radius.circular(5),
-                                              bottomRight: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            ),),
-                                          child:
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Container(
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      style: TextStyle(fontSize: 14, color: Colors.black),
-                                                      children: <TextSpan>[
-                                                        TextSpan(text:'${friendsInc[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
-                                                        TextSpan(text: ('sent you a friend request.')),
-                                                      ],
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 7,),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(left: 15),
+                                      width: 130,
+                                      height: 25,
+                                      child: Center(child: Text('Notifications', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),)),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 87),
+                                      height: 25,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [Colors.blueGrey[700], Colors.blueGrey[800]],
+                                          begin: FractionalOffset.bottomCenter,
+                                          end: FractionalOffset.topCenter,
+                                        ),
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(50.0),
+                                          topLeft: Radius.circular(50.0),
+                                          bottomRight: Radius.circular(50.0),
+                                          topRight: Radius.circular(50.0),),
+                                      ),
+                                      child: FlatButton(
+                                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        child: Text('clear', style: TextStyle(color: Colors.white),),
+                                        onPressed: () {
+                                          setState(() {
+                                            friendsInc.removeRange(0, friendsInc.length);
+                                            notificationsAcceptedReq.removeRange(0, notificationsAcceptedReq.length);
+                                          });
+                                        }, //CLEAR NOTIFICATIONS HERE::::::::::::::::::::::::::::::::::::::::::::::::::
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.white,height: 15,),
+                                ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    itemCount: friendsInc.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                              margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft: Radius.circular(5),
+                                                  topLeft: Radius.circular(5),
+                                                  bottomRight: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                ),),
+                                              child:
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          style: TextStyle(fontSize: 14, color: Colors.black),
+                                                          children: <TextSpan>[
+                                                            TextSpan(text:'${friendsInc[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                            TextSpan(text: ('sent you a friend request.')),
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 30,
-                                                child: IconButton(
-                                                  padding: EdgeInsets.only(right: 3),
-                                                  icon: Icon(Icons.clear),
-                                                  onPressed: () {}, // MAKE IT DISAPPEAR HERE
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                            }),
-                        ],),
-                      ],
-                    ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
-                  color: Colors.blueGrey[900],
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      //Container(child: Icon(Icons.close, color: Colors.white,),),
-                      Expanded(
-                        child: Container(
-                          child: FlatButton(
-                            child: Text("Close",style: TextStyle(color: Colors.white),),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),],
-      ),
-    ),);
-
-  void _showNotificationNewFriend (List<dynamic> friendReqAccept) => showDialog(context: context, builder: (context) =>
-      Material(
-        type: MaterialType.transparency,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 40,),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.fromLTRB(50, 2, 80, 0),
-                    height: 350,
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey[800],
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(0),
-                        topLeft: Radius.circular(3),
-                        bottomRight: Radius.circular(0),
-                        topRight: Radius.circular(3),
-                      ),),
-                    child:
-                    ListView(
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount: friendReqAccept.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(5),
-                                              topLeft: Radius.circular(5),
-                                              bottomRight: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            ),),
-                                          child:
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Container(
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      style: TextStyle(fontSize: 14, color: Colors.black),
-                                                      children: <TextSpan>[
-                                                        TextSpan(text:'${friendReqAccept[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
-                                                        TextSpan(text: ('sent you a friend request.')),
-                                                      ],
+                                                  Container(
+                                                    width: 30,
+                                                    child: IconButton(
+                                                      padding: EdgeInsets.only(right: 3),
+                                                      icon: Icon(Icons.clear),
+                                                      onPressed: () {}, // MAKE IT DISAPPEAR HERE
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                              Container(
-                                                width: 30,
-                                                child: IconButton(
-                                                  padding: EdgeInsets.only(right: 3),
-                                                  icon: Icon(Icons.clear),
-                                                  onPressed: () {}, // MAKE IT DISAPPEAR HERE
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
+                                        ],
+                                      );
                                 }),
-                          ],),
-                      ],
+                                ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    itemCount: notificationsAcceptedReq.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                              margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft: Radius.circular(5),
+                                                  topLeft: Radius.circular(5),
+                                                  bottomRight: Radius.circular(5),
+                                                  topRight: Radius.circular(5),
+                                                ),),
+                                              child: Container(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(fontSize: 14, color: Colors.black),
+                                                    children: <TextSpan>[
+                                                      TextSpan(text:'${notificationsAcceptedReq[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                      TextSpan(text: ('accepted your friend request.')),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                            ],),
+                          ],
+                        ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(50, 0, 80, 0),
-                    color: Colors.blueGrey[900],
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        //Container(child: Icon(Icons.close, color: Colors.white,),),
-                        Expanded(
-                          child: Container(
-                            child: FlatButton(
-                              child: Text('Close',style: TextStyle(color: Colors.white),),
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
+                    Container(
+                      margin: EdgeInsets.fromLTRB(85, 0, 30, 0),
+                      color: Colors.blueGrey[900],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          //Container(child: Icon(Icons.close, color: Colors.white,),),
+                          Expanded(
+                            child: Container(
+                              child: FlatButton(
+                                child: Text("Close",style: TextStyle(color: Colors.white),),
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),],
-        ),
-      ),);
+                  ],
+                ),
+              ),],
+          ),
+        );}
+    ),);
+
 
   void challengeComplete (List<dynamic> challenges, int index) => showDialog(context: context, builder: (context) =>
     Material(
@@ -718,5 +672,7 @@ class _HomeState extends State<Home> {
     ),
   );
 }
+
+
 
 

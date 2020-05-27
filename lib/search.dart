@@ -204,15 +204,13 @@ class _SearchState extends State<Search> {
                      label: Text("Send friend request", style: TextStyle(fontSize: 15),),
                      icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
                       onPressed:() {
-                        LocalSave.save('notifications', email); //PREFF
+                        LocalSave.save('${user.email}notifications', email);
                         connection.sendFriendRequest(email);
                         Navigator.pop(context);
                         setState(() {
                           list2.removeAt(index);
                           user.friendRequestsOutgoing.add(email);
-                          //list2.remove(email);
                         });
-                        //Friend request sent
                       },
                 ),),
                 ),
