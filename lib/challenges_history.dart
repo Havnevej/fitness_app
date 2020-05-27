@@ -41,7 +41,7 @@ class _Challenges_history_state extends State<Challenges_history> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: Colors.blueGrey[800],
         elevation: 0.0,
         title: Text('Challenges history',
           style: TextStyle(

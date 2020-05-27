@@ -25,7 +25,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     return [
       charts.Series<TimeSeriesWeight, DateTime>(
         id: 'Weight History',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.cyan.shadeDefault,
         domainFn: (TimeSeriesWeight DateSeries, _) => DateSeries.time,
         measureFn: (TimeSeriesWeight WeightProgress, _) => WeightProgress.weight,
         data: data,

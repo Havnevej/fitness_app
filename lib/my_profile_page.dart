@@ -83,16 +83,16 @@ class _myProfileState extends State<myProfilePage> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[700],
       appBar: AppBar(
-        backgroundColor: Colors.green[600],
+        backgroundColor: Colors.blueGrey[900],
         elevation: (1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('My Profile', style: TextStyle(color: Colors.black),),
+            Text('My Profile', style: TextStyle(color: Colors.white),),
             FlatButton.icon(
               padding: EdgeInsets.only(left: 50),
               icon: Icon(
-                Icons.people, color: Colors.black,),
+                Icons.people, color: Colors.white,),
               label: Text(
                 '', style: TextStyle(color: Colors.white),),
               onPressed: () {

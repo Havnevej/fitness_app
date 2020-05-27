@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  restoreSharedPrefs() async{
+  restoreSharedPrefs() async{ //RETURN
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
@@ -77,6 +77,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
+
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
     user.exp = xpCurrent;
@@ -85,14 +86,14 @@ class _HomeState extends State<Home> {
     return loading ? Loading() : Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.yellow[600],
+        backgroundColor: Colors.blueGrey[900],
         elevation: 0.0,
         title: Text('Fit2Gether',
           style: GoogleFonts.lato(
             fontSize: 32,
             letterSpacing: 5.0,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
@@ -101,7 +102,7 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               IconButton(
                 padding: EdgeInsets.only(top: 10),
-                icon: Icon(Icons.notifications, color: Colors.black,), onPressed: () {
+                icon: Icon(Icons.notifications, color: Colors.white,), onPressed: () {
                   setState(() {
                     //restore();
                     counter = 0;
@@ -147,9 +148,9 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.list, size:20 ,color: Colors.yellow, ), //size parameter added to fix overflowing pixels.
+                        icon: Icon(Icons.list, size:20 ,color: Colors.lightGreenAccent, ), //size parameter added to fix overflowing pixels.
                         label: Text('Leaderboard'),
-                        textColor: Colors.yellow,
+                        textColor: Colors.white,
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(user: user, connection: connection)));
                           },
@@ -167,9 +168,9 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.people, color: Colors.yellow),
+                        icon: Icon(Icons.people, color: Colors.lightGreenAccent),
                         label: Text('Friends'),
-                        textColor: Colors.yellow,
+                        textColor: Colors.white,
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Friends(user:user, connection: connection,)));
                         },
@@ -187,9 +188,9 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       child: FlatButton.icon(
-                        icon: Icon(Icons.person_outline, color: Colors.yellow),
+                        icon: Icon(Icons.person_outline, color: Colors.lightGreenAccent),
                         label: Text(user.firstName),
-                        textColor: Colors.yellow,
+                        textColor: Colors.white,
                         onPressed: () {
                           _showbuttons();
                           },
@@ -198,7 +199,7 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Divider(height: 0, color: Colors.yellow[600],),
+              Divider(height: 0, color: Colors.lightGreenAccent,),
               SizedBox(height: 47,),
               CircularPercentIndicator(
                 animateFromLastPercent: true,
@@ -207,13 +208,10 @@ class _HomeState extends State<Home> {
                 animationDuration: 1200,
                 lineWidth: 15.0,
                 percent: (xpProgress.toDouble()/100) <= 1 ? (xpProgress.toDouble()/100) : 0 ,
-                center: new Text('LVL ${user.level}',
-                  style:
-                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.yellow),
-                ),
+                center: Text('LVL ${user.level}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: Colors.blueGrey,
-                progressColor: Colors.yellow,
+                progressColor: Colors.lightGreenAccent,
               ),
               SizedBox(height: 40,),
               Container(
@@ -265,7 +263,7 @@ class _HomeState extends State<Home> {
                       ),
                       SizedBox(height: 55,),
                       Container(
-                        child: Text("NO CHALLENGES LEFT FOR THE DAY!", style: TextStyle(fontWeight: FontWeight.bold),
+                        child: Text('NO CHALLENGES LEFT FOR THE DAY!', style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -355,29 +353,29 @@ class _HomeState extends State<Home> {
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
-                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
-                icon: Icon(Icons.fitness_center,color: Colors.yellow[600],),
+                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                icon: Icon(Icons.fitness_center,color: Colors.lightGreenAccent,),
                 onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
-              Divider(height:0 ,color: Colors.yellow[600],),
+              Divider(height:0 ,color: Colors.lightGreenAccent,),
               FlatButton.icon(
-                icon: Icon(Icons.person_outline, color: Colors.yellow[600]),
-                label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
+                icon: Icon(Icons.person_outline, color: Colors.lightGreenAccent),
+                label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 onPressed: () async{
                   await connection.getMyUserData();
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
+                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
                 },
               ),
-              Divider(height:0 ,color: Colors.yellow[600],),
+              Divider(height:0 ,color: Colors.lightGreenAccent,),
               FlatButton.icon(
-                icon: Icon(Icons.exit_to_app, color: Colors.yellow[600]),
-                label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[600]),),
+                icon: Icon(Icons.exit_to_app, color: Colors.lightGreenAccent),
+                label: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 onPressed: () async{
                   final SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.clear();
                   await connection.logout();
                   Navigator.pop(context);
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
+                  await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login()));
                 },
               ),
             ],
@@ -443,8 +441,8 @@ class _HomeState extends State<Home> {
                                             text: TextSpan(
                                               style: TextStyle(fontSize: 14, color: Colors.black),
                                               children: <TextSpan>[
-                                                TextSpan(text:"${friendsInc[index]} ", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                TextSpan(text: ("sent you a friend request.")),
+                                                TextSpan(text:'${friendsInc[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                TextSpan(text: ('sent you a friend request.')),
                                               ],
                                             ),
                                           ),
@@ -480,8 +478,8 @@ class _HomeState extends State<Home> {
                                             text: TextSpan(
                                               style: TextStyle(fontSize: 14, color: Colors.black),
                                               children: <TextSpan>[
-                                                TextSpan(text:"${notificationsAcceptedReq[index]} ", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                TextSpan(text: ("accepted your friend request.")),
+                                                TextSpan(text:'${notificationsAcceptedReq[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                TextSpan(text: ('accepted your friend request.')),
                                               ],
                                             ),
                                           ),
@@ -529,7 +527,7 @@ class _HomeState extends State<Home> {
           Container(
             margin: EdgeInsets.fromLTRB(50, 450, 50, 0),
             padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
-            color: Colors.yellow[600],
+            color: Colors.blueGrey[100],
             height: 125,
             width: 250,
             child: Column(
@@ -559,8 +557,8 @@ class _HomeState extends State<Home> {
                     Row(
                       children: <Widget>[
                         FlatButton(
-                          color: Colors.black,
-                          child: Text("Yes!",style: TextStyle(color: Colors.yellow[600]),),
+                          color: Colors.blueGrey[800],
+                          child: Text("Yes!",style: TextStyle(color: Colors.white),),
                           onPressed: () async{
                             colors.removeAt(index);
                             await connection.completeChallenge(jsonEncode(challenges[index]));
@@ -573,12 +571,11 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    VerticalDivider(width:0,color: Colors.black,),
                     Row(
                       children: <Widget>[
                         FlatButton(
-                          color: Colors.black,
-                          child: Text("Cancel",style: TextStyle(color: Colors.yellow[600]),),
+                          color: Colors.blueGrey[800],
+                          child: Text('Cancel',style: TextStyle(color: Colors.white),),
                           onPressed: (){
                             Navigator.pop(context);
                           },

@@ -55,7 +55,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.green[400],
+        backgroundColor: Colors.blueGrey[900],
         elevation: (1),
         title: Text('Leaderboard'),
       ),
@@ -69,9 +69,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 children: [
                   Expanded(
                     child: Container(
-                      color: Colors.blueGrey[800],
+                      color: Colors.blueGrey[900],
                       child: Center(
-                        child: Text("Your Leaderboard placing in Denmark", style: TextStyle(fontSize: 20,
+                        child: Text('Your Leaderboard placing in Denmark', style: TextStyle(fontSize: 20,
                             color: Colors.white,
                             fontWeight: FontWeight.bold
                         ),
