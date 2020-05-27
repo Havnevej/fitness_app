@@ -31,28 +31,33 @@ class _HomeState extends State<Home> {
   int xpRequired = 1; //level*
   int xpCurrent = 0;
   double xpProgress = 0;
-  int counter = 0;
+  int counterFriendReq = 0;
+  int counterAcceptReq = 0;
   List notificationsAcceptedReq = [];
   List<dynamic> challenges = [];
   List<Color> colors = [];
+  SharedPreferences prefs;
 
   @override
   void initState() {
+    restoreSharedPrefs();
     connection = widget.connection;
     user = connection.loggedInPerson;
-    restoreSharedPrefs();// POSITION +
-    streamChallenges();
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     super.initState();
+    //restoreSharedPrefs();// POSITION +
+    streamChallenges();
   }
 
   restoreSharedPrefs() async{ //RETURN
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    prefs = await SharedPreferences.getInstance();
+    notificationsAcceptedReq = [];
+    prefs.clear();
     List<String> outgoingFriendsList = user.friendRequestsOutgoing;
     List<String> friendsList = user.friendslist;
-    LocalSave.save("savedOutGoing", outgoingFriendsList);
-    List<String> savedOut = prefs.getStringList("savedOutGoing");
+    //LocalSave.save("savedOutGoing", outgoingFriendsList);
+    await prefs.setStringList('savedOutGoing', outgoingFriendsList);
+    List<String> savedOut = await prefs.getStringList("savedOutGoing");
 
     for(int i = 0; i<savedOut.length; i++){
       if(friendsList.contains(savedOut[i])){
@@ -61,7 +66,8 @@ class _HomeState extends State<Home> {
         prefs.setStringList("savedOutGoing", user.friendRequestsOutgoing);
       }
     }
-    counter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    counterFriendReq = user.friendRequestsIncoming.length;
+    counterAcceptReq = notificationsAcceptedReq.length;
   }
 
   streamChallenges()async*{
@@ -76,7 +82,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
+    restoreSharedPrefs();
 
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
@@ -96,8 +102,39 @@ class _HomeState extends State<Home> {
             color: Colors.white,
           ),
         ),
-        centerTitle: true,
+        //centerTitle: true,
         actions: <Widget>[
+          Stack(
+            children: <Widget>[
+              IconButton(
+                padding: EdgeInsets.only(top: 10),
+                icon: Icon(Icons.people, color: Colors.white,), onPressed: () {
+                setState(() {
+                  counterAcceptReq = 0;
+                  _showNotificationNewFriend(notificationsAcceptedReq);
+                });
+              },),
+              counterAcceptReq != 0 ? Positioned( // FALLBACK?!
+                right: 11,
+                top: 11,
+                child: Container(
+                  padding:  EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints:  BoxConstraints(
+                    minWidth: 14,
+                    minHeight: 14,
+                  ),
+                  child: Text('$counterAcceptReq',style: TextStyle(color: Colors.white, fontSize: 8,),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ) : Container(),
+            ],
+          ),
+
           Stack(
             children: <Widget>[
               IconButton(
@@ -105,11 +142,11 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.notifications, color: Colors.white,), onPressed: () {
                   setState(() {
                     //restore();
-                    counter = 0;
+                    counterFriendReq = 0;
                     _showNotification(user.friendRequestsIncoming);
                 });
               },),
-              counter != 0 ? Positioned( // FALLBACK?!
+              counterFriendReq != 0 ? Positioned( // FALLBACK?!
               right: 11,
               top: 11,
               child: Container(
@@ -122,7 +159,7 @@ class _HomeState extends State<Home> {
                   minWidth: 14,
                   minHeight: 14,
                 ),
-                child: Text("$counter",style: TextStyle(color: Colors.white, fontSize: 8,),
+                child: Text("$counterFriendReq",style: TextStyle(color: Colors.white, fontSize: 8,),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -422,7 +459,6 @@ class _HomeState extends State<Home> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Row(
                                     children: [
-                                      //SizedBox(height: 20,),
                                       Expanded(
                                         child: Container(
                                           padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
@@ -437,57 +473,37 @@ class _HomeState extends State<Home> {
                                               bottomRight: Radius.circular(5),
                                               topRight: Radius.circular(5),
                                             ),),
-                                          child:RichText(
-                                            text: TextSpan(
-                                              style: TextStyle(fontSize: 14, color: Colors.black),
-                                              children: <TextSpan>[
-                                                TextSpan(text:'${friendsInc[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
-                                                TextSpan(text: ('sent you a friend request.')),
-                                              ],
-                                            ),
+                                          child:
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      style: TextStyle(fontSize: 14, color: Colors.black),
+                                                      children: <TextSpan>[
+                                                        TextSpan(text:'${friendsInc[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                        TextSpan(text: ('sent you a friend request.')),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 30,
+                                                child: IconButton(
+                                                  padding: EdgeInsets.only(right: 3),
+                                                  icon: Icon(Icons.clear),
+                                                  onPressed: () {}, // MAKE IT DISAPPEAR HERE
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ],
                                   );
                             }),
-                            ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount: notificationsAcceptedReq.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    children: [
-                                      //SizedBox(height: 20,),
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(5),
-                                              topLeft: Radius.circular(5),
-                                              bottomRight: Radius.circular(5),
-                                              topRight: Radius.circular(5),
-                                            ),),
-                                          child:RichText(
-                                            text: TextSpan(
-                                              style: TextStyle(fontSize: 14, color: Colors.black),
-                                              children: <TextSpan>[
-                                                TextSpan(text:'${notificationsAcceptedReq[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
-                                                TextSpan(text: ('accepted your friend request.')),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }),
                         ],),
                       ],
                     ),
@@ -516,8 +532,118 @@ class _HomeState extends State<Home> {
             ),
           ),],
       ),
-    ),
-  );
+    ),);
+
+  void _showNotificationNewFriend (List<dynamic> friendReqAccept) => showDialog(context: context, builder: (context) =>
+      Material(
+        type: MaterialType.transparency,
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 40,),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(50, 2, 80, 0),
+                    height: 350,
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey[800],
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(0),
+                        topLeft: Radius.circular(3),
+                        bottomRight: Radius.circular(0),
+                        topRight: Radius.circular(3),
+                      ),),
+                    child:
+                    ListView(
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount: friendReqAccept.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                          margin: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                              bottomRight: Radius.circular(5),
+                                              topRight: Radius.circular(5),
+                                            ),),
+                                          child:
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      style: TextStyle(fontSize: 14, color: Colors.black),
+                                                      children: <TextSpan>[
+                                                        TextSpan(text:'${friendReqAccept[index]} ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                        TextSpan(text: ('sent you a friend request.')),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 30,
+                                                child: IconButton(
+                                                  padding: EdgeInsets.only(right: 3),
+                                                  icon: Icon(Icons.clear),
+                                                  onPressed: () {}, // MAKE IT DISAPPEAR HERE
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ],),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(50, 0, 80, 0),
+                    color: Colors.blueGrey[900],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        //Container(child: Icon(Icons.close, color: Colors.white,),),
+                        Expanded(
+                          child: Container(
+                            child: FlatButton(
+                              child: Text('Close',style: TextStyle(color: Colors.white),),
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),],
+        ),
+      ),);
 
   void challengeComplete (List<dynamic> challenges, int index) => showDialog(context: context, builder: (context) =>
     Material(

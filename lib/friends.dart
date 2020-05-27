@@ -191,9 +191,9 @@ class _FriendsState extends State<Friends> {
                 ],
               ),
               ExpansionTile(
-                initiallyExpanded: false,
+                initiallyExpanded: true,
                 backgroundColor: Colors.blueGrey[900],
-                title: Text("Friendslist", style: TextStyle(fontSize: 20,
+                title: Text('Friendslist', style: TextStyle(fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent),),
                 children: <Widget>[
@@ -255,9 +255,9 @@ class _FriendsState extends State<Friends> {
                                     animationDuration: 1200,
                                     lineWidth: 4.0,
                                     percent: (0.2), //0.1
-                                    center: new Text(friend.level.toString(),
+                                    center: Text(friend.level.toString(),
                                       style:
-                                      new TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
+                                      TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
                                     ),
                                     circularStrokeCap: CircularStrokeCap.square,
                                     backgroundColor: Colors.deepOrange,
