@@ -44,25 +44,25 @@ class _HomeState extends State<Home> {
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     super.initState();
     streamChallenges();
-    restoreSharedPrefs();//STREAM
+    restoreSharedPrefs();
     xpCurrent = user.exp;
   }
 
-  Future<int> restoreSharedPrefs() async {
+  restoreSharedPrefs() async {
     prefs = await SharedPreferences.getInstance();
     notificationsAcceptedReq = [];
     var friendsList = user.friendslist;
-    print(friendsList);
-    var savedOut = <String>[];
+    var savedOut = [];
 
     savedOut.add(await prefs.getString('${user.email}notifications'));
-
-    for(var i = 0; i<savedOut.length; i++){
+    for (var i = 0; i<savedOut.length; i++){
       if(friendsList.contains(savedOut[i])){
-        notificationsAcceptedReq.add(savedOut[i]);
+        await notificationsAcceptedReq.add(savedOut[i]);
       }
     }
-    return notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    setState(() {
+      notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    });
   }
 
   streamChallenges()async*{
@@ -71,7 +71,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //restoreSharedPrefs().asStream();
 
     print(notificationsAcceptedReq);
     print(notificationCounter);
