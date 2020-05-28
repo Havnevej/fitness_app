@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'connection_handler.dart';
-
 
 class LeaderBoard extends StatefulWidget {
 
@@ -37,7 +35,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     leadRank = await connection.getLeaderBoardPosition();
     leadPos = leadRank.keys.toList();
 
-    for(int i = 1; i<listLead.length+1; i++){
+    for(var i = 1; i<listLead.length+1; i++){
       leaderboardIncrement.add(i);
     }
   }
@@ -157,7 +155,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  child: Text("$lvl", style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text('$lvl', style: TextStyle(fontWeight: FontWeight.bold),),
                   decoration: BoxDecoration(
                     color: Colors.yellow,
                     borderRadius: BorderRadius.circular(20),
@@ -193,14 +191,14 @@ class _LeaderBoardState extends State<LeaderBoard> {
                       Expanded(
                         child: Container(
                             margin: EdgeInsets.fromLTRB(3, 3, 0, 0),
-                            child: Text("${email.toUpperCase()}", style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Colors.black54, fontSize: 35, fontWeight: FontWeight.bold),))
+                            child: Text('${email.toUpperCase()}', style: GoogleFonts.yanoneKaffeesatz(textStyle: TextStyle(color: Colors.black54, fontSize: 35, fontWeight: FontWeight.bold),))
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 4),
                         width: 45,
                         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                        child: Center(child: Text("#$lvl", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
+                        child: Center(child: Text('#$lvl', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)),
                         decoration: BoxDecoration(
                           color: Colors.blueGrey[900],
                           borderRadius: BorderRadius.circular(11),

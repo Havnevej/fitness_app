@@ -12,7 +12,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    this.rotationController.dispose();
+    rotationController.dispose(); //removed => this.
     super.dispose();
   }
 

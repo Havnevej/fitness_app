@@ -72,14 +72,14 @@ class Connection {
     try{
       socket = await SecureSocket.connect(_address, _port, context: context, timeout: Duration(seconds: 15));
       socketWriteLine('login');
-      socketWriteLine(user+"#NEXT#"+pass);
-      print(user + " " + pass);
+      socketWriteLine(user+'#NEXT#'+pass);
+      print(user + ' ' + pass);
       await for(var data in socket){
-        String dataFromSocket = new String.fromCharCodes(data).trim();
+        var dataFromSocket = String.fromCharCodes(data).trim();
         if(dataFromSocket == '0'){
           print('Could not login with the supplied crendentials');
           return false;
-        } else if (dataFromSocket.contains("UID:")) { //if this is in the message we have the right credentials
+        } else if (dataFromSocket.contains('UID:')) { //if this is in the message we have the right credentials
           UID = dataFromSocket.split('UID:')[1];
           _username = user;
           print('Logged in, i have uid: ' + UID);
@@ -134,7 +134,7 @@ class Connection {
 
   Future<bool> register(Person user) async {
     socket = await SecureSocket.connect(_address, _port, context: context);
-    socketWriteLine("register_user");
+    socketWriteLine('register_user');
     socketWriteLine(json.encode(user.toJson()));
     var returns = false;
     await for(var response in socket){
@@ -142,7 +142,7 @@ class Connection {
       if(dataFromSocket == '1'){
         print('register successfull');
         returns = true;
-      } else if (dataFromSocket.contains("-1")){
+      } else if (dataFromSocket.contains('-1')){
         print ('email already taken');
         returns = false;
       }
@@ -162,10 +162,10 @@ class Connection {
       if(dataFromSocket == '1'){
         print('Sent friend request');
         returns = true;
-      } else if (dataFromSocket.contains("-1")){
+      } else if (dataFromSocket.contains('-1')){
         print ('could not send friend request');
         returns = false;
-      } else if (dataFromSocket.contains("-2")){
+      } else if (dataFromSocket.contains('-2')){
         print('User: ' + to + ' is not found in the databse');
         returns = false;
       }
@@ -182,13 +182,13 @@ class Connection {
     var returns = false;
     await for(var response in socket){
       var dataFromSocket = String.fromCharCodes(response).trim();
-      if(dataFromSocket == "1"){
+      if(dataFromSocket == '1'){
         print('Accepted friendrequest');
         returns = true;
-      } else if (dataFromSocket.contains("-1")){
+      } else if (dataFromSocket.contains('-1')){
         print ('could not send friend request');
         returns = false;
-      } else if (dataFromSocket.contains("-2")){
+      } else if (dataFromSocket.contains('-2')){
         print('User: ' + from + ' is not found in the databse');
         returns = false;
       }
@@ -284,7 +284,7 @@ class Connection {
   Future<Map<dynamic,dynamic>> getLeaderBoardPosition() async{
     socket = await SecureSocket.connect(_address, _port, context: context);
     socketWriteLine('get_leaderboard_position');
-    socketWriteLine("");
+    socketWriteLine('');
     await for(var response in socket){
       var dataFromSocket = String.fromCharCodes(response).trim();
       Map userMap = jsonDecode(dataFromSocket);

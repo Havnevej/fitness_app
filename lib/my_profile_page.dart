@@ -10,8 +10,6 @@ import 'loading.dart';
 import 'connection_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 // ignore: camel_case_types
 class myProfilePage extends StatefulWidget {
 
@@ -71,12 +69,8 @@ class _myProfileState extends State<myProfilePage> {
 
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    print(weightHistoryDataYAxis.length.toString() + ' Weight');
-    print(weightHistoryDataXAxis.length.toString() + ' Date');
     weightHistoryDataYAxis = [];
     weightHistoryDataXAxis = [];
     return loading ? Loading() : Scaffold(
@@ -126,7 +120,7 @@ class _myProfileState extends State<myProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Text("${user.firstName} ${user.lastName}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 30)),),
+                            Text('${user.firstName} ${user.lastName}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 30)),),
                             SizedBox(width: 15),
                             CircularPercentIndicator(
                               animateFromLastPercent: true,
@@ -148,6 +142,7 @@ class _myProfileState extends State<myProfilePage> {
                       ),
                       Divider(height: 0, color: Colors.greenAccent[400], thickness: 2,),
                       Container(
+                        height: 70,
                         color: Colors.greenAccent[400],
                         child: Row(
                           children: <Widget>[
@@ -163,8 +158,9 @@ class _myProfileState extends State<myProfilePage> {
                                   SizedBox(width: 5,),
                                   Image.asset('assets/images/weight.png', height: 30, width: 30, color: Colors.greenAccent[400],),
                                   SizedBox(width: 5,),
-                                  Text(" ${user.weight} kg", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 19))),
+                                  Text(' ${user.weight} kg', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 19))),
                                   IconButton(
+                                    padding: EdgeInsets.only(bottom: 1),
                                     icon: Icon(Icons.edit, size: 15,),
                                     color: Colors.greenAccent[400],
                                     onPressed: (){
@@ -181,8 +177,9 @@ class _myProfileState extends State<myProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Image.asset('assets/images/height.png', height: 30, width: 30, color: Colors.greenAccent[400],),
-                                  Text(" ${user.height} cm", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 19))),
+                                  Text(' ${user.height} cm', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 19))),
                                   IconButton(
+                                    padding: EdgeInsets.only(bottom: 1),
                                     icon: Icon(Icons.edit, size: 15,),
                                     color: Colors.greenAccent[400],
                                     onPressed: (){
@@ -200,7 +197,7 @@ class _myProfileState extends State<myProfilePage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Image.asset('assets/images/BMI.png', height: 28, width: 28, color: bmiColor(),),
-                                    Text("BMI: ${calculateBMI(user.weight, user.height)}", style: GoogleFonts.ropaSans(textStyle: TextStyle(color: bmiColor(), fontSize: 18))),
+                                    Text('BMI: ${calculateBMI(user.weight, user.height)}', style: GoogleFonts.ropaSans(textStyle: TextStyle(color: bmiColor(), fontSize: 18))),
                                     IconButton(
                                       padding: EdgeInsets.only(right: 5),
                                       icon: Icon(Icons.info_outline, size: 15,),
@@ -219,16 +216,15 @@ class _myProfileState extends State<myProfilePage> {
                       SizedBox(height: 2,),
                       Container(
                         width: 420,
-                        height: 30,
+                        height: 60,
                         color: Colors.blueGrey[900],
-                        child: Center(child: Text('Your Weight progress', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
+                        child: Center(child: Text('Your Weight progress', style: TextStyle(color: Colors.white, fontSize: 19))),
                       ),
                       SizedBox(height: 0,),
                       StreamBuilder (
                         key: UniqueKey(),
                         stream: weightHist(),
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          print('Inside builder');
                           return Container(
                             color: Colors.white,
                             width: 420,
@@ -247,13 +243,13 @@ class _myProfileState extends State<myProfilePage> {
                       width: 100.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/profilepic.jpg'),
+                          image: NetworkImage('https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/77/57/32/7757329d-e5cb-f401-3576-ed3c2e86988b/mza_2306268303586606653.jpg/600x600bb.jpg'),
                           fit: BoxFit.fill,
                         ),
                         shape: BoxShape.circle,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ],

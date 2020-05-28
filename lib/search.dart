@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/localsave.dart';
 import 'package:flutter_fitness_app/utils/constants.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
 import 'connection_handler.dart';
 
 class Search extends StatefulWidget {
@@ -37,7 +35,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        title: Text("Find friends",style: TextStyle(color: Colors.greenAccent),),
+        title: Text('Find friends',style: TextStyle(color: Colors.greenAccent),),
         backgroundColor: Colors.blueGrey[900],
         elevation: 1,
       ),
@@ -201,7 +199,7 @@ class _SearchState extends State<Search> {
                    // color: Colors.green,
                    child:FlatButton.icon(
                      padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                     label: Text("Send friend request", style: TextStyle(fontSize: 15),),
+                     label: Text('Send friend request', style: TextStyle(fontSize: 15),),
                      icon: Icon(Icons.person_add,color: Colors.blueGrey[900],),
                       onPressed:() {
                         LocalSave.save('${user.email}notifications', email);

@@ -1,13 +1,9 @@
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_second.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-
 import 'connection_handler.dart';
 import 'utils/constants.dart';
 import 'loading.dart';
@@ -16,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 
 class Register extends StatefulWidget {
 
-  final Connection connection; //Removed final
+  final Connection connection;
   const Register({Key key, this.connection}) : super(key: key);
 
   @override
@@ -29,12 +25,9 @@ class _RegisterState extends State<Register> {
   bool loading = false;
   bool _obscureText = true;
   bool _obscurePassword = true;
-
-  // text field state
   String error = '';
-
   String _password = '';
-  String _email = "";
+  String _email = '';
   String _confirmPass = '';
 
   Connection connection;
@@ -67,21 +60,9 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.blueGrey[900],
         elevation: (1),
         title: Text('Sign up', style: TextStyle(color: Colors.greenAccent),),
-        actions: <Widget>[
-          /*FlatButton.icon(
-            icon: Icon(
-              Icons.person, color: Colors.greenAccent,),
-            label: Text(
-              'Sign in', style: TextStyle(color: Colors.greenAccent),),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => Login()));
-            },
-          ),*/
-        ],
       ),
 
-      body: ListView( ////changed from column to list to implement (scroll) & fix overlaoding pixels
+      body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         children: <Widget>[
           Form(
@@ -130,10 +111,12 @@ class _RegisterState extends State<Register> {
                   obscureText: _obscurePassword,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   validator: (val){
-                    if(val.isEmpty)
+                    if(val.isEmpty) {
                       return 'Empty';
-                    if(val != _password)
+                    }
+                    if(val != _password) {
                       return 'Not Match';
+                    }
                     return null;},
                   onChanged: (val){_confirmPass = val;},
                 ),
@@ -165,7 +148,7 @@ class _RegisterState extends State<Register> {
                       onPressed: () {
                         if(_formkey.currentState.validate()){
                           setState(() {
-                            p = new Person("", "", _password, _email, -1, "", "", "", -1, -1, "", 0, "");
+                            p = Person('', '', _password, _email, -1, '', '', '', -1, -1, '', 0, '');
                             Navigator.of(context).push(MaterialPageRoute(builder: (
                                 BuildContext context) => RegisterSecond(connection: connection, person: p,)));
                           });

@@ -3,12 +3,9 @@ import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:flutter_fitness_app/register_third.dart';
-
 import 'connection_handler.dart';
 import 'utils/constants.dart';
-
 import 'package:flutter/cupertino.dart';
-
 
 class RegisterSecond extends StatefulWidget {
 
@@ -28,11 +25,10 @@ class _RegisterSecondState extends State<RegisterSecond> {
   String error = '';
 
   String _country;
-  String _region = "";
-  String _city="";
-  String _address="";
+  String _region = '';
+  String _city = '';
+  String _address = '';
   Person p;
-
   Connection connection;
   String dateText;
   Country _selectedCountry;
@@ -47,7 +43,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
   @override
   Widget build(BuildContext context) {
 
-    String _countryText = _country == null ? "Please select your country" : _country;
+    String _countryText = _country == null ? 'Please select your country' : _country;
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
@@ -59,7 +55,7 @@ class _RegisterSecondState extends State<RegisterSecond> {
         ],
       ),
 
-      body: ListView( ////changed from column to list to implement (scroll) & fix overlaoding pixels
+      body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         children: <Widget>[
           Form(

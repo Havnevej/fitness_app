@@ -1,4 +1,3 @@
-/// Timeseries chart example
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,6 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       animate: animate
     );
   }
-  /// Create one series with sample hard coded data.
   static List<charts.Series<TimeSeriesWeight, DateTime>> createSampleData(List<DateTime> dates, List<int> weights) {
     var data = <TimeSeriesWeight>[];
     for(var i=0; i<weights.length; i++){
@@ -33,7 +31,6 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     ];
   }
 }
-/// Time series data type.
 class TimeSeriesWeight {
   final DateTime time;
   final int weight;

@@ -219,19 +219,19 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Container(
                       width: 70,
-                      child: Center(child: Text("Title"),),
+                      child: Center(child: Text('Title'),),
                     ),
                     VerticalDivider(width:0,color: Colors.black,),
                     Expanded(
                       child: Container(
                         width: 200,
-                        child: Center(child: Text("Description")),
+                        child: Center(child: Text('Description')),
                       ),
                     ),
                     VerticalDivider(width:0,color: Colors.black,),
                     Container(
                       width: 50,
-                      child: Center(child: Text("Reward")),
+                      child: Center(child: Text('Reward')),
                     ),
                   ],
                 ),
@@ -359,7 +359,7 @@ class _HomeState extends State<Home> {
           child: ListView(
             children: <Widget>[
               FlatButton.icon(
-                label: Text("Challenges history", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                label: Text('Challenges history', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 icon: Icon(Icons.fitness_center,color: Colors.lightGreenAccent,),
                 onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
               ),
@@ -456,7 +456,7 @@ class _HomeState extends State<Home> {
                                             friendsInc.removeRange(0, friendsInc.length);
                                             notificationsAcceptedReq.removeRange(0, notificationsAcceptedReq.length);
                                           });
-                                        }, //CLEAR NOTIFICATIONS HERE::::::::::::::::::::::::::::::::::::::::::::::::::
+                                        },
                                       ),
                                     ),
                                   ],
@@ -559,7 +559,7 @@ class _HomeState extends State<Home> {
                           Expanded(
                             child: Container(
                               child: FlatButton(
-                                child: Text("Close",style: TextStyle(color: Colors.white),),
+                                child: Text('Close',style: TextStyle(color: Colors.white),),
                                 onPressed: (){
                                   Navigator.pop(context);
                                 },
@@ -598,9 +598,9 @@ class _HomeState extends State<Home> {
                       width: 220,
                       child: Column(
                           children: [
-                            Center(child: Text("DID YOU COMPLETE THE", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
+                            Center(child: Text('DID YOU COMPLETE THE', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),)
                             ),
-                            Center(child: Text("CHALLENGE?", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                            Center(child: Text('CHALLENGE?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
                             ),
                       ]),
                     ),
@@ -616,7 +616,7 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         FlatButton(
                           color: Colors.blueGrey[800],
-                          child: Text("Yes!",style: TextStyle(color: Colors.white),),
+                          child: Text('Yes!',style: TextStyle(color: Colors.white),),
                           onPressed: () async{
                             await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {

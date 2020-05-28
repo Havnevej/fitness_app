@@ -6,15 +6,15 @@ class LocalSave {
   static void save(String key, dynamic value) async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     if (value is bool) {
-      sharedPrefs.setBool(key, value);
+      await sharedPrefs.setBool(key, value);
     } else if (value is String) {
-      sharedPrefs.setString(key, value);
+      await sharedPrefs.setString(key, value);
     } else if (value is int) {
-      sharedPrefs.setInt(key, value);
+      await sharedPrefs.setInt(key, value);
     } else if (value is double) {
-      sharedPrefs.setDouble(key, value);
+      await sharedPrefs.setDouble(key, value);
     } else if (value is List<String>) {
-      sharedPrefs.setStringList(key, value);
+      await sharedPrefs.setStringList(key, value);
     }
   }
 }

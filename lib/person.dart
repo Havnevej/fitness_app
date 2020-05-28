@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:sprintf/sprintf.dart'; //sprintf: https://pub.dev/packages/sprintf
+import 'package:sprintf/sprintf.dart';
 
 class Person {
   String firstName;
@@ -25,8 +23,6 @@ class Person {
   String registerDate;
   int challengesCompleted;
 
-
-  //dart magi den sætter variablerne bare ved at gøre det her
   Person(this.firstName,this.lastName,this.password,this.email,this.age,this.country,
       [this.address = "",this.region = "",this.weight = -1, this.height = -1,this.gender = "", this.id = 0,this.city = "", this.level = -1]);
 
@@ -75,7 +71,7 @@ class Person {
       };
   @override
   String toString() {
-    String d = sprintf("%s t %s i %s s s %s e %s m %s a %s n %s d %s h %s e %s h %s e %s",[firstName, lastName, password,  email, weight, height, age, gender, country, region, city, address, id]);
+    var d = sprintf('%s t %s i %s s s %s e %s m %s a %s n %s d %s h %s e %s h %s e %s',[firstName, lastName, password,  email, weight, height, age, gender, country, region, city, address, id]);
     return d;
   }
 }

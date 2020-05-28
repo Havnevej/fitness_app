@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/login.dart';
 import 'package:flutter_fitness_app/person.dart';
 import 'package:intl/intl.dart';
-
 import 'connection_handler.dart';
 import 'utils/constants.dart';
-
 import 'package:flutter/cupertino.dart';
-
 import 'loading.dart';
 
 class RegisterThird extends StatefulWidget {
-
   final Connection connection;
   final Person person;
   const RegisterThird({Key key, this.connection, this.person}) : super(key: key);
@@ -21,11 +17,8 @@ class RegisterThird extends StatefulWidget {
 }
 
 class _RegisterThirdState extends State<RegisterThird> {
-
   final _formkey = GlobalKey<FormState>();
   bool loading = false;
-
-  // text field state
   String error = '';
   bool errorOn = false;
   double weight = -1;
@@ -33,7 +26,6 @@ class _RegisterThirdState extends State<RegisterThird> {
   String gender = "";
   Person p;
   int _age = -1;
-
   Connection connection;
   List<String> _genders = ['Male', 'Female', 'Other'];
   String _selected_gender;

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/home.dart';
 import 'package:flutter_fitness_app/register.dart';
@@ -45,7 +44,7 @@ class _LoginState extends State<Login> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         children: <Widget>[
-          Divider(height: 145,),
+          SizedBox(height: 145,),
         /*CircleAvatar(
           radius: 140,
           backgroundImage: NetworkImage('https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/77/57/32/7757329d-e5cb-f401-3576-ed3c2e86988b/mza_2306268303586606653.jpg/600x600bb.jpg'),
@@ -83,26 +82,6 @@ class _LoginState extends State<Login> {
                   if(_formkey.currentState.validate()){
                     setState(()=> loading = true);
                     if(await _server_connection.loginUser(username, password)){
-
-                      var challenges = await _server_connection.getChallenges();
-                      await _server_connection.getWeightHistory();
-                      //Uncomment these to test features on login
-                      /*
-                       _server_connection.getLeaderBoardPosition();
-                      _server_connection.getCompletedChallenges();
-                      //Gets the 1st challenge and gets the point reward from it.
-                      print(challenges[0]["point_reward"]);
-                      _server_connection.completeChallenge(jsonEncode(challenges[0]));
-                      Get top 25 sorted by level
-                      _server_connection.getTop25ByRank();
-                      Accept and decline friends request, if the friend is not in the friend requests it will throw an error
-                      bool did_accept = await _server_connection.declineFriendRequest("hkmiari@ruc.dk");
-                      bool did_decline = await _server_connection.declineFriendRequest("hkmiari@ruc.dk");
-                      print(did_accept);
-                      print(did_decline);
-                      Map<String, dynamic> results = await _server_connection.searchByEmail("ant");
-                       */
-
                       setState(() {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Home(_server_connection)));
                       });
@@ -112,7 +91,7 @@ class _LoginState extends State<Login> {
                     }
                   }
                 },
-                child: Text("Login"),
+                child: Text('Login'),
               ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
