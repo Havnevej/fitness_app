@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'connection_handler.dart';
 import 'friends.dart';
 import 'leaderboard.dart';
-import 'localsave.dart';
 import 'login.dart';
 import 'loading.dart';
 import 'my_profile_page.dart';
@@ -45,17 +44,17 @@ class _HomeState extends State<Home> {
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     super.initState();
     streamChallenges();
-    restoreSharedPrefs().asStream();//STREAM
-    //notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    restoreSharedPrefs();//STREAM
+    xpCurrent = user.exp;
   }
 
-  Future<int> restoreSharedPrefs() async{ //RETURN
+  Future<int> restoreSharedPrefs() async {
     prefs = await SharedPreferences.getInstance();
     notificationsAcceptedReq = [];
     var friendsList = user.friendslist;
     print(friendsList);
-
     var savedOut = <String>[];
+
     savedOut.add(await prefs.getString('${user.email}notifications'));
 
     for(var i = 0; i<savedOut.length; i++){
@@ -79,7 +78,7 @@ class _HomeState extends State<Home> {
 
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
-    xpCurrent = user.exp;
+
     xpProgress = (xpCurrent / (user.level*1000) * 100);
 
     return loading ? Loading() : Scaffold(
@@ -238,6 +237,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
+              Divider(height: 0, color: Colors.lightGreenAccent, thickness: 1,),
             ],
           ),
           StreamBuilder(
@@ -619,10 +619,8 @@ class _HomeState extends State<Home> {
                           color: Colors.blueGrey[800],
                           child: Text("Yes!",style: TextStyle(color: Colors.white),),
                           onPressed: () async{
-                            colors.removeAt(index);
                             await connection.completeChallenge(jsonEncode(challenges[index]));
                             setState(() {
-                              //challenges.removeAt(index);
                               xpCurrent += challenges[index]['point_reward'];
                             });
                             Navigator.pop(context);
