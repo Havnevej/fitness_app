@@ -9,7 +9,6 @@ import 'friends.dart';
 import 'loading.dart';
 import 'connection_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fcharts/fcharts.dart';
 
 
 
@@ -136,7 +135,7 @@ class _myProfileState extends State<myProfilePage> {
                               animationDuration: 1200,
                               lineWidth: 5.0,
                               percent: 0.2, //0.1
-                              center: new Text('${user.level}',
+                              center: Text('${user.level}',
                                 style:
                                 GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                               ),

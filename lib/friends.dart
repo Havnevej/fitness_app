@@ -22,9 +22,9 @@ class _FriendsState extends State<Friends> {
   Person user;
   Connection connection;
   Stream loadFriendsData()async*{
-     for(int i = 0; i<user.friendslist.length; i++) {
+      await connection.getMyUserData();
+     for(var i = 0; i<user.friendslist.length; i++) {
       friends.add(await connection.getFriendData(user.friendslist[i]));
-      //yield friends;
     }
   }
   @override
@@ -125,11 +125,16 @@ class _FriendsState extends State<Friends> {
                                   //color:Colors.green,
                                   child: FlatButton(
                                     child: Text("Accept"),
-                                    onPressed: (){
-                                      connection.acceptFriendRequest(user.friendRequestsIncoming[index]);
+                                    onPressed: () async{
+                                      await connection.acceptFriendRequest(user.friendRequestsIncoming[index]);
+                                      var friend = await connection.getFriendData(user.friendRequestsIncoming[index]);
+                                      await loadFriendsData();
+
                                       setState(() {
-                                        user.friendslist.add(user.friendRequestsIncoming[index]);
+
+                                        user.friendslist.add(friend.email);
                                         user.friendRequestsIncoming.removeAt(index);
+                                        print(user.friendslist);
                                       });
                                     },
                                   ),
@@ -255,7 +260,7 @@ class _FriendsState extends State<Friends> {
                                     animationDuration: 1200,
                                     lineWidth: 4.0,
                                     percent: (0.2), //0.1
-                                    center: Text(friend.level.toString(),
+                                    center: Text(friend?.level == null ?? true ?'':friend.level.toString(),
                                       style:
                                       TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0, color: Colors.amber),
                                     ),

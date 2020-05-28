@@ -123,7 +123,7 @@ class _SearchState extends State<Search> {
                                         margin: const EdgeInsets.only(right: 0),
                                         child: FlatButton.icon(
                                           padding: EdgeInsets.only(left:20),
-                                          label: Text(""),
+                                          label: Text(''),
                                           icon: Icon(Icons.person_add),
                                         onPressed: (){
                                             _showbuttons(list2[index], index);

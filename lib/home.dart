@@ -40,55 +40,42 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-
     connection = widget.connection;
     user = connection.loggedInPerson;
     colors = [Colors.blue,Colors.green,Colors.purple,Colors.orange];
     super.initState();
-    //restoreSharedPrefs();// POSITION +
     streamChallenges();
-    restoreSharedPrefs();
-    notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
+    restoreSharedPrefs().asStream();//STREAM
+    //notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
-  restoreSharedPrefs() async{ //RETURN
+  Future<int> restoreSharedPrefs() async{ //RETURN
     prefs = await SharedPreferences.getInstance();
-
     notificationsAcceptedReq = [];
-    //prefs.clear();
-    List<String> outgoingFriendsList = user.friendRequestsOutgoing;
-    List<String> friendsList = user.friendslist;
+    var friendsList = user.friendslist;
     print(friendsList);
-    //LocalSave.save("savedOutGoing", outgoingFriendsList);
-    //await prefs.setStringList('savedOutGoing', outgoingFriendsList);
 
-    List<String> savedOut = [];
+    var savedOut = <String>[];
     savedOut.add(await prefs.getString('${user.email}notifications'));
 
     for(var i = 0; i<savedOut.length; i++){
       if(friendsList.contains(savedOut[i])){
         notificationsAcceptedReq.add(savedOut[i]);
-        //prefs.setStringList('savedOutGoing', user.friendRequestsOutgoing);
       }
     }
-    notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
-
-    print('SAVED $savedOut ');
-    print(notificationsAcceptedReq);
+    return notificationCounter = user.friendRequestsIncoming.length + notificationsAcceptedReq.length;
   }
 
   streamChallenges()async*{
     challenges = await connection.getChallenges();
   }
 
-  Color challengeColor(){
-    Color returnColor = colors[0];
-    colors.removeAt(0);
-    return returnColor;
-  }
-
   @override
   Widget build(BuildContext context) {
+    //restoreSharedPrefs().asStream();
+
+    print(notificationsAcceptedReq);
+    print(notificationCounter);
 
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
@@ -122,7 +109,7 @@ class _HomeState extends State<Home> {
                     _showNotification(user.friendRequestsIncoming,notificationsAcceptedReq);
                 });
               },),
-              notificationCounter != 0 ? Positioned( // FALLBACK?!
+              notificationCounter != 0 ? Positioned(
               right: 11,
               top: 11,
               child: Container(
@@ -135,7 +122,7 @@ class _HomeState extends State<Home> {
                   minWidth: 14,
                   minHeight: 14,
                 ),
-                child: Text("$notificationCounter",style: TextStyle(color: Colors.white, fontSize: 8,),
+                child: Text('$notificationCounter',style: TextStyle(color: Colors.white, fontSize: 8,),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -348,7 +335,7 @@ class _HomeState extends State<Home> {
                               });
                             },
                           ),
-                          Divider(height: 0, color: Colors.black,),
+                          Divider(height: 1, color: Colors.lightGreenAccent, thickness: 1,),
                         ],
                       );
                   }),
@@ -512,14 +499,6 @@ class _HomeState extends State<Home> {
                                                           ],
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: 30,
-                                                    child: IconButton(
-                                                      padding: EdgeInsets.only(right: 3),
-                                                      icon: Icon(Icons.clear),
-                                                      onPressed: () {}, // MAKE IT DISAPPEAR HERE
                                                     ),
                                                   ),
                                                 ],
