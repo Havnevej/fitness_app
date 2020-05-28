@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
 
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
-    user.exp = xpCurrent;
+    xpCurrent = user.exp;
     xpProgress = (xpCurrent / (user.level*1000) * 100);
 
     return loading ? Loading() : Scaffold(
