@@ -12,10 +12,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ignore: camel_case_types
 class myProfilePage extends StatefulWidget {
-
+  final double xpProgress;
   final Person user;
   final Connection connection;
-  const myProfilePage({Key key, this.user, this.connection}) : super(key: key);
+  const myProfilePage({Key key, this.user, this.connection, this.xpProgress}) : super(key: key);
 
   @override
   _myProfileState createState() => _myProfileState();
@@ -23,6 +23,7 @@ class myProfilePage extends StatefulWidget {
 
 // ignore: camel_case_types
 class _myProfileState extends State<myProfilePage> {
+  double xpProgress;
   Person user;
   Connection connection;
   String weight = '';
@@ -48,6 +49,7 @@ class _myProfileState extends State<myProfilePage> {
   }
   @override
   void initState() {
+    xpProgress = widget.xpProgress;
     user = widget.user;
     connection = widget.connection;
     super.initState();
@@ -128,7 +130,7 @@ class _myProfileState extends State<myProfilePage> {
                               animation: true,
                               animationDuration: 1200,
                               lineWidth: 5.0,
-                              percent: 0.2, //0.1
+                              percent:  (xpProgress/100) <= 1 ? (xpProgress/100) : 0,
                               center: Text('${user.level}',
                                 style:
                                 GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),

@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness_app/person.dart';
-import 'package:flutter_fitness_app/search.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'connection_handler.dart';
 import 'loading.dart';
 
 class Challenges_history extends StatefulWidget {
+  final double xpProgress;
   final Person user;
   final Connection connection;
 
-  const Challenges_history({Key key, this.user, this.connection}) : super(key: key);
+  const Challenges_history({Key key, this.user, this.connection, this.xpProgress}) : super(key: key);
 
   @override
   _Challenges_history_state createState() => _Challenges_history_state();
 }
 
 class _Challenges_history_state extends State<Challenges_history> {
+  double xpProgress;
   Person user;
   Connection connection;
   Map<dynamic, dynamic> _map;
@@ -30,6 +31,7 @@ class _Challenges_history_state extends State<Challenges_history> {
 
   @override
   void initState() {
+    xpProgress = widget.xpProgress;
     user = widget.connection.loggedInPerson;
     connection = widget.connection;
     super.initState();
@@ -60,9 +62,9 @@ class _Challenges_history_state extends State<Challenges_history> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: Text('Please wait its loading...'));
                 } else {
-                  print("${snapshot.data}");
+                  print('${snapshot.data}');
                   _map = snapshot.data;
-                  List<dynamic> challenges = _map.values.toList();
+                  var challenges = _map.values.toList();
                   totalChallenges = challenges[0];
                   cardioChallenges = challenges[1];
                   flexibilityChallenges = challenges[2];
@@ -99,8 +101,8 @@ class _Challenges_history_state extends State<Challenges_history> {
                               animation: true,
                               animationDuration: 1200,
                               lineWidth: 3.0,
-                              percent: 0.2, //0.1
-                              center: new Text('${user.level}',
+                              percent: (xpProgress/100) <= 1 ? (xpProgress/100) : 0,
+                              center: Text('${user.level}',
                                 style:
                                 GoogleFonts.ropaSans(textStyle: TextStyle(color: Colors.white, fontSize: 15,)),
                               ),

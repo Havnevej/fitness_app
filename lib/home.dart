@@ -72,9 +72,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-    print(notificationsAcceptedReq);
-    print(notificationCounter);
-
     if(xpCurrent>=user.level*1000){xpCurrent = 0;user.level++;}
 
 
@@ -361,7 +358,7 @@ class _HomeState extends State<Home> {
               FlatButton.icon(
                 label: Text('Challenges history', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 icon: Icon(Icons.fitness_center,color: Colors.lightGreenAccent,),
-                onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection,)));},
+                onPressed:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Challenges_history(user:user, connection: connection, xpProgress: xpProgress)));},
               ),
               Divider(height:0 ,color: Colors.lightGreenAccent,),
               FlatButton.icon(
@@ -369,7 +366,7 @@ class _HomeState extends State<Home> {
                 label: Text('My profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                 onPressed: () async{
                   await connection.getMyUserData();
-                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user)));
+                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => myProfilePage(connection: connection, user: user, xpProgress: xpProgress))); // currentxp
                 },
               ),
               Divider(height:0 ,color: Colors.lightGreenAccent,),

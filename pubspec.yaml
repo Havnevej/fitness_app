@@ -19,7 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  wifi: ^0.1.5
   sprintf: ^4.0.0
   percent_indicator: ^2.1.1
   cupertino_icons: ^0.1.2
