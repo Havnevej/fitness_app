@@ -8,17 +8,17 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="group_six.drone_controller.Controller">
     <top>
-        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="CENTER">
-            <children>
-                <Label prefHeight="87.0" prefWidth="477.0" text="DRONE COMMANDS">
-                    <font>
-                        <Font name="Tahoma" size="51.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets left="8.0" top="8.0" />
-                    </HBox.margin>
-                </Label>
-            </children></HBox>
+        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: lightgreen;"
+              BorderPane.alignment="CENTER">
+            <Label prefHeight="87.0" prefWidth="477.0" text="DRONE COMMANDS">
+                <font>
+                    <Font name="Tahoma" size="51.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets left="8.0" top="8.0"/>
+                </HBox.margin>
+            </Label>
+        </HBox>
     </top>
     <center>
         <TableView fx:id="table" prefHeight="200.0" prefWidth="585.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
@@ -43,50 +43,44 @@
     </center>
     <bottom>
         <HBox BorderPane.alignment="CENTER">
-            <children>
-                <VBox prefHeight="68.0" prefWidth="599.0">
-                    <children>
-                        <FlowPane alignment="TOP_RIGHT" prefHeight="73.0" prefWidth="204.0" style="-fx-background-color: lightgreen;">
-                            <children>
-                                <Label text="Recieving from: ">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                                <Label fx:id="labelIp" text="127.0.0.1">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                                <Label text=":">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                                <Label fx:id="labelConnectionPort" text="7000">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                            </children>
-                        </FlowPane>
-                        <FlowPane alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="599.0" style="-fx-background-color: green;">
-                            <children>
-                                <Label text="Broadcast on port: ">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                                <Label fx:id="labelBroadcastPort" text="7007">
-                                    <FlowPane.margin>
-                                        <Insets top="4.0" />
-                                    </FlowPane.margin>
-                                </Label>
-                            </children>
-                        </FlowPane>
-                    </children>
-                </VBox>
-            </children>
+            <VBox prefHeight="68.0" prefWidth="599.0">
+                <FlowPane alignment="TOP_RIGHT" prefHeight="73.0" prefWidth="204.0"
+                          style="-fx-background-color: lightgreen;">
+                    <Label text="Receiving from: ">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                    <Label text="127.0.0.1">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                    <Label text=":">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                    <Label text="7000">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                </FlowPane>
+                <FlowPane alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="599.0"
+                          style="-fx-background-color: green;">
+                    <Label text="Broadcasting on port: ">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                    <Label text="7009">
+                        <FlowPane.margin>
+                            <Insets top="4.0"/>
+                        </FlowPane.margin>
+                    </Label>
+                </FlowPane>
+            </VBox>
         </HBox>
     </bottom>
 </BorderPane>

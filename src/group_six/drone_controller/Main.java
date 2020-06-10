@@ -15,7 +15,7 @@ import java.io.IOException;
 
 
 public class Main extends Application {
-    private static int speed = 0;
+    private static int speed = 15; //default speed
     final static Image player = new Image("file:drone.png");
     static ImageView drone_player;
     public static void main(String[] args) { launch(args) ;}
@@ -47,34 +47,34 @@ public class Main extends Application {
         return instructions;
     }
 
-    public static void move_drone(String MESSAGE){
-        System.out.println(MESSAGE);
-        if(MESSAGE.equals("initialize")){
+    public static void move_drone(String udpMessage){
+        System.out.println(udpMessage);
+        if(udpMessage.equals("initialize")){
             drone_player.setY(drone_window_height/2);
             drone_player.setX(drone_window_width/2);
         }
-        if (MESSAGE.equals("moveup")) {
+        if (udpMessage.equals("moveup")) {
             if (get_drone_center_y() + drone_player.getFitHeight()/2 - get_speed_of_drone() > 0) {
                 drone_player.setY(drone_player.getY() - get_speed_of_drone());
             } else {
                 drone_player.setY(drone_window_height-drone_player.getFitHeight());
             }
         }
-        if(MESSAGE.equals("movedown")){
+        if(udpMessage.equals("movedown")){
             if (!((drone_player.getY() - drone_player.getFitWidth()/2 + get_speed_of_drone()) > drone_window_height)) {
                 drone_player.setY(drone_player.getY() + get_speed_of_drone());
             } else {
                 drone_player.setY(0);
             }
         }
-        if(MESSAGE.equals("moveleft")){
+        if(udpMessage.equals("moveleft")){
             if ((get_drone_center_x() - drone_player.getFitWidth()/2 - get_speed_of_drone()) > 0.0) {
                 drone_player.setX(drone_player.getX() - get_speed_of_drone());
             }else {
                 drone_player.setX(drone_window_width-drone_player.getFitWidth());
             }
         }
-        if(MESSAGE.equals("moveright")){
+        if(udpMessage.equals("moveright")){
             if (!((drone_player.getX() - drone_player.getFitWidth()/2 + get_speed_of_drone()) > drone_window_width)) {
                 drone_player.setX(drone_player.getX() + get_speed_of_drone());
             }else{

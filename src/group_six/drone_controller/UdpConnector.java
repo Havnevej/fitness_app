@@ -7,16 +7,16 @@ public class UdpConnector implements Runnable{
     private DatagramSocket socket;
     private final int udp_listen_port = 7000;
     private final int udp_send_port = 7009;
+    private boolean serverRun = true;
     private Controller message_handler;
-    private boolean receiveMessages = true;
 
-    public UdpConnector(Controller message_handler)
+    UdpConnector(Controller message_handler)
     {
         this.message_handler = message_handler;
         setupSocket();
     }
 
-    public void close_socket()
+    void close_socket()
     {
         this.socket.close();
     }
@@ -30,14 +30,10 @@ public class UdpConnector implements Runnable{
         }
     }
 
-    private void sendMessage(String string, InetAddress address)
+    private void sendOK(InetAddress address)
     {
-        sendMessage(string.getBytes(), address);
-    }
-
-    private void sendMessage(byte[] bytes, InetAddress address)
-    {
-        DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, udp_send_port);
+        byte[] send = "ok".getBytes();
+        DatagramPacket packet = new DatagramPacket(send, send.length, address, udp_send_port);
         try {
             socket.send(packet);
         } catch (IOException e) {
@@ -49,18 +45,15 @@ public class UdpConnector implements Runnable{
         byte[] buf = new byte[256];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         try {
-            socket.receive(packet);
+            socket.receive(packet); // actually receiving the message here
             UdpMessage message = new UdpMessage(packet.getData(), packet.getLength(), packet.getAddress() , packet.getPort());
 
-            //MESSAGE = 50;
-
-            if(UdpMessage.length <=2){ // will be potentiometer always
-                Main.set_speed_of_drone(UdpMessage.message);
+            if(message.getLength() <=2){ // If the length of the message is less than or equal to two, we know the message is a number which will change the speed
+                Main.set_speed_of_drone(message.getMessage());
             } else {
-                Main.move_drone(UdpMessage.message);
+                Main.move_drone(message.getMessage());
             }
-
-            if (receiveMessages) message_handler.receiveMessage(message);
+            message_handler.receiveMessage(message);
             return message;
         } catch (IOException e) {
             System.out.println("IOEXCEPTION: Tried to receive packet");
@@ -72,7 +65,9 @@ public class UdpConnector implements Runnable{
     {
         try {
             UdpMessage message = receive_message();
-            if (receiveMessages) sendMessage("ok", InetAddress.getByName(message.getIp()));
+            if(message != null) {
+                sendOK(InetAddress.getByName(message.getIp())); // we send ok back if message is not null
+            }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -83,14 +78,10 @@ public class UdpConnector implements Runnable{
         connection_main_loop();
     }
 
-    public void connection_main_loop() {
+    private void connection_main_loop() {
         System.out.println("Started UDP Monitor");
-        do {
+        while (serverRun){
             udp_monitor();
-        } while(is_receiving_messages());
-    }
-
-    private boolean is_receiving_messages() {
-        return receiveMessages;
+        }
     }
 }

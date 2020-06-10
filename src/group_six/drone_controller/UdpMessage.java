@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class UdpMessage {
     private String time;
-    public static String message;
+    private String message;
     private String ip;
-    public static int length;
+    private int length;
     private int port;
 
     public UdpMessage(String message, String ip, int port)
@@ -28,23 +28,11 @@ public class UdpMessage {
         //call other constructor
         this(new String(message, 0, msgLength), ip.getHostAddress(), port );
     }
-
-    public String getTime() { //used for reflection data retrieval
-        return time;
-    }
-
-    public String getMessage() { //used for reflection data retrieval
-        return message;
-    }
-
-    public String getIp() { //used for reflection data retrieval
-        return ip;
-    }
-
-    public String getIpAndString() //used for reflection data retrieval
-    {
-        return ip + ":" + port;
-    }
+     public String getTime() { return time; }                    //used for reflection data retrieval
+     public String getMessage() { return message; }              //used for reflection data retrieval
+     int getLength() { return length; }
+     public String getIp() { return ip; }                        //used for reflection data retrieval
+     public String getIpAndString() { return ip + ":" + port; }  //used for reflection data retrieval
 
     @Override
     public String toString() {
@@ -55,10 +43,6 @@ public class UdpMessage {
                 ", length=" + length +
                 ", port=" + port +
                 '}';
-    }
-
-    public int getLength() {
-        return length;
     }
 }
 
