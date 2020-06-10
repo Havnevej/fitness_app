@@ -47,34 +47,34 @@ public class Main extends Application {
         return instructions;
     }
 
-    public static void move_drone(String direction){
-        System.out.println(direction);
-        if(direction.equals("initialize")){
+    public static void move_drone(String MESSAGE){
+        System.out.println(MESSAGE);
+        if(MESSAGE.equals("initialize")){
             drone_player.setY(drone_window_height/2);
             drone_player.setX(drone_window_width/2);
         }
-        if (direction.equals("moveup")) {
+        if (MESSAGE.equals("moveup")) {
             if (get_drone_center_y() + drone_player.getFitHeight()/2 - get_speed_of_drone() > 0) {
                 drone_player.setY(drone_player.getY() - get_speed_of_drone());
             } else {
                 drone_player.setY(drone_window_height-drone_player.getFitHeight());
             }
         }
-        if(direction.equals("movedown")){
+        if(MESSAGE.equals("movedown")){
             if (!((drone_player.getY() - drone_player.getFitWidth()/2 + get_speed_of_drone()) > drone_window_height)) {
                 drone_player.setY(drone_player.getY() + get_speed_of_drone());
             } else {
                 drone_player.setY(0);
             }
         }
-        if(direction.equals("moveleft")){
+        if(MESSAGE.equals("moveleft")){
             if ((get_drone_center_x() - drone_player.getFitWidth()/2 - get_speed_of_drone()) > 0.0) {
                 drone_player.setX(drone_player.getX() - get_speed_of_drone());
             }else {
                 drone_player.setX(drone_window_width-drone_player.getFitWidth());
             }
         }
-        if(direction.equals("moveright")){
+        if(MESSAGE.equals("moveright")){
             if (!((drone_player.getX() - drone_player.getFitWidth()/2 + get_speed_of_drone()) > drone_window_width)) {
                 drone_player.setX(drone_player.getX() + get_speed_of_drone());
             }else{
@@ -84,17 +84,17 @@ public class Main extends Application {
     }
 
     //GETTERS AND SETTERS
-    public static void set_speed_of_drone(String speed){
+    static void set_speed_of_drone(String speed){
         Main.speed = Integer.parseInt(speed);
     }
 
-    public static int get_speed_of_drone() {
+    static int get_speed_of_drone() {
         return Main.speed;
     }
-    public static int get_drone_window_height() {
+    static int get_drone_window_height() {
         return drone_window_height;
     }
-    public static int get_drone_window_width() {
+    static int get_drone_window_width() {
         return drone_window_width;
     }
     private static double get_drone_center_x(){

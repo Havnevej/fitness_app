@@ -23,7 +23,6 @@ public class UdpConnector implements Runnable{
 
     private void setupSocket() {
         try {
-
             socket = new DatagramSocket(udp_listen_port);
         } catch (SocketException e) {
             System.out.println("IOEXCEPTION: Tried to create new datagramsocket on "+ udp_listen_port);
@@ -53,13 +52,15 @@ public class UdpConnector implements Runnable{
             socket.receive(packet);
             UdpMessage message = new UdpMessage(packet.getData(), packet.getLength(), packet.getAddress() , packet.getPort());
 
-            Main.move_drone(UdpMessage.message);
+            //MESSAGE = 50;
+
             if(UdpMessage.length <=2){ // will be potentiometer always
                 Main.set_speed_of_drone(UdpMessage.message);
+            } else {
+                Main.move_drone(UdpMessage.message);
             }
 
             if (receiveMessages) message_handler.receiveMessage(message);
-            sendMessage("ok", InetAddress.getByName(message.getIp())); //sends back OK to the ESP, this will make the LED blink to indicate activity
             return message;
         } catch (IOException e) {
             System.out.println("IOEXCEPTION: Tried to receive packet");
@@ -67,10 +68,10 @@ public class UdpConnector implements Runnable{
         }
     }
 
-    public void udp_monitor()
+    private void udp_monitor()
     {
-        UdpMessage message = receive_message();
         try {
+            UdpMessage message = receive_message();
             if (receiveMessages) sendMessage("ok", InetAddress.getByName(message.getIp()));
         } catch (UnknownHostException e) {
             e.printStackTrace();
